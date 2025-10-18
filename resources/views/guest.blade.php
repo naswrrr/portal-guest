@@ -69,7 +69,7 @@
                         <div class="navbar-nav ms-auto">
                             <a href="index.html" class="nav-item nav-link active">Home</a>
                             <a href="profil.html" class="nav-item nav-link">Profil</a>
-                            <a href="events.html" class="nav-item nav-link">Events</a>
+                            <a href="warga.html" class="nav-item nav-link">Data Warga</a>
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                     </div>
@@ -81,6 +81,7 @@
 
        <!-- Carousel Start -->
         <div class="container-fluid carousel-header vh-100 px-0">
+            @yield('content')
             <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
