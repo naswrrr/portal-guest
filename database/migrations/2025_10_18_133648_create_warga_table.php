@@ -7,18 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up()
-    {
-        Schema::create('warga', function (Blueprint $table) {
-            $table->increments('warga_id');
-            $table->string('nama_depan', 100);
-            $table->string('nama_belakang', 100);
-            $table->date('tanggal_lahir')->nullable();
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan'])->nullable();
-            $table->string('email')->unique();
-            $table->string('no_telepon', 20)->nullable();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('warga', function (Blueprint $table) {
+        $table->increments('warga_id');
+        $table->string('nama', 100);
+        $table->string('nik', 16)->unique();
+        $table->string('no_kk', 16);
+        $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+        $table->text('alamat');
+        $table->timestamps();
+    });
+}
 
     public function down()
     {

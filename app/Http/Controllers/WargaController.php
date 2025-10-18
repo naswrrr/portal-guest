@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Warga; // JANGAN LUPA INI
 
 class WargaController extends Controller
 {
     public function index()
     {
         $data['dataWarga'] = Warga::all();
-        $data['editData'] = null; // Pastikan ini ada
+        $data['editData'] = null;
         return view('warga.index', $data);
     }
 
@@ -20,17 +21,15 @@ class WargaController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi
         $validated = $request->validate([
             'nama_depan' => 'required|string|max:100',
             'nama_belakang' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'email' => 'required|email|unique:warga,email',
-            'no_telepon' => 'required|numeric'
+            'email' => 'nullable|email|unique:warga,email',
+            'no_telepon' => 'nullable|numeric'
         ]);
 
-        // Simpan data
         Warga::create($validated);
 
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan!');
@@ -52,17 +51,15 @@ class WargaController extends Controller
     {
         $warga = Warga::findOrFail($id);
 
-        // Validasi
         $validated = $request->validate([
             'nama_depan' => 'required|string|max:100',
             'nama_belakang' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'email' => 'required|email|unique:warga,email,' . $warga->warga_id . ',warga_id',
-            'no_telepon' => 'required|numeric'
+            'email' => 'nullable|email|unique:warga,email,' . $warga->warga_id . ',warga_id',
+            'no_telepon' => 'nullable|numeric'
         ]);
 
-        // Update data
         $warga->update($validated);
 
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui!');
