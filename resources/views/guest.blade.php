@@ -49,7 +49,7 @@
     <div
         class="container-fluid bg-primary text-white py-2 px-lg-5 d-none d-lg-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-            <small class="me-4"><i class="fa fa-envelope me-2 text-white"></i> Example@gmail.com</small>
+            <small class="me-4"><i class="fa fa-envelope me-2 text-white"></i> BinaDesa@gmail.com</small>
             <small><i class="fa fa-phone-alt me-2 text-white"></i> +01234567890</small>
         </div>
         <div class="d-flex align-items-center">
@@ -102,13 +102,13 @@
                     <a class="btn btn-link" href="#">About Us</a>
                     <a class="btn btn-link" href="#">Contact Us</a>
                     <a class="btn btn-link" href="#">Privacy Policy</a>
-                    <a class="btn btn-link" href="#">Terms & Condition</a>
+                    <a class="btn btn-link" href="#">Terms & Conditions</a>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-white mb-4">Contact</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, City</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>example@email.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Yahayuk, Atlantic</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>4012 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>BinaDesa@email.com</p>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h5 class="text-white mb-4">Follow Us</h5>
@@ -153,4 +153,3 @@
 </body>
 
 </html>
-
