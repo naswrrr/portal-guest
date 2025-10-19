@@ -102,8 +102,8 @@
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ url('/profil') }}" class="nav-item nav-link">Profil</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link active">Data Warga</a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
+                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
                         <a href="{{ url('/contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                 </div>
@@ -309,10 +309,10 @@
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th>Nama Lengkap</th>
-                                    <th>Tanggal Lahir</th>
+                                    <th>NIK</th>
+                                    <th>No KK</th>
                                     <th>Jenis Kelamin</th>
-                                    <th>Email</th>
-                                    <th>No. Telepon</th>
+                                    <th>Alamat</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -327,46 +327,38 @@
                                                     <i class="fas fa-user text-white"></i>
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0">{{ $item->nama_depan }}
-                                                        {{ $item->nama_belakang }}</h6>
+                                                    <h6 class="mb-0">{{ $item->nama }}</h6>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ date('d/m/Y', strtotime($item->tanggal_lahir)) }}</td>
+                                        <td>{{ $item->nik }}</td>
+                                        <td>{{ $item->no_kk }}</td>
                                         <td>
                                             <span
-                                                class="badge
-                                            @if ($item->jenis_kelamin == 'Laki-laki') bg-primary
-                                            @else bg-success @endif">
+                                                class="badge @if ($item->jenis_kelamin == 'Laki-laki') bg-primary @else bg-success @endif">
                                                 {{ $item->jenis_kelamin }}
                                             </span>
                                         </td>
                                         <td>
-                                            @if ($item->email)
-                                                <i class="fas fa-envelope text-primary me-2"></i>{{ $item->email }}
+                                            @if ($item->alamat)
+                                                <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                                {{ Str::limit($item->alamat, 50) }}
                                             @else
                                                 <span class="text-muted">-</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            @if ($item->no_telepon)
-                                                <i class="fas fa-phone text-primary me-2"></i>{{ $item->no_telepon }}
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center gap-2">
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
                                                 <a href="{{ route('warga.edit', $item->warga_id) }}"
-                                                    class="btn-hover-bg btn btn-warning btn-sm text-white">
+                                                    class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('warga.destroy', $item->warga_id) }}"
-                                                    method="POST" class="d-inline">
+                                                    method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn-hover-bg btn btn-danger btn-sm"
-                                                        onclick="return confirm('Yakin ingin menghapus data warga ini?')">
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Yakin hapus data?')">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>

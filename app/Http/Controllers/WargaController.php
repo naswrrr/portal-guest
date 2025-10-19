@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Warga;
 use Illuminate\Http\Request;
-use App\Models\Warga; // JANGAN LUPA INI
 
 class WargaController extends Controller
 {
@@ -22,29 +22,34 @@ class WargaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_depan' => 'required|string|max:100',
-            'nama_belakang' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
+            'nama' => 'required|string|max:100',
+            'nik' => 'required|string|size:16|unique:warga,nik',
+            'no_kk' => 'required|string|size:16',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'email' => 'nullable|email|unique:warga,email',
-            'no_telepon' => 'nullable|numeric'
+            'alamat' => 'required|string'
         ]);
 
-        Warga::create($validated);
+        Warga::create([
+            'nama' => $request->nama,
+            'nik' => $request->nik,
+            'no_kk' => $request->no_kk,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat' => $request->alamat
+    ]);
 
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan!');
     }
 
     public function show(string $id)
     {
-        //
+        $warga = Warga::findOrFail($id);
+        return view('warga.show', compact('warga'));
     }
 
     public function edit(string $id)
     {
-        $data['editData'] = Warga::findOrFail($id);
-        $data['dataWarga'] = Warga::all();
-        return view('warga.index', $data);
+         $warga = Warga::findOrFail($id);
+         return view('warga.edit', compact('warga'));
     }
 
     public function update(Request $request, string $id)
@@ -52,12 +57,11 @@ class WargaController extends Controller
         $warga = Warga::findOrFail($id);
 
         $validated = $request->validate([
-            'nama_depan' => 'required|string|max:100',
-            'nama_belakang' => 'required|string|max:100',
-            'tanggal_lahir' => 'required|date',
+            'nama' => 'required|string|max:100',
+            'nik' => 'required|string|size:16|unique:warga,nik,' . $warga->warga_id . ',warga_id',
+            'no_kk' => 'required|string|size:16',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'email' => 'nullable|email|unique:warga,email,' . $warga->warga_id . ',warga_id',
-            'no_telepon' => 'nullable|numeric'
+            'alamat' => 'required|string'
         ]);
 
         $warga->update($validated);

@@ -102,8 +102,8 @@
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ url('/profil') }}" class="nav-item nav-link">Profil</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link active">Data Warga</a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
+                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
                         <a href="{{ url('/contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                 </div>
@@ -151,50 +151,57 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <label for="nama_depan" class="form-label fw-bold">Nama Depan <span class="text-danger">*</span></label>
+                                    <!-- NAMA LENGKAP -->
+                                    <div class="col-12 mb-4">
+                                        <label for="nama" class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fas fa-user"></i>
                                             </span>
-                                            <input type="text" class="form-control @error('nama_depan') is-invalid @enderror"
-                                                   id="nama_depan" name="nama_depan" value="{{ old('nama_depan', $warga->nama_depan) }}"
-                                                   placeholder="Masukkan nama depan" required>
+                                            <input type="text" class="form-control @error('nama') is-invalid @enderror"
+                                                   id="nama" name="nama" value="{{ old('nama', $warga->nama) }}"
+                                                   placeholder="Masukkan nama lengkap" required>
                                         </div>
-                                        @error('nama_depan')
+                                        @error('nama')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
 
+                                    <!-- NIK -->
                                     <div class="col-md-6 mb-4">
-                                        <label for="nama_belakang" class="form-label fw-bold">Nama Belakang <span class="text-danger">*</span></label>
+                                        <label for="nik" class="form-label fw-bold">NIK <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
-                                                <i class="fas fa-user"></i>
+                                                <i class="fas fa-id-card"></i>
                                             </span>
-                                            <input type="text" class="form-control @error('nama_belakang') is-invalid @enderror"
-                                                   id="nama_belakang" name="nama_belakang" value="{{ old('nama_belakang', $warga->nama_belakang) }}"
-                                                   placeholder="Masukkan nama belakang" required>
+                                            <input type="text" class="form-control @error('nik') is-invalid @enderror"
+                                                   id="nik" name="nik" value="{{ old('nik', $warga->nik) }}"
+                                                   placeholder="Masukkan 16 digit NIK" maxlength="16" required>
                                         </div>
-                                        @error('nama_belakang')
+                                        @error('nik')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-muted">* Harus 16 digit dan unik</small>
                                     </div>
 
+                                    <!-- NO KK -->
                                     <div class="col-md-6 mb-4">
-                                        <label for="tanggal_lahir" class="form-label fw-bold">Tanggal Lahir <span class="text-danger">*</span></label>
+                                        <label for="no_kk" class="form-label fw-bold">No. KK <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
-                                                <i class="fas fa-calendar"></i>
+                                                <i class="fas fa-house-user"></i>
                                             </span>
-                                            <input type="date" class="form-control @error('tanggal_lahir') is-invalid @enderror"
-                                                   id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $warga->tanggal_lahir) }}" required>
+                                            <input type="text" class="form-control @error('no_kk') is-invalid @enderror"
+                                                   id="no_kk" name="no_kk" value="{{ old('no_kk', $warga->no_kk) }}"
+                                                   placeholder="Masukkan 16 digit No. KK" maxlength="16" required>
                                         </div>
-                                        @error('tanggal_lahir')
+                                        @error('no_kk')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
+                                        <small class="text-muted">* Harus 16 digit</small>
                                     </div>
 
+                                    <!-- JENIS KELAMIN -->
                                     <div class="col-md-6 mb-4">
                                         <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin <span class="text-danger">*</span></label>
                                         <div class="input-group">
@@ -213,32 +220,18 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6 mb-4">
-                                        <label for="email" class="form-label fw-bold">Email</label>
+                                    <!-- ALAMAT -->
+                                    <div class="col-12 mb-4">
+                                        <label for="alamat" class="form-label fw-bold">Alamat Lengkap <span class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <span class="input-group-text bg-primary text-white">
-                                                <i class="fas fa-envelope"></i>
+                                            <span class="input-group-text bg-primary text-white align-items-start">
+                                                <i class="fas fa-map-marker-alt mt-2"></i>
                                             </span>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                                   id="email" name="email" value="{{ old('email', $warga->email) }}"
-                                                   placeholder="Masukkan email">
+                                            <textarea class="form-control @error('alamat') is-invalid @enderror"
+                                                      id="alamat" name="alamat" rows="4"
+                                                      placeholder="Masukkan alamat lengkap" required>{{ old('alamat', $warga->alamat) }}</textarea>
                                         </div>
-                                        @error('email')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label for="no_telepon" class="form-label fw-bold">No. Telepon</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-primary text-white">
-                                                <i class="fas fa-phone"></i>
-                                            </span>
-                                            <input type="text" class="form-control @error('no_telepon') is-invalid @enderror"
-                                                   id="no_telepon" name="no_telepon" value="{{ old('no_telepon', $warga->no_telepon) }}"
-                                                   placeholder="Masukkan nomor telepon">
-                                        </div>
-                                        @error('no_telepon')
+                                        @error('alamat')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -315,7 +308,16 @@
             });
 
             // Auto focus pada field pertama
-            document.getElementById('nama_depan').focus();
+            document.getElementById('nama').focus();
+
+            // Validasi input NIK dan No KK hanya angka
+            document.getElementById('nik').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            document.getElementById('no_kk').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
         });
     </script>
 
