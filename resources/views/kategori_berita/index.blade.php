@@ -81,7 +81,9 @@
     </div>
     <!-- Navbar End -->
 
-    <!-- Page Header Start -->
+    <!-- Content Start -->
+    <div class="container-fluid py-5">
+        <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5">
         <div class="container py-5">
             <div class="text-center mx-auto pb-5" style="max-width: 800px;">
@@ -92,9 +94,6 @@
         </div>
     </div>
     <!-- Page Header End -->
-
-    <!-- Content Start -->
-    <div class="container-fluid py-5">
         <div class="container py-5">
             <!-- Notifikasi -->
             @if(session('success'))
@@ -222,6 +221,7 @@
         </div>
     </div>
     <!-- Content End -->
+
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
