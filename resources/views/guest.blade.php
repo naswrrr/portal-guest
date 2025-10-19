@@ -72,8 +72,8 @@
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ url('/profil') }}" class="nav-item nav-link">Profil</a>
                         <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
+                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
                         <a href="{{ url('/contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                 </div>

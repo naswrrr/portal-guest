@@ -2,19 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Warga extends Model
 {
+    use HasFactory;
+
     protected $table = 'warga';
     protected $primaryKey = 'warga_id';
 
     protected $fillable = [
-        'nama_depan',
-        'nama_belakang',
-        'tanggal_lahir',
+        'nama',
+        'nik',
+        'no_kk',
         'jenis_kelamin',
-        'email',
-        'no_telepon'
+        'alamat'
     ];
+    public $timestamps = true;
 }
