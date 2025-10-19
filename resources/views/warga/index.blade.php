@@ -134,28 +134,6 @@
                 </div>
             @endif
 
-            <!-- FORM EDIT (TAMPIL HANYA SAAT EDIT) -->
-            @if (isset($editData))
-                <div class="row justify-content-center mb-5">
-                    <div class="col-lg-10">
-                        <div class="card border-0 shadow">
-                            <div class="card-header bg-primary text-white py-4">
-                                <h4 class="mb-0 text-center"><i class="fas fa-user-edit me-2"></i>Form Edit Warga</h4>
-                            </div>
-                            <div class="card-body p-4">
-                                @if ($errors->any())
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <i class="fas fa-exclamation-triangle me-2"></i>
-                                        <strong>Terjadi kesalahan!</strong>
-                                        <ul class="mb-0 mt-2">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                @endif
-
                                 <form action="{{ route('warga.update', $editData->warga_id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
@@ -308,11 +286,11 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th class="text-center">No</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>Tanggal Lahir</th>
+                                    <th>Nama</th>
+                                    <th>NIK</th>
+                                    <th>No KK</th>
                                     <th>Jenis Kelamin</th>
-                                    <th>Email</th>
-                                    <th>No. Telepon</th>
+                                    <th>Alamat</th>
                                     <th class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -327,34 +305,19 @@
                                                     <i class="fas fa-user text-white"></i>
                                                 </div>
                                                 <div>
-                                                    <h6 class="mb-0">{{ $item->nama_depan }}
-                                                        {{ $item->nama_belakang }}</h6>
+                                                    <h6 class="mb-0">{{ $item->nama }}</h6>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>{{ date('d/m/Y', strtotime($item->tanggal_lahir)) }}</td>
+                                        <td>{{ $item->nik }}</td>
+                                        <td>{{ $item->no_kk }}</td>
                                         <td>
                                             <span
-                                                class="badge
-                                            @if ($item->jenis_kelamin == 'Laki-laki') bg-primary
-                                            @else bg-success @endif">
+                                                class="badge @if ($item->jenis_kelamin == 'Laki-laki') bg-primary @else bg-success @endif">
                                                 {{ $item->jenis_kelamin }}
                                             </span>
                                         </td>
-                                        <td>
-                                            @if ($item->email)
-                                                <i class="fas fa-envelope text-primary me-2"></i>{{ $item->email }}
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($item->no_telepon)
-                                                <i class="fas fa-phone text-primary me-2"></i>{{ $item->no_telepon }}
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
-                                        </td>
+                                        <td>{{ Str::limit($item->alamat, 50) }}</td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-2">
                                                 <a href="{{ route('warga.edit', $item->warga_id) }}"
@@ -390,62 +353,60 @@
                     @endif
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Data Warga End -->
 
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright py-4">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-4 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
-                            Bina Desa</a>, All right
-                        reserved.</span>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-instagram"></i></a>
+            <!-- Copyright Start -->
+            <div class="container-fluid copyright py-4">
+                <div class="container">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-4 text-center text-md-start mb-md-0">
+                            <span class="text-body"><a href="#"><i
+                                        class="fas fa-copyright text-light me-2"></i>Portal
+                                    Bina Desa</a>, All right
+                                reserved.</span>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a href="#" class="btn-hover-color btn-square text-white me-2"><i
+                                        class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="btn-hover-color btn-square text-white me-2"><i
+                                        class="fab fa-twitter"></i></a>
+                                <a href="#" class="btn-hover-color btn-square text-white me-2"><i
+                                        class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Copyright End -->
+            <!-- Copyright End -->
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
-            class="fa fa-arrow-up"></i></a>
+            <!-- Back to Top -->
+            <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+                    class="fa fa-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets-guest/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/counterup/counterup.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/lightbox/js/lightbox.min.js') }}"></script>
+            <!-- JavaScript Libraries -->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="{{ asset('assets-guest/lib/easing/easing.min.js') }}"></script>
+            <script src="{{ asset('assets-guest/lib/waypoints/waypoints.min.js') }}"></script>
+            <script src="{{ asset('assets-guest/lib/counterup/counterup.min.js') }}"></script>
+            <script src="{{ asset('assets-guest/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+            <script src="{{ asset('assets-guest/lib/lightbox/js/lightbox.min.js') }}"></script>
 
-    <!-- Template Javascript -->
-    <script src="{{ asset('assets-guest/js/main.js') }}"></script>
+            <!-- Template Javascript -->
+            <script src="{{ asset('assets-guest/js/main.js') }}"></script>
 
-    <script>
-        // Temporary JS to hide spinner
-        $(document).ready(function() {
-            // Remove spinner if exists
-            $('#spinner').remove();
+            <script>
+                // Temporary JS to hide spinner
+                $(document).ready(function() {
+                    // Remove spinner if exists
+                    $('#spinner').remove();
 
-            // Fix untuk navbar toggle
-            $('.navbar-toggler').on('click', function() {
-                $('#navbarCollapse').toggleClass('show');
-            });
-        });
-    </script>
+                    // Fix untuk navbar toggle
+                    $('.navbar-toggler').on('click', function() {
+                        $('#navbarCollapse').toggleClass('show');
+                    });
+                });
+            </script>
 
 </body>
 
