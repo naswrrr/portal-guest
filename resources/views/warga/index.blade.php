@@ -26,42 +26,13 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
-
-    <!-- Fix CSS -->
-    <style>
-        body {
-            padding-top: 0 !important;
-        }
-
-        .fixed-top {
-            position: fixed;
-            top: 0;
-            right: 0;
-            left: 0;
-            z-index: 1030;
-        }
-
-        .page-header {
-            margin-top: 120px;
-        }
-
-        .container-fluid.page-header {
-            padding-top: 2rem !important;
-            padding-bottom: 2rem !important;
-        }
-
-        .container-fluid.py-5 {
-            padding-top: 1rem !important;
-            padding-bottom: 1rem !important;
-        }
-    </style>
 </head>
 
 <body>
 
     <!-- Spinner Start -->
     <div id="spinner"
-        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50 d-flex align-items-center justify-content-center">
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" role="status"></div>
     </div>
     <!-- Spinner End -->
@@ -99,115 +70,95 @@
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link active">Data Warga</a>
+                        <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link">Kategori Berita</a>
                         <a href="{{ url('/contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                 </div>
             </nav>
         </div>
     </div>
-    <!-- Navbar End -->
 
-    <!-- Page Header Start -->
-    <div class="container-fluid page-header py-5 mb-0">
-        <div class="container py-5">
-            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-                <h5 class="text-uppercase text-primary">Data Warga</h5>
-                <h1 class="mb-4">Kelola Data Warga Desa</h1>
-                <p class="mb-0">Kelola informasi data warga desa dengan mudah dan efisien</p>
-            </div>
-        </div>
-    </div>
-    <!-- Page Header End -->
-
-    <!-- Data Warga Start -->
+    <!-- Content Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
+
+            <!-- Page Header Start -->
+            <div class="container-fluid page-header py-5 mb-5">
+                <div class="container py-5">
+                    <div class="text-center mx-auto pb-5" style="max-width: 800px;">
+                        <h5 class="text-uppercase text-primary">Data Warga</h5>
+                        <h1 class="mb-4">Kelola Data Warga Desa</h1>
+                        <p class="mb-0">Kelola informasi data warga desa dengan mudah dan efisien</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Page Header End -->
+
+            <!-- Notifikasi -->
             @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             @endif
 
-            <!-- FORM EDIT - HANYA MUNCUL JIKA ADA DATA EDIT -->
-            @if (isset($editData) && $editData)
+            <!-- Form Edit (Muncul saat edit) -->
+            @if (isset($editData))
                 <div class="row mb-5">
                     <div class="col-12">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Data Warga</h4>
+                        <div class="card border-warning shadow">
+                            <div class="card-header bg-warning text-dark py-3">
+                                <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Data Warga</h5>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body p-4">
                                 <form action="{{ route('warga.update', $editData->warga_id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="nama_depan" class="form-label fw-bold">Nama Depan <span
-                                                    class="text-danger">*</span></label>
+                                        <div class="col-12 mb-4">
+                                            <label for="nama" class="form-label fw-bold">Nama Lengkap</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fas fa-user"></i>
                                                 </span>
-                                                <input type="text"
-                                                    class="form-control @error('nama_depan') is-invalid @enderror"
-                                                    id="nama_depan" name="nama_depan"
-                                                    value="{{ old('nama_depan', $editData->nama_depan) }}"
-                                                    placeholder="Masukkan nama depan" required>
-                                            </div>
-                                            @error('nama_depan')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="nama_belakang" class="form-label fw-bold">Nama Belakang <span
-                                                    class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fas fa-user"></i>
-                                                </span>
-                                                <input type="text"
-                                                    class="form-control @error('nama_belakang') is-invalid @enderror"
-                                                    id="nama_belakang" name="nama_belakang"
-                                                    value="{{ old('nama_belakang', $editData->nama_belakang) }}"
-                                                    placeholder="Masukkan nama belakang" required>
-                                            </div>
-                                            @error('nama_belakang')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="tanggal_lahir" class="form-label fw-bold">Tanggal Lahir <span
-                                                    class="text-danger">*</span></label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fas fa-calendar"></i>
-                                                </span>
-                                                <input type="date"
-                                                    class="form-control @error('tanggal_lahir') is-invalid @enderror"
-                                                    id="tanggal_lahir" name="tanggal_lahir"
-                                                    value="{{ old('tanggal_lahir', $editData->tanggal_lahir) }}"
+                                                <input type="text" class="form-control" id="nama"
+                                                    name="nama" value="{{ old('nama', $editData->nama) }}"
                                                     required>
                                             </div>
-                                            @error('tanggal_lahir')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
                                         </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin <span
-                                                    class="text-danger">*</span></label>
+                                        <div class="col-md-6 mb-4">
+                                            <label for="nik" class="form-label fw-bold">NIK</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fas fa-id-card"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="nik"
+                                                    name="nik" value="{{ old('nik', $editData->nik) }}"
+                                                    maxlength="16" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label for="no_kk" class="form-label fw-bold">No. KK</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fas fa-house-user"></i>
+                                                </span>
+                                                <input type="text" class="form-control" id="no_kk"
+                                                    name="no_kk" value="{{ old('no_kk', $editData->no_kk) }}"
+                                                    maxlength="16" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label for="jenis_kelamin" class="form-label fw-bold">Jenis
+                                                Kelamin</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fas fa-venus-mars"></i>
                                                 </span>
-                                                <select
-                                                    class="form-control @error('jenis_kelamin') is-invalid @enderror"
-                                                    id="jenis_kelamin" name="jenis_kelamin" required>
+                                                <select class="form-control" id="jenis_kelamin" name="jenis_kelamin"
+                                                    required>
                                                     <option value="">Pilih Jenis Kelamin</option>
                                                     <option value="Laki-laki"
                                                         {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>
@@ -217,56 +168,25 @@
                                                         Perempuan</option>
                                                 </select>
                                             </div>
-                                            @error('jenis_kelamin')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
                                         </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="email" class="form-label fw-bold">Email</label>
+                                        <div class="col-12 mb-4">
+                                            <label for="alamat" class="form-label fw-bold">Alamat</label>
                                             <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fas fa-envelope"></i>
+                                                <span class="input-group-text bg-primary text-white align-items-start">
+                                                    <i class="fas fa-map-marker-alt mt-2"></i>
                                                 </span>
-                                                <input type="email"
-                                                    class="form-control @error('email') is-invalid @enderror"
-                                                    id="email" name="email"
-                                                    value="{{ old('email', $editData->email) }}"
-                                                    placeholder="Masukkan email">
+                                                <textarea class="form-control" id="alamat" name="alamat" rows="3" required>{{ old('alamat', $editData->alamat) }}</textarea>
                                             </div>
-                                            @error('email')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
                                         </div>
-
-                                        <div class="col-md-6 mb-3">
-                                            <label for="no_telepon" class="form-label fw-bold">No. Telepon</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fas fa-phone"></i>
-                                                </span>
-                                                <input type="text"
-                                                    class="form-control @error('no_telepon') is-invalid @enderror"
-                                                    id="no_telepon" name="no_telepon"
-                                                    value="{{ old('no_telepon', $editData->no_telepon) }}"
-                                                    placeholder="Masukkan nomor telepon">
-                                            </div>
-                                            @error('no_telepon')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-12 mt-4">
-                                            <div class="d-flex justify-content-between">
-                                                <a href="{{ route('warga.index') }}"
-                                                    class="btn-hover-bg btn btn-secondary text-white py-2 px-4">
-                                                    <i class="fas fa-times me-2"></i>Batal Edit
-                                                </a>
-                                                <button type="submit"
-                                                    class="btn-hover-bg btn btn-primary text-white py-2 px-4">
-                                                    <i class="fas fa-save me-2"></i>Update Data
-                                                </button>
-                                            </div>
+                                        <div class="col-12">
+                                            <button type="submit"
+                                                class="btn-hover-bg btn btn-primary text-white py-2 px-4">
+                                                <i class="fas fa-save me-2"></i>Update Data
+                                            </button>
+                                            <a href="{{ route('warga.index') }}"
+                                                class="btn-hover-bg btn btn-secondary text-white py-2 px-4">
+                                                <i class="fas fa-times me-2"></i>Batal
+                                            </a>
                                         </div>
                                     </div>
                                 </form>
@@ -276,31 +196,34 @@
                 </div>
             @endif
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Daftar Warga</h3>
+            <!-- Card Utama -->
+            <div class="card border-0 shadow">
+                <div class="card-header bg-primary text-white py-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="fas fa-users me-2"></i>Daftar Warga</h4>
                         <a href="{{ route('warga.create') }}"
-                            class="btn-hover-bg btn btn-primary text-white py-2 px-4">
+                            class="btn-hover-bg btn btn-light text-primary py-2 px-4">
                             <i class="fas fa-plus me-2"></i>Tambah Warga
                         </a>
                     </div>
-
+                </div>
+                <div class="card-body p-4">
+                    <!-- Tabel -->
                     <div class="table-responsive">
                         <table class="table table-striped table-hover table-bordered">
                             <thead class="bg-primary text-white">
                                 <tr>
-                                    <th class="text-center">No</th>
-                                    <th>Nama</th>
+                                    <th class="text-center" style="width: 60px;">No</th>
+                                    <th>Nama Lengkap</th>
                                     <th>NIK</th>
                                     <th>No KK</th>
                                     <th>Jenis Kelamin</th>
                                     <th>Alamat</th>
-                                    <th class="text-center">Aksi</th>
+                                    <th class="text-center" style="width: 120px;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($dataWarga as $item)
+                                @forelse ($dataWarga as $item)
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>
@@ -323,57 +246,42 @@
                                             </span>
                                         </td>
                                         <td>{{ Str::limit($item->alamat, 50) }}</td>
-                                        <td>
-                                            <div class="d-flex justify-content-center gap-2">
+                                        <td class="text-center">
+                                            <div class="btn-group" role="group">
                                                 <a href="{{ route('warga.edit', $item->warga_id) }}"
-                                                    class="btn-hover-bg btn btn-warning btn-sm text-white">
+                                                    class="btn-hover-bg btn btn-warning btn-sm text-white"
+                                                    title="Edit">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
                                                 <form action="{{ route('warga.destroy', $item->warga_id) }}"
-                                                    method="POST" class="d-inline">
+                                                    method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn-hover-bg btn btn-danger btn-sm"
-                                                        onclick="return confirm('Yakin ingin menghapus data warga ini?')">
+                                                        onclick="return confirm('Yakin hapus data warga?')"
+                                                        title="Hapus">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted py-4">
+                                            <i class="fas fa-inbox fa-2x mb-3"></i><br>
+                                            Belum ada data warga
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
-
-                    @if ($dataWarga->isEmpty())
-                        <div class="text-center py-5">
-                            <i class="fas fa-users fa-4x text-muted mb-3"></i>
-                            <h4 class="text-muted">Belum ada data warga</h4>
-                            <p class="text-muted">Silakan tambah data warga terlebih dahulu</p>
-                            <a href="{{ route('warga.create') }}" class="btn-hover-bg btn btn-primary text-white">
-                                <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
-                            </a>
-                        </div>
-                    @endif
                 </div>
             </div>
-
-            @if ($dataWarga->isEmpty())
-                <div class="text-center py-5">
-                    <i class="fas fa-users fa-4x text-muted mb-3"></i>
-                    <h4 class="text-muted">Belum ada data warga</h4>
-                    <p class="text-muted">Silakan tambah data warga terlebih dahulu</p>
-                    <a href="{{ route('warga.create') }}" class="btn-hover-bg btn btn-primary text-white">
-                        <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
-                    </a>
-                </div>
-            @endif
         </div>
     </div>
-    </div>
-    </div>
-    <!-- Data Warga End -->
+    <!-- Content End -->
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
@@ -381,7 +289,8 @@
             <div class="row g-4 align-items-center">
                 <div class="col-md-4 text-center text-md-start mb-md-0">
                     <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
-                            Bina Desa</a>, All right reserved.</span>
+                            Bina Desa</a>, All right
+                        reserved.</span>
                 </div>
                 <div class="col-md-4 text-center">
                     <div class="d-flex align-items-center justify-content-center">
@@ -402,7 +311,6 @@
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
             class="fa fa-arrow-up"></i></a>
 
-
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -416,11 +324,18 @@
     <script src="{{ asset('assets-guest/js/main.js') }}"></script>
 
     <script>
+        // Temporary JS to hide spinner
         $(document).ready(function() {
+            // Remove spinner if exists
             $('#spinner').remove();
 
-            $('.navbar-toggler').on('click', function() {
-                $('#navbarCollapse').toggleClass('show');
+            // Validasi input NIK dan No KK hanya angka
+            document.getElementById('nik')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            document.getElementById('no_kk')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
             });
         });
     </script>
