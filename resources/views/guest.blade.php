@@ -8,6 +8,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
+        {{-- Start CSS --}}
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,6 +28,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
+        {{-- End CSS --}}
 </head>
 
 <body>
@@ -38,7 +40,7 @@
     </div>
     <!-- Spinner End -->
 
-
+        {{-- start header --}}
     <!-- Navbar start -->
     <div class="container-fluid fixed-top px-0">
         <div class="container px-0">
