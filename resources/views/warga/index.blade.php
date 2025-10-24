@@ -173,79 +173,161 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <!-- Tabel -->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover table-bordered">
-                            <thead class="bg-primary text-white">
-                                <tr>
-                                    <th class="text-center" style="width: 60px;">No</th>
-                                    <th>Nama Lengkap</th>
-                                    <th>NIK</th>
-                                    <th>No KK</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Alamat</th>
-                                    <th class="text-center" style="width: 120px;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($dataWarga as $item)
-                                    <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-                                                    style="width: 40px; height: 40px;">
-                                                    <i class="fas fa-user text-white"></i>
-                                                </div>
+                    @if($dataWarga->count() > 0)
+                        <div class="row">
+                            @foreach($dataWarga as $item)
+                            <div class="col-lg-6 col-xl-4 mb-4">
+                                <div class="card border-light shadow-sm h-100 card-hover">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-4">
+                                            <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">{{ $item->nama }}</h6>
+                                                <span class="badge {{ $item->jenis_kelamin == 'Laki-laki' ? 'bg-primary' : 'bg-pink' }} badge-custom">
+                                                    {{ $item->jenis_kelamin }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="data-grid">
+                                            <div class="data-item">
+                                                <i class="fas fa-fingerprint text-primary me-2"></i>
                                                 <div>
-                                                    <h6 class="mb-0">{{ $item->nama }}</h6>
+                                                    <small class="text-muted">NIK</small>
+                                                    <div class="fw-semibold">{{ $item->nik }}</div>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>{{ $item->nik }}</td>
-                                        <td>{{ $item->no_kk }}</td>
-                                        <td>
-                                            <span
-                                                class="badge @if ($item->jenis_kelamin == 'Laki-laki') bg-primary @else bg-success @endif">
-                                                {{ $item->jenis_kelamin }}
-                                            </span>
-                                        </td>
-                                        <td>{{ Str::limit($item->alamat, 50) }}</td>
-                                        <td class="text-center">
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('warga.edit', $item->warga_id) }}"
-                                                    class="btn-hover-bg btn btn-warning btn-sm text-white"
-                                                    title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('warga.destroy', $item->warga_id) }}"
-                                                    method="POST" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn-hover-bg btn btn-danger btn-sm"
-                                                        onclick="return confirm('Yakin hapus data warga?')"
-                                                        title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
+
+                                            <div class="data-item">
+                                                <i class="fas fa-home text-success me-2"></i>
+                                                <div>
+                                                    <small class="text-muted">No. KK</small>
+                                                    <div class="fw-semibold">{{ $item->no_kk }}</div>
+                                                </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center text-muted py-4">
-                                            <i class="fas fa-inbox fa-2x mb-3"></i><br>
-                                            Belum ada data warga
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+
+                                            <div class="data-item">
+                                                <i class="fas fa-map-marker-alt text-warning me-2"></i>
+                                                <div>
+                                                    <small class="text-muted">Alamat</small>
+                                                    <div class="fw-semibold small">{{ Str::limit($item->alamat, 60) }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top">
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('warga.edit', $item->warga_id) }}"
+                                               class="btn btn-soft-primary btn-sm flex-fw">
+                                                <i class="fas fa-edit me-1"></i>Edit
+                                            </a>
+                                            <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST" class="flex-fw">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-soft-danger btn-sm w-100"
+                                                    onclick="return confirm('Yakin hapus data warga?')">
+                                                    <i class="fas fa-trash me-1"></i>Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <div class="empty-state mb-4">
+                                <i class="fas fa-user-friends fa-4x text-light mb-3"></i>
+                            </div>
+                            <h5 class="text-muted mb-2">Data Warga Kosong</h5>
+                            <p class="text-muted mb-4">Mulai tambahkan data warga pertama Anda</p>
+                            <a href="{{ route('warga.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
     <!-- Content End -->
     {{-- end main content --}}
+
+    <style>
+    .card-hover {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+    }
+
+    .card-hover:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    .badge-custom {
+        font-size: 0.7rem;
+        padding: 0.35em 0.65em;
+    }
+
+    .bg-pink {
+        background-color: #e83e8c !important;
+    }
+
+    .data-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .data-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .data-item i {
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    .btn-soft-primary {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #007bff;
+        border: 1px solid rgba(0, 123, 255, 0.2);
+    }
+
+    .btn-soft-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-soft-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-soft-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .empty-state {
+        opacity: 0.3;
+    }
+
+    .flex-fw {
+        flex: 1;
+        min-width: 0;
+    }
+    </style>
 @endsection

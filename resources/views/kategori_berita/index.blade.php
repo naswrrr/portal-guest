@@ -1,42 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts1.guest.app')
 
-<head>
-    <meta charset="utf-8">
-    <title>Portal Bina Desa - Kategori Berita</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('assets-guest/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets-guest/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
-</head>
-
-<body>
-
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-        <div class="spinner-grow text-primary" role="status"></div>
-    </div>
-    <!-- Spinner End -->
-
+@section('content')
+    {{-- start main content --}}
     <!-- Navbar start -->
     <div class="container-fluid fixed-top px-0">
         <div class="container px-0">
@@ -114,8 +79,7 @@
                                 <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Edit Kategori Berita</h5>
                             </div>
                             <div class="card-body p-4">
-                                <form action="{{ route('kategori_berita.update', $editData->kategori_id) }}"
-                                    method="POST">
+                                <form action="{{ route('kategori_berita.update', $editData->kategori_id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row">
@@ -164,131 +128,140 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <!-- Tabel -->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover table-bordered">
-                            <thead class="bg-primary text-white">
-                                <tr>
-                                    <th class="text-center" style="width: 60px;">No</th>
-                                    <th>Nama Kategori</th>
-                                    <th>Slug</th>
-                                    <th>Deskripsi</th>
-                                    <th class="text-center" style="width: 120px;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($dataKategori as $item)
-                                    <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-                                                    style="width: 40px; height: 40px;">
-                                                    <i class="fas fa-tag text-white"></i>
-                                                </div>
+                    @if($dataKategori->count() > 0)
+                        <div class="row">
+                            @foreach($dataKategori as $item)
+                            <div class="col-lg-6 col-xl-4 mb-4">
+                                <div class="card border-light shadow-sm h-100 card-hover">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-4">
+                                            <div class="category-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                <i class="fas fa-tag"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-bold">{{ $item->nama }}</h6>
+                                                <span class="badge bg-secondary badge-custom">
+                                                    {{ $item->slug }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="category-info">
+                                            <div class="info-item">
+                                                <i class="fas fa-align-left text-info me-2"></i>
                                                 <div>
-                                                    <h6 class="mb-0">{{ $item->nama }}</h6>
+                                                    <small class="text-muted">Deskripsi</small>
+                                                    <div class="fw-semibold small">{{ $item->deskripsi ?: 'Tidak ada deskripsi' }}</div>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td><code>{{ $item->slug }}</code></td>
-                                        <td>{{ $item->deskripsi ?: '-' }}</td>
-                                        <td class="text-center">
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('kategori_berita.edit', $item->kategori_id) }}"
-                                                    class="btn-hover-bg btn btn-warning btn-sm text-white"
-                                                    title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form
-                                                    action="{{ route('kategori_berita.destroy', $item->kategori_id) }}"
-                                                    method="POST" style="display: inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn-hover-bg btn btn-danger btn-sm"
-                                                        onclick="return confirm('Yakin hapus kategori?')"
-                                                        title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">
-                                            <i class="fas fa-inbox fa-2x mb-3"></i><br>
-                                            Belum ada data kategori berita
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-transparent border-top">
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('kategori_berita.edit', $item->kategori_id) }}"
+                                               class="btn btn-soft-primary btn-sm flex-fw">
+                                                <i class="fas fa-edit me-1"></i>Edit
+                                            </a>
+                                            <form action="{{ route('kategori_berita.destroy', $item->kategori_id) }}" method="POST" class="flex-fw">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-soft-danger btn-sm w-100"
+                                                    onclick="return confirm('Yakin hapus kategori?')">
+                                                    <i class="fas fa-trash me-1"></i>Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <div class="empty-state mb-4">
+                                <i class="fas fa-tags fa-4x text-light mb-3"></i>
+                            </div>
+                            <h5 class="text-muted mb-2">Data Kategori Kosong</h5>
+                            <p class="text-muted mb-4">Mulai tambahkan kategori berita pertama Anda</p>
+                            <a href="{{ route('kategori_berita.create') }}" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Tambah Kategori Pertama
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
     <!-- Content End -->
 
+    <style>
+    .card-hover {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+    }
 
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright py-4">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-4 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
-                            Bina Desa</a>, All right
-                        reserved.</span>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Copyright End -->
+    .card-hover:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
+    }
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
-            class="fa fa-arrow-up"></i></a>
+    .category-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
 
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets-guest/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/counterup/counterup.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/lightbox/js/lightbox.min.js') }}"></script>
+    .badge-custom {
+        font-size: 0.7rem;
+        padding: 0.35em 0.65em;
+    }
 
-    <!-- Template Javascript -->
-    <script src="{{ asset('assets-guest/js/main.js') }}"></script>
+    .category-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-    <script>
-        // Temporary JS to hide spinner
-        $(document).ready(function() {
-            // Remove spinner if exists
-            $('#spinner').remove();
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
 
-            // Auto generate slug dari nama
-            $('#nama').on('input', function() {
-                const slug = $(this).val().toLowerCase()
-                    .replace(/[^a-z0-9 -]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-');
-                $('#slug').val(slug);
-            });
-        });
-    </script>
+    .info-item i {
+        margin-top: 0.25rem;
+        flex-shrink: 0;
+    }
 
-</body>
+    .btn-soft-primary {
+        background-color: rgba(0, 123, 255, 0.1);
+        color: #007bff;
+        border: 1px solid rgba(0, 123, 255, 0.2);
+    }
 
-</html>
+    .btn-soft-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .btn-soft-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    .btn-soft-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .empty-state {
+        opacity: 0.3;
+    }
+
+    .flex-fw {
+        flex: 1;
+        min-width: 0;
+    }
+    </style>
+@endsection
