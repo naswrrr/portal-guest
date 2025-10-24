@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     {{-- start css --}}
-    @include('layouts.guest.css')
+    @include('layouts.warga.css')
     {{-- end css --}}
 </head>
 
@@ -28,7 +28,7 @@
     {{-- end main content --}}
 
     {{-- start footer --}}
-    @include('layouts.guest.footer')
+    @include('layouts.warga.footer')
     {{-- end footer --}}
 
     <!-- Back to Top -->
@@ -36,7 +36,7 @@
             class="fa fa-arrow-up"></i></a>
 
     {{-- start js --}}
-    @include('layouts.guest.js')
+    @include('layouts.warga.js')
     {{-- end js --}}
 
     <script>

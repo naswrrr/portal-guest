@@ -8,24 +8,9 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('assets-guest/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets-guest/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
+    {{-- start css --}}
+    @include('layouts.warga.css')
+    {{-- end css --}}
 </head>
 
 <body>
@@ -70,9 +55,9 @@
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
+                        <a href="{{ route('users.index') }}" class="nav-item nav-link">User</a>
                         <a href="{{ route('warga.index') }}" class="nav-item nav-link active">Data Warga</a>
                         <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
-                        <a href="{{ url('/contact') }}" class="nav-item nav-link">Contact</a>
                     </div>
                 </div>
             </nav>
@@ -124,7 +109,8 @@
                         <div class="row">
                             <!-- NAMA LENGKAP -->
                             <div class="col-12 mb-4">
-                                <label for="nama" class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
+                                <label for="nama" class="form-label fw-bold">Nama Lengkap <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary text-white">
                                         <i class="fas fa-user"></i>
@@ -140,7 +126,8 @@
 
                             <!-- NIK -->
                             <div class="col-md-6 mb-4">
-                                <label for="nik" class="form-label fw-bold">NIK <span class="text-danger">*</span></label>
+                                <label for="nik" class="form-label fw-bold">NIK <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary text-white">
                                         <i class="fas fa-id-card"></i>
@@ -157,7 +144,8 @@
 
                             <!-- NO KK -->
                             <div class="col-md-6 mb-4">
-                                <label for="no_kk" class="form-label fw-bold">No. KK <span class="text-danger">*</span></label>
+                                <label for="no_kk" class="form-label fw-bold">No. KK <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary text-white">
                                         <i class="fas fa-house-user"></i>
@@ -174,7 +162,8 @@
 
                             <!-- JENIS KELAMIN -->
                             <div class="col-md-6 mb-4">
-                                <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin <span class="text-danger">*</span></label>
+                                <label for="jenis_kelamin" class="form-label fw-bold">Jenis Kelamin <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary text-white">
                                         <i class="fas fa-venus-mars"></i>
@@ -182,10 +171,12 @@
                                     <select class="form-control @error('jenis_kelamin') is-invalid @enderror"
                                         id="jenis_kelamin" name="jenis_kelamin" required>
                                         <option value="">Pilih Jenis Kelamin</option>
-                                        <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
+                                        <option value="Laki-laki"
+                                            {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
                                             Laki-laki
                                         </option>
-                                        <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>
+                                        <option value="Perempuan"
+                                            {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>
                                             Perempuan
                                         </option>
                                     </select>
@@ -209,7 +200,8 @@
 
                             <!-- ALAMAT -->
                             <div class="col-12 mb-4">
-                                <label for="alamat" class="form-label fw-bold">Alamat Lengkap <span class="text-danger">*</span></label>
+                                <label for="alamat" class="form-label fw-bold">Alamat Lengkap <span
+                                        class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-primary text-white">
                                         <i class="fas fa-map-marker-alt"></i>
@@ -223,21 +215,19 @@
                             </div>
 
 
-                                <div class="col-12 mt-5">
-                                    <div class="d-flex justify-content-between">
-                                        <a href="{{ route('warga.index') }}"
-                                            class="btn-hover-bg btn btn-secondary text-white py-2 px-4">
-                                            <i class="fas fa-arrow-left me-2"></i>Kembali
-                                        </a>
-                                        <button type="submit"
-                                            class="btn-hover-bg btn btn-primary text-white py-2 px-4">
-                                            <i class="fas fa-save me-2"></i>Simpan Data
-                                        </button>
-                                    </div>
+                            <div class="col-12 mt-5">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ route('warga.index') }}"
+                                        class="btn-hover-bg btn btn-secondary text-white py-2 px-4">
+                                        <i class="fas fa-arrow-left me-2"></i>Kembali
+                                    </a>
+                                    <button type="submit" class="btn-hover-bg btn btn-primary text-white py-2 px-4">
+                                        <i class="fas fa-save me-2"></i>Simpan Data
+                                    </button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -245,45 +235,17 @@
     </div>
     <!-- Form End -->
 
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright py-4">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-4 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
-                            Bina Desa</a>, All right
-                        reserved.</span>
-                </div>
-                <div class="col-md-4 text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Copyright End -->
+    {{-- start footer --}}
+    @include('layouts.warga.footer')
+    {{-- end footer --}}
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
             class="fa fa-arrow-up"></i></a>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets-guest/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/counterup/counterup.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/lightbox/js/lightbox.min.js') }}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{{ asset('assets-guest/js/main.js') }}"></script>
+    {{-- start js --}}
+    @include('layouts.warga.js')
+    {{-- end js --}}
 
     <script>
         // Temporary JS to hide spinner

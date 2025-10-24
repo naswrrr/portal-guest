@@ -1,4 +1,4 @@
-@extends('layouts1.guest.app')
+@extends('layouts.kategori_berita.app')
 
 @section('content')
     {{-- start main content --}}
@@ -35,10 +35,9 @@
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
+                        <a href="{{ route('users.index') }}" class="nav-item nav-link">User</a>
                         <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link active">Kategori
-                            Berita</a>
-                        <a href="{{ url('/contact') }}" class="nav-item nav-link">Contact</a>
+                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link active">Kategori Berita</a>
                     </div>
                 </div>
             </nav>

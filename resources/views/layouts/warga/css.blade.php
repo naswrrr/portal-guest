@@ -1,4 +1,4 @@
-    {{-- start css --}}
+{{-- start css --}}
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,12 +9,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="assets-guest/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="assets-guest/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="{{ asset('assets-guest/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets-guest/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="assets-guest/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="assets-guest/css/style.css" rel="stylesheet">
+    <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
     {{-- end css --}}
