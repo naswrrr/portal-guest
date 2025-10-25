@@ -8,7 +8,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
 
-        {{-- Start CSS --}}
+    {{-- Start CSS --}}
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +28,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
-        {{-- End CSS --}}
+    {{-- End CSS --}}
 </head>
 
 <body>
@@ -40,7 +40,7 @@
     </div>
     <!-- Spinner End -->
 
-        {{-- start header --}}
+    {{-- start header --}}
     <!-- Navbar start -->
     <div class="container-fluid fixed-top px-0">
         <div class="container px-0">
@@ -77,6 +77,20 @@
                         <a href="{{ route('users.index') }}" class="nav-item nav-link">User</a>
                         <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
                         <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
+                            </a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-divider"></div>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>
