@@ -7,7 +7,7 @@ use App\Http\Controllers\KategoriBeritaController;
 
 
 Route::get('/', function () {
-    return view('guest');
+    return view('auth.login');
 });
 
 // // route tabel warga
