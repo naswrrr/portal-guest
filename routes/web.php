@@ -24,11 +24,10 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// SEMUA ROUTE LAIN HARUS LOGIN DULU - DI DALAM
 Route::middleware(['auth'])->group(function () {
     Route::get('/', function () { return view('guest'); })->name('guest');
     Route::resource('users', UserController::class);
     Route::resource('warga', WargaController::class);
-    Route::resource('bina-desa', BinaDesaController::class);
     Route::resource('kategori_berita', KategoriBeritaController::class);
+    // HAPUS BinaDesaController karena tidak ada filenya
 });
