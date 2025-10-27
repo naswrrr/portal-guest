@@ -34,24 +34,62 @@
                 </button>
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ route('users.index') }}" class="nav-item nav-link acitve">User</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-divider"></div>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                    </button>
-                                </form>
+                        <a href="{{ url('/') }}" class="nav-item nav-link">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                        <a href="{{ route('about') }}" class="nav-item nav-link">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                        <a href="{{ route('users.index') }}" class="nav-item nav-link active">
+                            <i class="fas fa-users me-1"></i> User
+                        </a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-address-book me-1"></i> Data Warga
+                        </a>
+                        <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-newspaper me-1"></i> Kategori Berita
+                        </a>
+                        <a href="{{ route('contact') }}" class="nav-item nav-link">
+                            <i class="fas fa-phone-alt me-1"></i> Contact
+                        </a>
+
+                        {{-- Auth Section --}}
+                        @auth
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-user-cog me-2"></i> Profile
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-cog me-2"></i> Settings
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle me-1"></i> Account
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('login') }}" class="dropdown-item">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                                    </a>
+                                    <a href="{{ route('register') }}" class="dropdown-item">
+                                        <i class="fas fa-user-plus me-2"></i> Register
+                                    </a>
+                                </div>
+                            </div>
+                        @endauth
                     </div>
                 </div>
             </nav>
@@ -123,17 +161,20 @@
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fas fa-lock"></i>
                                                 </span>
-                                                <input type="password" class="form-control" id="password" name="password">
+                                                <input type="password" class="form-control" id="password"
+                                                    name="password">
                                             </div>
                                             <small class="text-muted">Kosongkan jika tidak ingin mengubah password</small>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label for="password_confirmation" class="form-label fw-bold">Konfirmasi Password</label>
+                                            <label for="password_confirmation" class="form-label fw-bold">Konfirmasi
+                                                Password</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fas fa-lock"></i>
                                                 </span>
-                                                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+                                                <input type="password" class="form-control" id="password_confirmation"
+                                                    name="password_confirmation">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -159,72 +200,75 @@
                 <div class="card-header bg-primary text-white py-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"><i class="fas fa-users me-2"></i>Daftar User</h4>
-                        <a href="{{ route('users.create') }}"
-                            class="btn-hover-bg btn btn-light text-primary py-2 px-4">
+                        <a href="{{ route('users.create') }}" class="btn-hover-bg btn btn-light text-primary py-2 px-4">
                             <i class="fas fa-plus me-2"></i>Tambah User
                         </a>
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    @if($users->count() > 0)
+                    @if ($users->count() > 0)
                         <div class="row">
-                            @foreach($users as $user)
-                            <div class="col-lg-6 col-xl-4 mb-4">
-                                <div class="card border-light shadow-sm h-100 card-hover">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center mb-4">
-                                            <div class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
-                                                <i class="fas fa-user"></i>
+                            @foreach ($users as $user)
+                                <div class="col-lg-6 col-xl-4 mb-4">
+                                    <div class="card border-light shadow-sm h-100 card-hover">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center mb-4">
+                                                <div
+                                                    class="user-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 fw-bold">{{ $user->name }}</h6>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h6 class="mb-1 fw-bold">{{ $user->name }}</h6>
+
+                                            <div class="data-grid">
+                                                <div class="data-item">
+                                                    <i class="fas fa-envelope text-primary me-2"></i>
+                                                    <div>
+                                                        <small class="text-muted">Email</small>
+                                                        <div class="fw-semibold">{{ $user->email }}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="data-item">
+                                                    <i class="fas fa-calendar text-success me-2"></i>
+                                                    <div>
+                                                        <small class="text-muted">Dibuat</small>
+                                                        <div class="fw-semibold">{{ $user->created_at->format('d M Y') }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="data-item">
+                                                    <i class="fas fa-sync text-warning me-2"></i>
+                                                    <div>
+                                                        <small class="text-muted">Diupdate</small>
+                                                        <div class="fw-semibold small">
+                                                            {{ $user->updated_at->format('d M Y') }}</div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="data-grid">
-                                            <div class="data-item">
-                                                <i class="fas fa-envelope text-primary me-2"></i>
-                                                <div>
-                                                    <small class="text-muted">Email</small>
-                                                    <div class="fw-semibold">{{ $user->email }}</div>
-                                                </div>
+                                        <div class="card-footer bg-transparent border-top">
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('users.edit', $user->id) }}"
+                                                    class="btn btn-soft-primary btn-sm flex-fw">
+                                                    <i class="fas fa-edit me-1"></i>Edit
+                                                </a>
+                                                <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                                    class="flex-fw">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-soft-danger btn-sm w-100"
+                                                        onclick="return confirm('Yakin hapus user?')">
+                                                        <i class="fas fa-trash me-1"></i>Hapus
+                                                    </button>
+                                                </form>
                                             </div>
-
-                                            <div class="data-item">
-                                                <i class="fas fa-calendar text-success me-2"></i>
-                                                <div>
-                                                    <small class="text-muted">Dibuat</small>
-                                                    <div class="fw-semibold">{{ $user->created_at->format('d M Y') }}</div>
-                                                </div>
-                                            </div>
-
-                                            <div class="data-item">
-                                                <i class="fas fa-sync text-warning me-2"></i>
-                                                <div>
-                                                    <small class="text-muted">Diupdate</small>
-                                                    <div class="fw-semibold small">{{ $user->updated_at->format('d M Y') }}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-top">
-                                        <div class="d-flex gap-2">
-                                            <a href="{{ route('users.edit', $user->id) }}"
-                                               class="btn btn-soft-primary btn-sm flex-fw">
-                                                <i class="fas fa-edit me-1"></i>Edit
-                                            </a>
-                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="flex-fw">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-soft-danger btn-sm w-100"
-                                                    onclick="return confirm('Yakin hapus user?')">
-                                                    <i class="fas fa-trash me-1"></i>Hapus
-                                                </button>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     @else
@@ -247,73 +291,73 @@
     {{-- end main content --}}
 
     <style>
-    .card-hover {
-        transition: all 0.3s ease;
-        border-radius: 12px;
-    }
+        .card-hover {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
 
-    .card-hover:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
-    }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
+        }
 
-    .user-avatar {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-    }
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            font-size: 1.1rem;
+        }
 
-    .badge-custom {
-        font-size: 0.7rem;
-        padding: 0.35em 0.65em;
-    }
+        .badge-custom {
+            font-size: 0.7rem;
+            padding: 0.35em 0.65em;
+        }
 
-    .data-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
+        .data-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-    .data-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-    }
+        .data-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
 
-    .data-item i {
-        margin-top: 0.25rem;
-        flex-shrink: 0;
-    }
+        .data-item i {
+            margin-top: 0.25rem;
+            flex-shrink: 0;
+        }
 
-    .btn-soft-primary {
-        background-color: rgba(0, 123, 255, 0.1);
-        color: #007bff;
-        border: 1px solid rgba(0, 123, 255, 0.2);
-    }
+        .btn-soft-primary {
+            background-color: rgba(0, 123, 255, 0.1);
+            color: #007bff;
+            border: 1px solid rgba(0, 123, 255, 0.2);
+        }
 
-    .btn-soft-primary:hover {
-        background-color: #007bff;
-        color: white;
-    }
+        .btn-soft-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
 
-    .btn-soft-danger {
-        background-color: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-        border: 1px solid rgba(220, 53, 69, 0.2);
-    }
+        .btn-soft-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
 
-    .btn-soft-danger:hover {
-        background-color: #dc3545;
-        color: white;
-    }
+        .btn-soft-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
 
-    .empty-state {
-        opacity: 0.3;
-    }
+        .empty-state {
+            opacity: 0.3;
+        }
 
-    .flex-fw {
-        flex: 1;
-        min-width: 0;
-    }
+        .flex-fw {
+            flex: 1;
+            min-width: 0;
+        }
     </style>
 @endsection

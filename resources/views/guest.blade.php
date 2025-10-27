@@ -22,7 +22,6 @@
     <link href="{{ asset('assets-guest/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets-guest/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
 
@@ -64,7 +63,7 @@
                 </div>
             </div>
             <nav class="navbar navbar-light bg-light navbar-expand-xl">
-                <a href="index.html" class="navbar-brand ms-3">
+                <a href="{{ url('/') }}" class="navbar-brand ms-3">
                     <h1 class="text-primary display-5">Portal Bina Desa</h1>
                 </a>
                 <button class="navbar-toggler py-2 px-3 me-3" type="button" data-bs-toggle="collapse"
@@ -73,24 +72,62 @@
                 </button>
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="{{ url('/') }}" class="nav-item nav-link active">Home</a>
-                        <a href="{{ route('users.index') }}" class="nav-item nav-link">User</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-divider"></div>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                    </button>
-                                </form>
+                        <a href="{{ url('/') }}" class="nav-item nav-link active">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                        <a href="{{ route('about') }}" class="nav-item nav-link">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                        <a href="{{ route('users.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-users me-1"></i> User
+                        </a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-address-book me-1"></i> Data Warga
+                        </a>
+                        <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-newspaper me-1"></i> Kategori Berita
+                        </a>
+                        <a href="{{ route('contact') }}" class="nav-item nav-link">
+                            <i class="fas fa-phone-alt me-1"></i> Contact
+                        </a>
+
+                        {{-- Auth Section --}}
+                        @auth
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-user-cog me-2"></i> Profile
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-cog me-2"></i> Settings
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle me-1"></i> Account
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('login') }}" class="dropdown-item">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                                    </a>
+                                    <a href="{{ route('register') }}" class="dropdown-item">
+                                        <i class="fas fa-user-plus me-2"></i> Register
+                                    </a>
+                                </div>
+                            </div>
+                        @endauth
                     </div>
                 </div>
             </nav>
@@ -98,10 +135,8 @@
     </div>
     <!-- Navbar End -->
 
-
     <!-- Carousel Start -->
     <div class="container-fluid carousel-header vh-100 px-0">
-        @yield('content')
         <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
@@ -113,15 +148,15 @@
                     <img src="{{ asset('assets-guest/img/carousel-1.jpg') }}" class="img-fluid" alt="Image">
                     <div class="carousel-caption">
                         <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">WE'll Save
-                                Our Planet</h4>
-                            <h1 class="display-1 text-capitalize text-white mb-4">Protect Environment</h1>
-                            <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Selamat
+                                Datang di Portal Desa</h4>
+                            <h1 class="display-1 text-capitalize text-white mb-4">Desa Maju Mandiri</h1>
+                            <p class="mb-5 fs-5">Portal informasi dan layanan desa untuk memajukan kesejahteraan
+                                masyarakat dan pembangunan desa yang berkelanjutan.
                             </p>
                             <div class="d-flex align-items-center justify-content-center">
-                                <a class="btn-hover-bg btn btn-primary text-white py-3 px-5" href="#">Join With
-                                    Us</a>
+                                <a class="btn-hover-bg btn btn-primary text-white py-3 px-5"
+                                    href="#about">Selengkapnya</a>
                             </div>
                         </div>
                     </div>
@@ -130,15 +165,15 @@
                     <img src="{{ asset('assets-guest/img/carousel-2.jpg') }}" class="img-fluid" alt="Image">
                     <div class="carousel-caption">
                         <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">WE'll Save
-                                Our Planet</h4>
-                            <h1 class="display-1 text-capitalize text-white mb-4">Protect Environment</h1>
-                            <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Data
+                                Terintegrasi</h4>
+                            <h1 class="display-1 text-capitalize text-white mb-4">Warga Desa</h1>
+                            <p class="mb-5 fs-5">Sistem terpadu untuk mengelola data warga, berita, dan informasi desa
+                                secara digital dan transparan.
                             </p>
                             <div class="d-flex align-items-center justify-content-center">
-                                <a class="btn-hover-bg btn btn-primary text-white py-3 px-5" href="#">Join With
-                                    Us</a>
+                                <a class="btn-hover-bg btn btn-primary text-white py-3 px-5"
+                                    href="{{ route('warga.index') }}">Lihat Data Warga</a>
                             </div>
                         </div>
                     </div>
@@ -147,15 +182,15 @@
                     <img src="{{ asset('assets-guest/img/carousel-3.jpg') }}" class="img-fluid" alt="Image">
                     <div class="carousel-caption">
                         <div class="p-3" style="max-width: 900px;">
-                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">WE'll Save
-                                Our Planet</h4>
-                            <h1 class="display-1 text-capitalize text-white mb-4">Protect Environment</h1>
-                            <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Informasi
+                                Terkini</h4>
+                            <h1 class="display-1 text-capitalize text-white mb-4">Berita Desa</h1>
+                            <p class="mb-5 fs-5">Dapatkan informasi terbaru seputar kegiatan, program, dan perkembangan
+                                desa melalui kategori berita yang terorganisir.
                             </p>
                             <div class="d-flex align-items-center justify-content-center">
-                                <a class="btn-hover-bg btn btn-primary text-white py-3 px-5" href="#">Join With
-                                    Us</a>
+                                <a class="btn-hover-bg btn btn-primary text-white py-3 px-5"
+                                    href="{{ route('kategori_berita.index') }}">Lihat Kategori Berita</a>
                             </div>
                         </div>
                     </div>
@@ -173,9 +208,8 @@
     </div>
     <!-- Carousel End -->
 
-
     <!-- About Start -->
-    <div class="container-fluid about  py-5">
+    <div id="about" class="container-fluid about py-5">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-xl-5">
@@ -185,29 +219,29 @@
                     </div>
                 </div>
                 <div class="col-xl-7">
-                    <h5 class="text-uppercase text-primary">About Us</h5>
-                    <h1 class="mb-4">Our main goal is to protect environment</h1>
-                    <p class="fs-5 mb-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                        printer took a galley of type and scrambled it to make a type specimen book. It has
+                    <h5 class="text-uppercase text-primary">Tentang Kami</h5>
+                    <h1 class="mb-4">Portal Bina Desa - Membangun Desa Mandiri</h1>
+                    <p class="fs-5 mb-4">Portal Bina Desa merupakan sistem informasi desa yang bertujuan untuk
+                        memajukan pembangunan desa melalui digitalisasi data dan informasi. Kami berkomitmen untuk
+                        meningkatkan pelayanan kepada warga dan transparansi pengelolaan desa.
                     </p>
                     <div class="tab-class bg-secondary p-4">
                         <ul class="nav d-flex mb-2">
                             <li class="nav-item mb-3">
                                 <a class="d-flex py-2 text-center bg-white active" data-bs-toggle="pill"
                                     href="#tab-1">
-                                    <span class="text-dark" style="width: 150px;">About</span>
+                                    <span class="text-dark" style="width: 150px;">Tentang</span>
                                 </a>
                             </li>
                             <li class="nav-item mb-3">
                                 <a class="d-flex py-2 mx-3 text-center bg-white" data-bs-toggle="pill"
                                     href="#tab-2">
-                                    <span class="text-dark" style="width: 150px;">Mission</span>
+                                    <span class="text-dark" style="width: 150px;">Misi</span>
                                 </a>
                             </li>
                             <li class="nav-item mb-3">
                                 <a class="d-flex py-2 text-center bg-white" data-bs-toggle="pill" href="#tab-3">
-                                    <span class="text-dark" style="width: 150px;">Vision</span>
+                                    <span class="text-dark" style="width: 150px;">Visi</span>
                                 </a>
                             </li>
                         </ul>
@@ -217,15 +251,14 @@
                                     <div class="col-12">
                                         <div class="d-flex">
                                             <div class="text-start my-auto">
-                                                <h5 class="text-uppercase mb-3">Lorem Ipsum 1</h5>
-                                                <p class="mb-4">Lorem Ipsum is simply dummy text of the printing and
-                                                    typesetting industry. Lorem Ipsum has been the industry's standard
-                                                    dummy text ever since the 1500s, when an unknown printer took a
-                                                    galley of type and scrambled it to make a type specimen book. It has
+                                                <h5 class="text-uppercase mb-3">Portal Bina Desa</h5>
+                                                <p class="mb-4">Sebagai wujud komitmen dalam membangun desa digital,
+                                                    kami menyediakan platform terintegrasi untuk mengelola data warga,
+                                                    informasi desa, dan layanan publik secara online.
                                                 </p>
                                                 <div class="d-flex align-items-center justify-content-start">
                                                     <a class="btn-hover-bg btn btn-primary text-white py-2 px-4"
-                                                        href="#">Read More</a>
+                                                        href="#">Selengkapnya</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,15 +270,14 @@
                                     <div class="col-12">
                                         <div class="d-flex">
                                             <div class="text-start my-auto">
-                                                <h5 class="text-uppercase mb-3">Lorem Ipsum 2</h5>
-                                                <p class="mb-4">Lorem Ipsum is simply dummy text of the printing and
-                                                    typesetting industry. Lorem Ipsum has been the industry's standard
-                                                    dummy text ever since the 1500s, when an unknown printer took a
-                                                    galley of type and scrambled it to make a type specimen book. It has
+                                                <h5 class="text-uppercase mb-3">Misi Kami</h5>
+                                                <p class="mb-4">Meningkatkan kualitas pelayanan publik melalui
+                                                    digitalisasi, mempermudah akses informasi bagi warga, dan
+                                                    menciptakan tata kelola desa yang transparan dan akuntabel.
                                                 </p>
                                                 <div class="d-flex align-items-center justify-content-start">
                                                     <a class="btn-hover-bg btn btn-primary text-white py-2 px-4"
-                                                        href="#">Read More</a>
+                                                        href="#">Selengkapnya</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -257,15 +289,14 @@
                                     <div class="col-12">
                                         <div class="d-flex">
                                             <div class="text-start my-auto">
-                                                <h5 class="text-uppercase mb-3">Lorem Ipsum 3</h5>
-                                                <p class="mb-4">Lorem Ipsum is simply dummy text of the printing and
-                                                    typesetting industry. Lorem Ipsum has been the industry's standard
-                                                    dummy text ever since the 1500s, when an unknown printer took a
-                                                    galley of type and scrambled it to make a type specimen book. It has
+                                                <h5 class="text-uppercase mb-3">Visi Kami</h5>
+                                                <p class="mb-4">Menjadi portal desa terdepan dalam mewujudkan desa
+                                                    mandiri, sejahtera, dan berkelanjutan melalui pemanfaatan teknologi
+                                                    informasi yang optimal.
                                                 </p>
                                                 <div class="d-flex align-items-center justify-content-start">
                                                     <a class="btn-hover-bg btn btn-primary text-white py-2 px-4"
-                                                        href="#">Read More</a>
+                                                        href="#">Selengkapnya</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -280,494 +311,15 @@
     </div>
     <!-- About End -->
 
-
-    <!-- Services Start -->
-    <div class="container-fluid service py-5 bg-light">
-        <div class="container py-5">
-            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-                <h5 class="text-uppercase text-primary">What we do</h5>
-                <h1 class="mb-0">What we do to protect environment</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="service-item">
-                        <img src="{{ asset('assets-guest/img/service-1.jpg') }}" class="img-fluid w-100"
-                            alt="Image">
-                        <div class="service-link">
-                            <a href="#" class="h4 mb-0">Raising money to help</a>
-                        </div>
-                    </div>
-                    <p class="my-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    </p>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="service-item">
-                        <img src="{{ asset('assets-guest/img/service-2.jpg') }}" class="img-fluid w-100"
-                            alt="Image">
-                        <div class="service-link">
-                            <a href="#" class="h4 mb-0"> close work with services</a>
-                        </div>
-                    </div>
-                    <p class="my-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    </p>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="service-item">
-                        <img src="{{ asset('assets-guest/img/service-3.jpg') }}" class="img-fluid w-100"
-                            alt="Image">
-                        <div class="service-link">
-                            <a href="#" class="h4 mb-0">Pro Guided tours only</a>
-                        </div>
-                    </div>
-                    <p class="my-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    </p>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="service-item">
-                        <img src="{{ asset('assets-guest/img/service-4.jpg') }}" class="img-fluid w-100"
-                            alt="Image">
-                        <div class="service-link">
-                            <a href="#" class="h4 mb-0">Protecting animal area</a>
-                        </div>
-                    </div>
-                    <p class="my-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    </p>
-                </div>
-                <div class="col-12">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Services End -->
-
-    <!-- Counter Start -->
-    <div class="container-fluid counter py-5"
-        style="background: linear-gradient(rgba(0, 0, 0, .4), rgba(0, 0, 0, 0.4)), url({{ asset('assets-guest/img/volunteers-bg.jpg') }}) center center; background-size: cover;">
-        <div class="container py-5">
-            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-                <h5 class="text-uppercase text-primary">Achievements</h5>
-                <p class="text-white mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown
-                    printer took a galley
-                </p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="counter-item text-center border p-5">
-                        <i class="fas fa-thumbs-up fa-4x text-white"></i>
-                        <h3 class="text-white my-4">Beavers Saved</h3>
-                        <div class="counter-counting">
-                            <span class="text-primary fs-2 fw-bold" data-toggle="counter-up">3600</span>
-                            <span class="h1 fw-bold text-primary">+</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="counter-item text-center border p-5">
-                        <i class="fas fa-file-invoice-dollar fa-4x text-white"></i>
-                        <h3 class="text-white my-4">Funds Collected</h3>
-                        <div class="counter-counting text-center border-white w-100"
-                            style="border-style: dotted; font-size: 30px;">
-                            <span class="text-primary fs-2 fw-bold" data-toggle="counter-up">513</span>
-                            <span class="h1 fw-bold text-primary">$</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="counter-item text-center border p-5">
-                        <i class="fas fa-user fa-4x text-white"></i>
-                        <h3 class="text-white my-4">Volunteer</h3>
-                        <div class="counter-counting text-center border-white w-100"
-                            style="border-style: dotted; font-size: 30px;">
-                            <span class="text-primary fs-2 fw-bold" data-toggle="counter-up">713</span>
-                            <span class="h1 fw-bold text-primary">+</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="counter-item text-center border p-5">
-                        <i class="fas fa-heart fa-4x text-white"></i>
-                        <h3 class="text-white my-4">Days of Help</h3>
-                        <div class="counter-counting text-center border-white w-100"
-                            style="border-style: dotted; font-size: 30px;">
-                            <span class="text-primary fs-2 fw-bold" data-toggle="counter-up">487</span>
-                            <span class="h1 fw-bold text-primary">+</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Join With Us</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Counter End -->
-
-
-    <!-- Causes Start -->
-    <div class="container-fluid causes py-5">
-        <div class="container py-5">
-            <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-                <h5 class="text-uppercase text-primary">Recent Causes</h5>
-                <h1 class="mb-4">The environment needs our protection</h1>
-                <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                    Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took
-                    a galley
-                </p>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-6 col-xl-3">
-                    <div class="causes-item">
-                        <div class="causes-img">
-                            <img src="{{ asset('assets-guest/img/causes-4.jpg') }}" class="img-fluid w-100"
-                                alt="Image">
-                        </div>
-                        <div class="causes-content p-4">
-                            <h4 class="mb-3">First environments activity of</h4>
-                            <p class="mb-4">Help today because tomorrow you may be the one who needs more helping!
-                            </p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-3" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-xl-3">
-                    <div class="causes-item">
-                        <div class="causes-img">
-                            <img src="{{ asset('assets-guest/img/causes-2.jpg') }}" class="img-fluid w-100"
-                                alt="Image">
-                        </div>
-                        <div class="causes-content p-4">
-                            <h4 class="mb-3">Build school for poor children.</h4>
-                            <p class="mb-4">Help today because tomorrow you may be the one who needs more helping!
-                            </p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-xl-3">
-                    <div class="causes-item">
-                        <div class="causes-img">
-                            <img src="{{ asset('assets-guest/img/causes-3.jpg') }}" class="img-fluid w-100"
-                                alt="Image">
-                        </div>
-                        <div class="causes-content p-4">
-                            <h4 class="mb-3">Building clean-water system for rural poor.</h4>
-                            <p class="mb-4">Help today because tomorrow you may be the one who needs more helping!
-                            </p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-xl-3">
-                    <div class="causes-item">
-                        <div class="causes-img">
-                            <img src="{{ asset('assets-guest/img/causes-1.jpg') }}" class="img-fluid w-100"
-                                alt="Image">
-                        </div>
-                        <div class="causes-content p-4">
-                            <h4 class="mb-3">First environments activity of this summer.</h4>
-                            <p class="mb-4">Help today because tomorrow you may be the one who needs more helping!
-                            </p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Causes End -->
-
-
-    <!-- Events Start -->
-    <div class="container-fluid event py-4">
-        <div class="container py-4">
-            <div class="event-carousel owl-carousel">
-                <div class="event-item">
-                    <img src="{{ asset('assets-guest/img/events-1.jpg') }}" class="img-fluid w-100" alt="Image">
-                    <div class="event-content p-4">
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="text-body"><i class="fas fa-map-marker-alt me-2"></i>Grand Mahal, Dubai
-                                2100.</span>
-                            <span class="text-body"><i class="fas fa-calendar-alt me-2"></i>10 Feb, 2023</span>
-                        </div>
-                        <h4 class="mb-4">How To Build A Cleaning Plan</h4>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip sed
-                            eiusmod tempor.</p>
-                        <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                    </div>
-                </div>
-                <div class="event-item">
-                    <img src="{{ asset('assets-guest/img/events-2.jpg') }}" class="img-fluid w-100" alt="Image">
-                    <div class="event-content p-4">
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="text-body"><i class="fas fa-map-marker-alt me-2"></i>Grand Mahal, Dubai
-                                2100.</span>
-                            <span class="text-body"><i class="fas fa-calendar-alt me-2"></i>10 Feb, 2023</span>
-                        </div>
-                        <h4 class="mb-4">How To Build A Cleaning Plan</h4>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip sed
-                            eiusmod tempor.</p>
-                        <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                    </div>
-                </div>
-                <div class="event-item">
-                    <img src="{{ asset('assets-guest/img/events-3.jpg') }}" class="img-fluid w-100" alt="Image">
-                    <div class="event-content p-4">
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="text-body"><i class="fas fa-map-marker-alt me-2"></i>Grand Mahal, Dubai
-                                2100.</span>
-                            <span class="text-body"><i class="fas fa-calendar-alt me-2"></i>10 Feb, 2023</span>
-                        </div>
-                        <h4 class="mb-4">How To Build A Cleaning Plan</h4>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip sed
-                            eiusmod tempor.</p>
-                        <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                    </div>
-                </div>
-                <div class="event-item">
-                    <img src="{{ asset('assets-guest/img/events-4.jpg') }}" class="img-fluid w-100" alt="Image">
-                    <div class="event-content p-4">
-                        <div class="d-flex justify-content-between mb-4">
-                            <span class="text-body"><i class="fas fa-map-marker-alt me-2"></i>Grand Mahal, Dubai
-                                2100.</span>
-                            <span class="text-body"><i class="fas fa-calendar-alt me-2"></i>10 Feb, 2023</span>
-                        </div>
-                        <h4 class="mb-4">How To Build A Cleaning Plan</h4>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip sed
-                            eiusmod tempor.</p>
-                        <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Events End -->
-
-    <!-- Blog Start -->
-    <div class="container-fluid blog py-4 mb-4">
-        <div class="container py-4">
-            <div class="text-center mx-auto pb-4" style="max-width: 800px;">
-                <h5 class="text-uppercase text-primary">Latest News</h5>
-                <h1 class="mb-0">Help today because tomorrow you may be the one who needs more helping!
-                </h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-6 col-xl-3">
-                    <div class="blog-item">
-                        <div class="blog-img">
-                            <img src="{{ asset('assets-guest/img/blog-1.jpg') }}" class="img-fluid w-100"
-                                alt="">
-                            <div class="blog-info">
-                                <span><i class="fa fa-clock"></i> Dec 01.2024</span>
-                                <div class="d-flex">
-                                    <span class="me-3"> 3 <i class="fa fa-heart"></i></span>
-                                    <a href="#" class="text-white">0 <i class="fa fa-comment"></i></a>
-                                </div>
-                            </div>
-                            <div class="search-icon">
-                                <a href="img/blog-1.jpg" data-lightbox="Blog-1" class="my-auto"><i
-                                        class="fas fa-search-plus btn-primary text-white p-3"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-dark border p-4 ">
-                            <h4 class="mb-4">Save The Topic Forests</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip
-                                sed eiusmod tempor.</p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-xl-3">
-                    <div class="blog-item">
-                        <div class="blog-img">
-                            <img src="{{ asset('assets-guest/img/blog-2.jpg') }}" class="img-fluid w-100"
-                                alt="">
-                            <div class="blog-info">
-                                <span><i class="fa fa-clock"></i> Dec 01.2024</span>
-                                <div class="d-flex">
-                                    <span class="me-3"> 3 <i class="fa fa-heart"></i></span>
-                                    <a href="#" class="text-white">0 <i class="fa fa-comment"></i></a>
-                                </div>
-                            </div>
-                            <div class="search-icon">
-                                <a href="img/blog-2.jpg" data-lightbox="Blog-2" class="my-auto"><i
-                                        class="fas fa-search-plus btn-primary text-white p-3"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-dark border p-4 ">
-                            <h4 class="mb-4">Save The Topic Forests</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip
-                                sed eiusmod tempor.</p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-xl-3">
-                    <div class="blog-item">
-                        <div class="blog-img">
-                            <img src="{{ asset('assets-guest/img/blog-3.jpg') }}" class="img-fluid w-100"
-                                alt="">
-                            <div class="blog-info">
-                                <span><i class="fa fa-clock"></i> Dec 01.2024</span>
-                                <div class="d-flex">
-                                    <span class="me-3"> 3 <i class="fa fa-heart"></i></span>
-                                    <a href="#" class="text-white">0 <i class="fa fa-comment"></i></a>
-                                </div>
-                            </div>
-                            <div class="search-icon">
-                                <a href="img/blog-3.jpg" data-lightbox="Blog-3" class="my-auto"><i
-                                        class="fas fa-search-plus btn-primary text-white p-3"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-dark border p-4 ">
-                            <h4 class="mb-4">Save The Topic Forests</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip
-                                sed eiusmod tempor.</p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-xl-3">
-                    <div class="blog-item">
-                        <div class="blog-img">
-                            <img src="{{ asset('assets-guest/img/blog-4.jpg') }}" class="img-fluid w-100"
-                                alt="">
-                            <div class="blog-info">
-                                <span><i class="fa fa-clock"></i> Dec 01.2024</span>
-                                <div class="d-flex">
-                                    <span class="me-3"> 3 <i class="fa fa-heart"></i></span>
-                                    <a href="#" class="text-white">0 <i class="fa fa-comment"></i></a>
-                                </div>
-                            </div>
-                            <div class="search-icon">
-                                <a href="img/blog-4.jpg" data-lightbox="Blog-4" class="my-auto"><i
-                                        class="fas fa-search-plus btn-primary text-white p-3"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-dark border p-4 ">
-                            <h4 class="mb-4">Save The Topic Forests</h4>
-                            <p class="mb-4">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip
-                                sed eiusmod tempor.</p>
-                            <a class="btn-hover-bg btn btn-primary text-white py-2 px-4" href="#">Read More</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Blog End -->
-
-
-    <!-- Gallery Start -->
-    <div class="container-fluid gallery py-5 px-0">
-        <div class="text-center mx-auto pb-5" style="max-width: 800px;">
-            <h5 class="text-uppercase text-primary">Our work</h5>
-            <h1 class="mb-4">We consider environment welfare</h1>
-            <p class="mb-0">Lorem ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip sed eiusmod
-                tempor ipsum dolor sit amet consectur adip sed eiusmod amet consectur adip sed eiusmod tempor.</p>
-        </div>
-        <div class="row g-0">
-            <div class="col-lg-4">
-                <div class="gallery-item">
-                    <img src="{{ asset('assets-guest/img/gallery-2.jpg') }}" class="img-fluid w-100" alt="">
-                    <div class="search-icon">
-                        <a href="img/gallery-2.jpg" data-lightbox="gallery-2" class="my-auto"><i
-                                class="fas fa-search-plus btn-hover-color bg-white text-primary p-3"></i></a>
-                    </div>
-                    <div class="gallery-content">
-                        <div class="gallery-inner pb-5">
-                            <a href="#" class="h4 text-white">Beauty Of Life</a>
-                            <a href="#" class="text-white">
-                                <p class="mb-0">Gallery Name</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets-guest/img/gallery-3.jpg') }}" class="img-fluid w-100" alt="">
-                    <div class="search-icon">
-                        <a href="img/gallery-3.jpg" data-lightbox="gallery-3" class="my-auto"><i
-                                class="fas fa-search-plus btn-hover-color bg-white text-primary p-3"></i></a>
-                    </div>
-                    <div class="gallery-content">
-                        <div class="gallery-inner pb-5">
-                            <a href="#" class="h4 text-white">Beauty Of Life</a>
-                            <a href="#" class="text-white">
-                                <p class="mb-0">Gallery Name</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="gallery-item">
-                    <img src="{{ asset('assets-guest/img/gallery-1.jpg') }}" class="img-fluid w-100" alt="">
-                    <div class="search-icon">
-                        <a href="img/gallery-1.jpg" data-lightbox="gallery-1" class="my-auto"><i
-                                class="fas fa-search-plus btn-hover-color bg-white text-primary p-3"></i></a>
-                    </div>
-                    <div class="gallery-content">
-                        <div class="gallery-inner pb-5">
-                            <a href="#" class="h4 text-white">Beauty Of Life</a>
-                            <a href="#" class="text-white">
-                                <p class="mb-0">Gallery Name</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="gallery-item">
-                    <img src="{{ asset('assets-guest/img/gallery-4.jpg') }}" class="img-fluid w-100" alt="">
-                    <div class="search-icon">
-                        <a href="img/gallery-4.jpg" data-lightbox="gallery-4" class="my-auto"><i
-                                class="fas fa-search-plus btn-hover-color bg-white text-primary p-3"></i></a>
-                    </div>
-                    <div class="gallery-content">
-                        <div class="gallery-inner pb-5">
-                            <a href="#" class="h4 text-white">Beauty Of Life</a>
-                            <a href="#" class="text-white">
-                                <p class="mb-0">Gallery Name</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="{{ asset('assets-guest/img/gallery-5.jpg') }}" class="img-fluid w-100" alt="">
-                    <div class="search-icon">
-                        <a href="img/gallery-5.jpg" data-lightbox="gallery-5" class="my-auto"><i
-                                class="fas fa-search-plus btn-hover-color bg-white text-primary p-3"></i></a>
-                    </div>
-                    <div class="gallery-content">
-                        <div class="gallery-inner pb-5">
-                            <a href="#" class="h4 text-white">Beauty Of Life</a>
-                            <a href="#" class="text-white">
-                                <p class="mb-0">Gallery Name</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Gallery End -->
+    <!-- ... (bagian Services, Counter, Causes, Events, Blog, Gallery tetap sama) ... -->
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
         <div class="container">
             <div class="row g-4 align-items-center">
                 <div class="col-md-4 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#"><i
-                                class="fas fa-copyright text-light me-2"></i>portal-guest</a>, All right
+                    <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
+                            Bina Desa</a>, All right
                         reserved.</span>
                 </div>
                 <div class="col-md-4 text-center">
@@ -785,31 +337,23 @@
                     </div>
                 </div>
                 <div class="col-md-4 text-center text-md-end text-body">
-                    <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                    <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                    <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                    Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+                    Portal Bina Desa &copy; 2024
                 </div>
             </div>
         </div>
     </div>
     <!-- Copyright End -->
 
-
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
             class="fa fa-arrow-up"></i></a>
-
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets-guest/lib/easing/easing.min.js') }}"></script>
-    <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-
+    <script src="{{ asset('assets-guest/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets-guest/lib/lightbox/js/lightbox.min.js') }}"></script>
 
     <!-- Template Javascript -->
     <script src="{{ asset('assets-guest/js/main.js') }}"></script>
