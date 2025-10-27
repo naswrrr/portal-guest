@@ -24,11 +24,11 @@ Route::resource('warga', WargaController::class);
 Route::resource('kategori_berita', KategoriBeritaController::class);
 
 // Di routes/web.php
-Route::get('/pages/contact', function () {
-    return view('/pages/contact');
+Route::get('/contact', function () {
+    return view('pages.contact');
 })->name('contact');
 
 // routes/web.php
 Route::get('/about', function () {
-    return view('about');
+    return view('pages.about');
 })->name('about');
