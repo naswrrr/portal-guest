@@ -1,0 +1,4 @@
+
+Catatan:
+- Seharusnya bagian Navbar ini dipisah menjadi partial view,karena digunakan terus disemua halaman
+- update lagi pemanggilan auth nya, karena file sudah berpindah
