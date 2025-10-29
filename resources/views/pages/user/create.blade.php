@@ -54,24 +54,62 @@
                 </button>
                 <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                     <div class="navbar-nav ms-auto">
-                        <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ route('users.index') }}" class="nav-item nav-link active">User</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link">Kategori Berita</a>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
-                            </a>
-                            <div class="dropdown-menu">
-                                <div class="dropdown-divider"></div>
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-danger">
-                                        <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                    </button>
-                                </form>
+                        <a href="{{ url('/') }}" class="nav-item nav-link">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                        <a href="{{ route('about') }}" class="nav-item nav-link">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                        <a href="{{ route('users.index') }}" class="nav-item nav-link active">
+                            <i class="fas fa-users me-1"></i> User
+                        </a>
+                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-address-book me-1"></i> Data Warga
+                        </a>
+                        <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link">
+                            <i class="fas fa-newspaper me-1"></i> Kategori Berita
+                        </a>
+                        <a href="{{ route('contact') }}" class="nav-item nav-link">
+                            <i class="fas fa-phone-alt me-1"></i> Contact
+                        </a>
+
+                        {{-- Auth Section --}}
+                        @auth
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-user-cog me-2"></i> Profile
+                                    </a>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-cog me-2"></i> Settings
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-circle me-1"></i> Account
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="{{ route('login') }}" class="dropdown-item">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                                    </a>
+                                    <a href="{{ route('register') }}" class="dropdown-item">
+                                        <i class="fas fa-user-plus me-2"></i> Register
+                                    </a>
+                                </div>
+                            </div>
+                        @endauth
                     </div>
                 </div>
             </nav>
@@ -123,14 +161,16 @@
 
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
-                                        <label for="name" class="form-label fw-bold">Nama Lengkap <span class="text-danger">*</span></label>
+                                        <label for="name" class="form-label fw-bold">Nama Lengkap <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fas fa-user"></i>
                                             </span>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                                   id="name" name="name" value="{{ old('name') }}"
-                                                   placeholder="Masukkan nama lengkap" required>
+                                            <input type="text"
+                                                class="form-control @error('name') is-invalid @enderror"
+                                                id="name" name="name" value="{{ old('name') }}"
+                                                placeholder="Masukkan nama lengkap" required>
                                         </div>
                                         @error('name')
                                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -138,14 +178,16 @@
                                     </div>
 
                                     <div class="col-md-6 mb-4">
-                                        <label for="email" class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                                        <label for="email" class="form-label fw-bold">Email <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
-                                            <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                                   id="email" name="email" value="{{ old('email') }}"
-                                                   placeholder="Masukkan alamat email" required>
+                                            <input type="email"
+                                                class="form-control @error('email') is-invalid @enderror"
+                                                id="email" name="email" value="{{ old('email') }}"
+                                                placeholder="Masukkan alamat email" required>
                                         </div>
                                         @error('email')
                                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -153,14 +195,16 @@
                                     </div>
 
                                     <div class="col-md-6 mb-4">
-                                        <label for="password" class="form-label fw-bold">Password <span class="text-danger">*</span></label>
+                                        <label for="password" class="form-label fw-bold">Password <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fas fa-lock"></i>
                                             </span>
-                                            <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                                   id="password" name="password"
-                                                   placeholder="Masukkan password" required>
+                                            <input type="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                id="password" name="password" placeholder="Masukkan password"
+                                                required>
                                         </div>
                                         @error('password')
                                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -169,24 +213,25 @@
                                     </div>
 
                                     <div class="col-md-6 mb-4">
-                                        <label for="password_confirmation" class="form-label fw-bold">Konfirmasi Password <span class="text-danger">*</span></label>
+                                        <label for="password_confirmation" class="form-label fw-bold">Konfirmasi
+                                            Password <span class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fas fa-lock"></i>
                                             </span>
-                                            <input type="password" class="form-control"
-                                                   id="password_confirmation" name="password_confirmation"
-                                                   placeholder="Ulangi password" required>
+                                            <input type="password" class="form-control" id="password_confirmation"
+                                                name="password_confirmation" placeholder="Ulangi password" required>
                                         </div>
                                     </div>
 
                                     <div class="col-12 mt-4">
                                         <div class="d-flex gap-3 justify-content-end">
                                             <a href="{{ route('users.index') }}"
-                                               class="btn-hover-bg btn btn-secondary text-white py-2 px-4">
+                                                class="btn-hover-bg btn btn-secondary text-white py-2 px-4">
                                                 <i class="fas fa-arrow-left me-2"></i>Kembali
                                             </a>
-                                            <button type="submit" class="btn-hover-bg btn btn-primary text-white py-2 px-4">
+                                            <button type="submit"
+                                                class="btn-hover-bg btn btn-primary text-white py-2 px-4">
                                                 <i class="fas fa-save me-2"></i>Simpan User
                                             </button>
                                         </div>
@@ -206,7 +251,8 @@
     {{-- end footer --}}
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+            class="fa fa-arrow-up"></i></a>
 
     {{-- start js --}}
     @include('layouts.warga.js')
@@ -221,4 +267,5 @@
     </script>
 
 </body>
+
 </html>

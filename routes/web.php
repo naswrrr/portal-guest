@@ -1,10 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KategoriBeritaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
-use App\Http\Controllers\KategoriBeritaController;
+use Illuminate\Support\Facades\Route;
+
+// PUBLIC ROUTES
+Route::get('/', function () {
+    return view('pages.guest');
+})->name('home');
 
 // AUTH ROUTES
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -13,13 +18,17 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// PROTECTED ROUTES
-Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('guest');
-    })->name('guest');
+// RESOURCE ROUTES (bisa diakses tanpa middleware)
+Route::resource('users', UserController::class);
+Route::resource('warga', WargaController::class);
+Route::resource('kategori_berita', KategoriBeritaController::class);
 
-    Route::resource('users', UserController::class);
-    Route::resource('warga', WargaController::class);
-    Route::resource('kategori_berita', KategoriBeritaController::class);
-});
+// Di routes/web.php
+Route::get('/contact', function () {
+    return view('pages.contact');
+})->name('contact');
+
+// routes/web.php
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');

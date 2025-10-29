@@ -1,11 +1,10 @@
-    {{-- start footer --}}
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
         <div class="container">
             <div class="row g-4 align-items-center">
                 <div class="col-md-4 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
-                            Bina Desa</a>, All right
+                    <span class="text-body"><a href="#"><i
+                                class="fas fa-copyright text-light me-2"></i>Portal Bina Desa</a>, All right
                         reserved.</span>
                 </div>
                 <div class="col-md-4 text-center">
@@ -22,4 +21,3 @@
         </div>
     </div>
     <!-- Copyright End -->
-    {{-- end footer --}}

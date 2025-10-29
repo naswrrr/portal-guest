@@ -51,7 +51,7 @@ class AuthController extends Controller
             ->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-    // Process login
+    // Process login - PERBAIKAN: gunakan redirect langsung ke URL
     public function login(Request $request)
     {
         $request->validate([
@@ -68,8 +68,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('guest')
+
+            // OPTION 1: Redirect langsung ke URL (lebih aman)
+            return redirect('/')
                 ->with('success', 'Login berhasil! Selamat datang.');
+
+            // OPTION 2: Atau jika route home sudah benar
+            // return redirect()->route('home')
+            //     ->with('success', 'Login berhasil! Selamat datang.');
         }
 
         return back()
@@ -77,14 +83,15 @@ class AuthController extends Controller
             ->withInput($request->except('password'));
     }
 
-    // Logout
+    // Logout - PERBAIKAN: gunakan redirect langsung ke URL
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')
+        // Redirect ke home page setelah logout
+        return redirect('/')
             ->with('success', 'Logout berhasil!');
     }
 }

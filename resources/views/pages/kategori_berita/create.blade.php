@@ -55,17 +55,39 @@
                     data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars text-primary"></span>
                 </button>
-                <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
-                        <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
-                        <a href="{{ route('users.index') }}" class="nav-item nav-link">User</a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">Data Warga</a>
-                        <a href="{{ url('/kategori_berita') }}" class="nav-item nav-link active">Kategori Berita</a>
+                <div class="navbar-nav ms-auto">
+                    <a href="{{ url('/') }}" class="nav-item nav-link">
+                        <i class="fas fa-home me-1"></i> Home
+                    </a>
+                    <a href="{{ route('about') }}" class="nav-item nav-link">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                    <a href="{{ route('users.index') }}" class="nav-item nav-link">
+                        <i class="fas fa-users me-1"></i> User
+                    </a>
+                    <a href="{{ route('warga.index') }}" class="nav-item nav-link">
+                        <i class="fas fa-address-book me-1"></i> Data Warga
+                    </a>
+                    <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link active">
+                        <i class="fas fa-newspaper me-1"></i> Kategori Berita
+                    </a>
+                    <a href="{{ route('contact') }}" class="nav-item nav-link">
+                        <i class="fas fa-phone-alt me-1"></i> Contact
+                    </a>
+
+                    {{-- Auth Section --}}
+                    @auth
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-user-cog me-2"></i> Profile
+                                </a>
+                                <a href="#" class="dropdown-item">
+                                    <i class="fas fa-cog me-2"></i> Settings
+                                </a>
                                 <div class="dropdown-divider"></div>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
@@ -75,7 +97,21 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i> Account
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="{{ route('login') }}" class="dropdown-item">
+                                    <i class="fas fa-sign-in-alt me-2"></i> Login
+                                </a>
+                                <a href="{{ route('register') }}" class="dropdown-item">
+                                    <i class="fas fa-user-plus me-2"></i> Register
+                                </a>
+                            </div>
+                        </div>
+                    @endauth
                 </div>
             </nav>
         </div>
@@ -102,7 +138,8 @@
                 <div class="card-header bg-primary text-white py-4">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Form Tambah Kategori</h4>
-                        <a href="{{ route('kategori_berita.index') }}" class="btn-hover-bg btn btn-light text-primary py-2 px-4">
+                        <a href="{{ route('kategori_berita.index') }}"
+                            class="btn-hover-bg btn btn-light text-primary py-2 px-4">
                             <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar
                         </a>
                     </div>
