@@ -1,3 +1,11 @@
+/*** Color Variables ***/
+:root {
+    --bs-primary: #5D8AA8 !important; /* Biru muda yang lembut */
+    --bs-primary-rgb: 93, 138, 168 !important;
+    --bs-primary-dark: #4a6e86 !important;
+    --bs-primary-light: #7fa6c1 !important;
+    --bs-secondary: #F3F4F6 !important; /* Abu-abu sangat muda */
+}
 
 /*** Spinner Start ***/
 #spinner {
@@ -25,6 +33,13 @@
     justify-content: center;
     transition: 0.5s;
     z-index: 99;
+    background: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.back-to-top:hover {
+    background: var(--bs-primary-dark) !important;
+    border-color: var(--bs-primary-dark) !important;
 }
 
 /*** Button Start ***/
@@ -78,8 +93,30 @@
 }
 
 .btn-hover-color:hover {
-    color: var(--bs-secondary) !important;
+    color: var(--bs-primary) !important;
 }
+
+.btn-primary {
+    background: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.btn-primary:hover {
+    background: var(--bs-primary-dark) !important;
+    border-color: var(--bs-primary-dark) !important;
+}
+
+.btn-outline-primary {
+    color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background: var(--bs-primary) !important;
+    color: white !important;
+}
+/*** Button End ***/
+
 /*** Topbar Start ***/
 .fixed-top .container {
     transition: 0.5s;
@@ -93,6 +130,7 @@
 .topbar a,
 .topbar a i {
     transition: 0.5s;
+    color: white !important;
 }
 
 .topbar a:hover,
@@ -100,14 +138,12 @@
     color: var(--bs-secondary) !important;
 }
 
-
 @media (max-width: 768px) {
     .topbar {
-        display: none;    
+        display: none;
     }
 }
 /*** Topbar End ***/
-
 
 /*** Navbar Start ***/
 .navbar {
@@ -124,7 +160,7 @@
 .navbar .navbar-nav .nav-link.active,
 .sticky-top.bg-white .navbar .navbar-nav .nav-link:hover,
 .sticky-top.bg-white .navbar .navbar-nav .nav-link.active {
-    color: var(--bs-primary);
+    color: var(--bs-primary) !important;
 }
 
 .navbar .dropdown-toggle::after {
@@ -177,7 +213,7 @@
 
 .carousel-header #carouselId .carousel-inner .carousel-item {
     position: relative;
-    min-height: 100vh 
+    min-height: 100vh
 }
 
 .carousel-header #carouselId .carousel-inner .carousel-item img {
@@ -238,7 +274,6 @@
     border-radius: 12px !important;
     border: 5px solid transparent;
     transition: 0.5s;
-    
 }
 
 .carousel-header #carouselId.carousel .carousel-indicators li.active {
@@ -246,8 +281,6 @@
     border-radius: 10px;
 }
 /*** Carousel End ***/
-
-
 
 /*** Single Page Hero Header Start ***/
 .bg-breadcrumb {
@@ -259,16 +292,13 @@
 }
 /*** Single Page Hero Header End ***/
 
-
 /*** About Start ***/
 .about .tab-class .nav .nav-item a.active,
 .about .tab-class .nav .nav-item a.active span {
     background: var(--bs-primary) !important;
     color: var(--bs-white) !important;
 }
-
 /*** About End ***/
-
 
 /*** Service Start ***/
 .service .service-item {
@@ -278,15 +308,15 @@
 
 .service .service-item .service-link {
     position: absolute;
-    width: 100%; 
-    height: 100%; 
-    padding: 20px; 
-    bottom: 0; 
-    left: 0; 
-    display: flex; 
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    bottom: 0;
+    left: 0;
+    display: flex;
     align-items: end;
     background: rgba(0, 0, 0, 0.3);
-    transition: 0.5s; 
+    transition: 0.5s;
 }
 
 .service .service-item .service-link:hover {
@@ -311,7 +341,6 @@
 }
 /*** Service End ***/
 
-
 /*** Donation Start ***/
 .donation .donation-item {
     position: relative;
@@ -331,14 +360,13 @@
     z-index: 2;
 }
 
-
 .donation .donation-item .donation-content {
     position: absolute;
-    width: 100%; 
-    height: 100%; 
-    padding: 20px; 
-    justify-content: end; 
-    bottom: -60px; 
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    justify-content: end;
+    bottom: -60px;
     left: 0;
     transition: 0.5s;
     z-index: 3;
@@ -346,11 +374,11 @@
 
 .donation .donation-item:hover .donation-content {
     position: absolute;
-    width: 100%; 
-    height: 100%; 
-    padding: 20px; 
-    justify-content: end; 
-    bottom: 0px; 
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    justify-content: end;
+    bottom: 0px;
     left: 0;
     background: rgba(0, 0, 0, 0.6);
 }
@@ -365,20 +393,17 @@
     visibility: visible;
     opacity: 1;
 }
-
 /*** Donation End ***/
-
 
 /*** Counter Start ***/
 .counter .counter-item .counter-counting {
     width: 100%;
     text-align: center;
     border-style: dotted;
-    border-color: var(--bs-white); 
+    border-color: var(--bs-white);
     font-size: 30px;
 }
 /*** Counter End ***/
-
 
 /*** causes Start ***/
 .causes .causes-item {
@@ -394,7 +419,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    bottom: 0 !important; 
+    bottom: 0 !important;
     left: 0;
     display: flex;
     justify-content: space-between;
@@ -417,7 +442,7 @@
 
 .causes .causes-item .causes-img .causes-dination {
     position: absolute;
-    top: 0; 
+    top: 0;
     right: 0;
 }
 
@@ -430,7 +455,6 @@
     border-color: var(--bs-white);
     border-style: dotted;
     border-top: 0;
-
 }
 
 .causes .causes-item .progress {
@@ -459,11 +483,11 @@
 }
 /*** causes End ***/
 
-
 /*** Events Start ***/
 .event .event-carousel.owl-carousel {
     position: relative;
 }
+
 .event .event-carousel.owl-carousel .owl-nav .owl-prev {
     position: absolute;
     top: -60px;
@@ -499,14 +523,14 @@
     background: var(--bs-secondary);
     color: var(--bs-primary);
 }
+
 .event .event-carousel .event-item .event-content {
     border-style: dotted;
-    border-top: 0; 
-    border-color: var(--bs-white); 
+    border-top: 0;
+    border-color: var(--bs-white);
     background: var(--bs-secondary);
 }
 /*** Events End ***/
-
 
 /*** Blog Start ***/
 .blog .blog-item .blog-img {
@@ -532,7 +556,6 @@
 .blog .blog-item .blog-img:hover .blog-info {
     background: rgba(0, 0, 0, .6);
 }
-
 
 .blog .blog-item .blog-img .search-icon {
     position: absolute;
@@ -579,9 +602,9 @@
     position: absolute;
     width: 100%;
     height: 0;
-    bottom: 0; 
+    bottom: 0;
     left: 0;
-    background: rgba(249, 195, 123, .4);
+    background: rgba(93, 138, 168, 0.4); /* Biru muda transparan */
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -601,12 +624,13 @@
 }
 
 .gallery .gallery-item:hover .gallery-content .gallery-inner {
-    background: rgba(249, 195, 123, 1);
+    background: var(--bs-primary);
     padding: 50px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: white;
 }
 
 .gallery .gallery-item .search-icon {
@@ -618,6 +642,7 @@
     opacity: 0;
     transition: 0.5s;
     z-index: 3;
+    color: white;
 }
 
 .gallery .gallery-item:hover .search-icon {
@@ -625,11 +650,11 @@
 }
 /*** Gallery End ***/
 
-
 /*** Volunteer Start ***/
 .volunteer {
-    background: rgba(249, 195, 123, .1);
+    background: rgba(93, 138, 168, 0.1); /* Biru muda sangat transparan */
 }
+
 .volunteer .volunteer-img {
     position: relative;
     overflow: hidden;
@@ -663,16 +688,13 @@
 }
 /*** Volunteer End ***/
 
-
 /*** Contact Start ***/
 .contact {
-    background: rgba(249, 195, 123, .4);
+    background: rgba(93, 138, 168, 0.2); /* Biru muda transparan */
     border-style: dotted;
     border-color: var(--bs-white);
 }
-
 /*** Contact End ***/
-
 
 /*** Footer Start ***/
 .footer {
@@ -683,6 +705,7 @@
     border-style: dotted;
     border-color: var(--bs-light);
 }
+
 .footer .footer-item a,
 .footer .footer-item p {
     line-height: 35px;
@@ -719,6 +742,7 @@
     justify-content: center;
     transition: 0.5s;
     opacity: 0;
+    color: white;
 }
 
 .footer .footer-item .footer-gallery:hover .footer-search-icon {
@@ -733,3 +757,22 @@
     background: var(--bs-dark) !important;
 }
 /*** copyright end ***/
+
+/*** Additional Global Styles untuk konsistensi ***/
+.bg-primary {
+    background-color: var(--bs-primary) !important;
+}
+
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+.border-primary {
+    border-color: var(--bs-primary) !important;
+}
+
+.spinner-grow.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+

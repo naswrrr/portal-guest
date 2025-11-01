@@ -14,7 +14,7 @@ class KategoriBeritaController extends Controller
     {
         $data['dataKategori'] = KategoriBerita::all();
         $data['editData'] = null;
-        return view('pages.kategori_berita.index', $data);
+        return view('guest.pages.kategori_berita.index', $data);
     }
 
     /**
@@ -22,7 +22,7 @@ class KategoriBeritaController extends Controller
      */
     public function create()
     {
-        return view('pages.kategori_berita.create');
+        return view('guest.pages.kategori_berita.create');
     }
 
     /**
@@ -52,7 +52,7 @@ class KategoriBeritaController extends Controller
         'deskripsi' => $request->deskripsi
     ]);
 
-    return redirect()->route('pages.kategori_berita.index')
+    return redirect()->route('guest.pages.kategori_berita.index')
         ->with('success', 'Kategori berita berhasil ditambahkan!');
     }
 
@@ -63,7 +63,7 @@ class KategoriBeritaController extends Controller
     {
         $data['editData'] = KategoriBerita::findOrFail($id);
         $data['dataKategori'] = KategoriBerita::all();
-        return view('pages.kategori_berita.index', $data);
+        return view('guest.pages.kategori_berita.index', $data);
     }
 
     /**
@@ -74,7 +74,7 @@ class KategoriBeritaController extends Controller
         $data['editData'] = KategoriBerita::findOrFail($id);
         $data['dataKategori'] = KategoriBerita::all();
 
-        return view('pages.kategori_berita.index', $data);
+        return view('guest.pages.kategori_berita.index', $data);
     }
 
     /**
@@ -95,7 +95,7 @@ class KategoriBeritaController extends Controller
             'deskripsi' => $request->deskripsi
         ]);
 
-        return redirect()->route('pages.kategori_berita.index')
+        return redirect()->route('guest.pages.kategori_berita.index')
             ->with('success', 'Kategori berita berhasil diperbarui!');
     }
 
@@ -107,7 +107,7 @@ class KategoriBeritaController extends Controller
         $kategori = KategoriBerita::findOrFail($id);
         $kategori->delete();
 
-        return redirect()->route('pages.kategori_berita.index')
+        return redirect()->route('guest.pages.kategori_berita.index')
         ->with('success', 'Kategori berita berhasil dihapus!');
     }
 }

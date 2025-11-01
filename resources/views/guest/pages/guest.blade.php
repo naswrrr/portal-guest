@@ -9,25 +9,231 @@
     <meta content="" name="description">
 
     {{-- Start CSS --}}
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="{{ asset('assets-guest/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets-guest/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('assets-guest/css/bootstrap.min.css') }}" rel="stylesheet">
-
-    <!-- Template Stylesheet -->
-    <link href="{{ asset('assets-guest/css/style.css') }}" rel="stylesheet">
+    @include('guest.layouts.warga.css')
     {{-- End CSS --}}
+
+    <style>
+        /* ===== FLOATING WHATSAPP STYLES ===== */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .whatsapp-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .whatsapp-main-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid white;
+            text-decoration: none;
+        }
+
+        .whatsapp-main-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-main-button i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .whatsapp-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FF4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+            animation: pulse-badge 2s infinite;
+        }
+
+        .whatsapp-tooltip {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 250px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .whatsapp-container:hover .whatsapp-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .whatsapp-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .whatsapp-avatar i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .whatsapp-info {
+            flex: 1;
+        }
+
+        .whatsapp-info h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #25D366;
+        }
+
+        .whatsapp-info p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .whatsapp-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 3px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: blink 2s infinite;
+        }
+
+        .status-text {
+            font-size: 11px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .whatsapp-chat-bubble {
+            background: #25D366;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 18px 18px 0 18px;
+            font-size: 12px;
+            margin-top: 8px;
+            position: relative;
+            animation: slideIn 0.5s ease;
+        }
+
+        .whatsapp-chat-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 10px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #25D366;
+        }
+
+        /* Animations */
+        @keyframes pulse-badge {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .whatsapp-main-button {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .floating-whatsapp {
+                bottom: 20px;
+                right: 15px;
+            }
+
+            .whatsapp-main-button {
+                width: 55px;
+                height: 55px;
+            }
+
+            .whatsapp-main-button i {
+                font-size: 24px;
+            }
+
+            .whatsapp-tooltip {
+                max-width: 220px;
+                padding: 10px 14px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -41,98 +247,7 @@
 
     {{-- start header --}}
     <!-- Navbar start -->
-    <div class="container-fluid fixed-top px-0">
-        <div class="container px-0">
-            <div class="topbar">
-                <div class="row align-items-center justify-content-center">
-                    <div class="col-md-8">
-                        <div class="topbar-info d-flex flex-wrap">
-                            <a href="#" class="text-light me-4"><i
-                                    class="fas fa-envelope text-white me-2"></i>BinaDesa@gmail.com</a>
-                            <a href="#" class="text-light"><i
-                                    class="fas fa-phone-alt text-white me-2"></i>+01234567890</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="topbar-icon d-flex align-items-center justify-content-end">
-                            <a href="#" class="btn-square text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="btn-square text-white me-2"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="btn-square text-white me-2"><i class="fab fa-instagram"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <nav class="navbar navbar-light bg-light navbar-expand-xl">
-                <a href="{{ url('/') }}" class="navbar-brand ms-3">
-                    <h1 class="text-primary display-5">Portal Bina Desa</h1>
-                </a>
-                <button class="navbar-toggler py-2 px-3 me-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
-                </button>
-                <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto">
-                        <a href="{{ url('/') }}" class="nav-item nav-link active">
-                            <i class="fas fa-home me-1"></i> Home
-                        </a>
-                        <a href="{{ route('about') }}" class="nav-item nav-link">
-                            <i class="fas fa-info-circle me-1"></i> About
-                        </a>
-                        <a href="{{ route('users.index') }}" class="nav-item nav-link">
-                            <i class="fas fa-users me-1"></i> User
-                        </a>
-                        <a href="{{ route('warga.index') }}" class="nav-item nav-link">
-                            <i class="fas fa-address-book me-1"></i> Data Warga
-                        </a>
-                        <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link">
-                            <i class="fas fa-newspaper me-1"></i> Kategori Berita
-                        </a>
-                        <a href="{{ route('contact') }}" class="nav-item nav-link">
-                            <i class="fas fa-phone-alt me-1"></i> Contact
-                        </a>
-
-                        {{-- Auth Section --}}
-                        @auth
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                    <i class="fas fa-user me-1"></i> {{ Auth::user()->name }}
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-user-cog me-2"></i> Profile
-                                    </a>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-cog me-2"></i> Settings
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <form action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        @else
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                    <i class="fas fa-user-circle me-1"></i> Account
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a href="{{ route('login') }}" class="dropdown-item">
-                                        <i class="fas fa-sign-in-alt me-2"></i> Login
-                                    </a>
-                                    <a href="{{ route('register') }}" class="dropdown-item">
-                                        <i class="fas fa-user-plus me-2"></i> Register
-                                    </a>
-                                </div>
-                            </div>
-                        @endauth
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
+    @include('guest.layouts.warga.navbar', ['activePage' => 'home'])
     <!-- Navbar End -->
 
     <!-- Carousel Start -->
@@ -225,7 +340,7 @@
                         memajukan pembangunan desa melalui digitalisasi data dan informasi. Kami berkomitmen untuk
                         meningkatkan pelayanan kepada warga dan transparansi pengelolaan desa.
                     </p>
-                    <div class="tab-class bg-secondary p-4">
+                    <div class="tab-class bg-light p-4"> <!-- Changed from bg-secondary to bg-light -->
                         <ul class="nav d-flex mb-2">
                             <li class="nav-item mb-3">
                                 <a class="d-flex py-2 text-center bg-white active" data-bs-toggle="pill"
@@ -313,35 +428,37 @@
 
     <!-- ... (bagian Services, Counter, Causes, Events, Blog, Gallery tetap sama) ... -->
 
-    <!-- Copyright Start -->
-    <div class="container-fluid copyright py-4">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-4 text-center text-md-start mb-md-0">
-                    <span class="text-body"><a href="#"><i class="fas fa-copyright text-light me-2"></i>Portal
-                            Bina Desa</a>, All right
-                        reserved.</span>
+    <!-- Floating WhatsApp Button -->
+    <div class="floating-whatsapp">
+        <div class="whatsapp-container">
+            <div class="whatsapp-tooltip">
+                <div class="whatsapp-avatar">
+                    <i class="fab fa-whatsapp"></i>
                 </div>
-                <div class="col-md-4 text-center">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-twitter"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-2"><i
-                                class="fab fa-pinterest"></i></a>
-                        <a href="#" class="btn-hover-color btn-square text-white me-0"><i
-                                class="fab fa-linkedin-in"></i></a>
+                <div class="whatsapp-info">
+                    <h4>Admin Bina Desa</h4>
+                    <p>Butuh bantuan? Chat dengan kami!</p>
+                    <div class="whatsapp-status">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Online</span>
+                    </div>
+                    <div class="whatsapp-chat-bubble">
+                        Ada yang bisa kami bantu? 👋
                     </div>
                 </div>
-                <div class="col-md-4 text-center text-md-end text-body">
-                    Portal Bina Desa &copy; 2024
-                </div>
             </div>
+            <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Portal%20Bina%20Desa,%20saya%20ingin%20bertanya%20tentang:"
+               class="whatsapp-main-button"
+               target="_blank"
+               title="Chat via WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+                <div class="whatsapp-badge">1</div>
+            </a>
         </div>
     </div>
+
+    <!-- Copyright Start -->
+    @include('guest.layouts.warga.footer')
     <!-- Copyright End -->
 
     <!-- Back to Top -->
@@ -349,14 +466,7 @@
             class="fa fa-arrow-up"></i></a>
 
     <!-- JavaScript Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets-guest/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/owlcarousel/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('assets-guest/lib/lightbox/js/lightbox.min.js') }}"></script>
-
-    <!-- Template Javascript -->
-    <script src="{{ asset('assets-guest/js/main.js') }}"></script>
+    @include('guest.layouts.warga.js')
 
     <script>
         // Temporary JS to hide spinner
@@ -366,6 +476,26 @@
 
             // Initialize carousel
             $('.carousel').carousel();
+
+            // WhatsApp button functionality
+            $('.whatsapp-main-button').on('click', function(e) {
+                // Optional: Add analytics tracking here
+                console.log('WhatsApp button clicked');
+            });
+
+            // Auto-hide tooltip after 5 seconds of appearing
+            $('.whatsapp-container').on('mouseenter', function() {
+                clearTimeout(window.whatsappTooltipTimeout);
+            });
+
+            $('.whatsapp-container').on('mouseleave', function() {
+                window.whatsappTooltipTimeout = setTimeout(function() {
+                    $('.whatsapp-tooltip').css({
+                        'opacity': '0',
+                        'transform': 'translateX(20px)'
+                    });
+                }, 5000);
+            });
         });
     </script>
 

@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Portal Bina Desa - Kategori Berita</title>
+    <title>Portal Bina Desa - Data Warga</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
 
     {{-- start css --}}
-    @include('layouts.warga.css')
+    @include('guest.layouts.warga.css')
     {{-- end css --}}
 </head>
 
@@ -22,14 +22,13 @@
     </div>
     <!-- Spinner End -->
 
-    {{-- main content start --}}
+    {{-- start main content --}}
     @yield('content')
     <!-- Content End -->
-
+    {{-- end main content --}}
 
     {{-- start footer --}}
-    @include('layouts.warga.footer')
-
+    @include('guest.layouts.warga.footer')
     {{-- end footer --}}
 
     <!-- Back to Top -->
@@ -37,7 +36,7 @@
             class="fa fa-arrow-up"></i></a>
 
     {{-- start js --}}
-    @include('layouts.warga.js')
+    @include('guest.layouts.warga.js')
     {{-- end js --}}
 
     <script>
@@ -46,13 +45,13 @@
             // Remove spinner if exists
             $('#spinner').remove();
 
-            // Auto generate slug dari nama
-            $('#nama').on('input', function() {
-                const slug = $(this).val().toLowerCase()
-                    .replace(/[^a-z0-9 -]/g, '')
-                    .replace(/\s+/g, '-')
-                    .replace(/-+/g, '-');
-                $('#slug').val(slug);
+            // Validasi input NIK dan No KK hanya angka
+            document.getElementById('nik')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            document.getElementById('no_kk')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
             });
         });
     </script>
