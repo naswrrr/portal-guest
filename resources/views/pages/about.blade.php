@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     {{-- Start CSS --}}
-    @include('guest.layouts.warga.css')
+    @include('layouts.guest.css')
     {{-- End CSS --}}
 
     <style>
@@ -355,7 +355,7 @@
     <!-- Spinner End -->
 
     {{-- start header --}}
-    @include('guest.layouts.warga.navbar', ['activePage' => 'about'])
+    @include('layouts.guest.navbar', ['activePage' => 'about'])
 
     <!-- Content Start -->
     <div class="container-fluid content-section">
@@ -625,7 +625,7 @@
     <!-- Content End -->
 
     <!-- Copyright Start -->
-    @include('guest.layouts.warga.footer')
+    @include('layouts.guest.footer')
     <!-- Copyright End -->
 
     <!-- Back to Top -->
@@ -634,7 +634,7 @@
     </a>
 
     <!-- JavaScript Libraries -->
-    @include('guest.layouts.warga.js')
+    @include('layouts.guest.js')
 
     <script>
         $(document).ready(function() {

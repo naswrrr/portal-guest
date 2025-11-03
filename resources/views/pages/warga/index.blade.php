@@ -1,9 +1,9 @@
-@extends('guest.layouts.warga.app')
+@extends('layouts.guest.app')
 
 @section('content')
     {{-- start main content --}}
     <!-- Navbar start -->
-    @include('guest.layouts.warga.navbar', ['activePage' => 'warga'])
+    @include('layouts.guest.navbar', ['activePage' => 'warga'])
     <!-- Navbar End -->
 
     <!-- Content Start -->

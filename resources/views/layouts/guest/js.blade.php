@@ -7,3 +7,20 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('assets-guest/js/main.js') }}"></script>
+
+    <script>
+        // Temporary JS to hide spinner
+        $(document).ready(function() {
+            // Remove spinner if exists
+            $('#spinner').remove();
+
+            // Validasi input NIK dan No KK hanya angka
+            document.getElementById('nik')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            document.getElementById('no_kk')?.addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        });
+    </script>

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 // PUBLIC ROUTES
 Route::get('/', function () {
-    return view('guest.pages.guest');
+    return view('pages.guest');
 })->name('home');
 
 // AUTH ROUTES
@@ -25,10 +25,10 @@ Route::resource('kategori_berita', KategoriBeritaController::class);
 
 // Di routes/web.php
 Route::get('/contact', function () {
-    return view('guest.pages.contact');
+    return view('pages.contact');
 })->name('contact');
 
 // routes/web.php
 Route::get('/about', function () {
-    return view('guest.pages.about');
+    return view('pages.about');
 })->name('about');

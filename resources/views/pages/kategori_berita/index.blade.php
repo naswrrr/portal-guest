@@ -1,9 +1,9 @@
-@extends('guest.layouts.user.app')
+@extends('layouts.guest.app')
 
 @section('content')
     {{-- start main content --}}
     <!-- Navbar start -->
-    @include('guest.layouts.warga.navbar', ['activePage' => 'users'])
+    @include('layouts.guest.navbar', ['activePage' => 'kategori_berita'])
     <!-- Navbar End -->
 
     <!-- Content Start -->
@@ -13,11 +13,11 @@
             <!-- Page Header Start -->
             <div class="page-header-modern text-center mb-5">
                 <div class="header-icon">
-                    <i class="fas fa-users-cog"></i>
+                    <i class="fas fa-tags"></i>
                 </div>
-                <h5 class="text-primary fw-bold text-uppercase mb-2">Manajemen User</h5>
-                <h1 class="display-4 fw-bold mb-3">Kelola User Portal Desa</h1>
-                <p class="text-muted fs-5 mb-0">Kelola user/admin yang dapat mengakses sistem dengan mudah dan efisien</p>
+                <h5 class="text-primary fw-bold text-uppercase mb-2">Kategori Berita</h5>
+                <h1 class="display-4 fw-bold mb-3">Kelola Kategori Berita Desa</h1>
+                <p class="text-muted fs-5 mb-0">Kelola kategori berita untuk portal desa dengan mudah dan efisien</p>
             </div>
             <!-- Page Header End -->
 
@@ -43,51 +43,54 @@
                             <div class="card-header-modern">
                                 <div class="header-content">
                                     <i class="fas fa-edit"></i>
-                                    <h5>Edit Data User</h5>
+                                    <h5>Edit Kategori Berita</h5>
                                 </div>
                             </div>
                             <div class="card-body p-4">
-                                <form action="{{ route('users.update', $editData->id) }}" method="POST">
+                                <form action="{{ route('kategori_berita.update', $editData->kategori_id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row g-4">
                                         <div class="col-12">
-                                            <label for="name" class="form-label-modern">Nama User</label>
+                                            <label for="nama" class="form-label-modern">Nama Kategori</label>
                                             <div class="input-group-modern">
                                                 <span class="input-icon">
-                                                    <i class="fas fa-user"></i>
+                                                    <i class="fas fa-tag"></i>
                                                 </span>
-                                                <input type="text" class="form-control-modern" id="name" name="name"
-                                                    value="{{ old('name', $editData->name) }}" placeholder="Masukkan nama user" required>
+                                                <input type="text" class="form-control-modern" id="nama"
+                                                    name="nama" value="{{ old('nama', $editData->nama) }}"
+                                                    placeholder="Masukkan nama kategori" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="email" class="form-label-modern">Email</label>
+                                            <label for="slug" class="form-label-modern">Slug</label>
                                             <div class="input-group-modern">
                                                 <span class="input-icon">
-                                                    <i class="fas fa-envelope"></i>
+                                                    <i class="fas fa-link"></i>
                                                 </span>
-                                                <input type="email" class="form-control-modern" id="email" name="email"
-                                                    value="{{ old('email', $editData->email) }}" placeholder="Masukkan email" required>
+                                                <input type="text" class="form-control-modern" id="slug"
+                                                    value="{{ $editData->slug }}" readonly>
                                             </div>
+                                            <small class="text-muted">* Slug otomatis dari nama kategori</small>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label for="password" class="form-label-modern">Password Baru</label>
+                                        <div class="col-12">
+                                            <label for="deskripsi" class="form-label-modern">Deskripsi</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-lock"></i>
+                                                <span class="input-icon textarea-icon">
+                                                    <i class="fas fa-align-left"></i>
                                                 </span>
-                                                <input type="password" class="form-control-modern" id="password"
-                                                    name="password" placeholder="Masukkan password baru">
+                                                <textarea class="form-control-modern" id="deskripsi" name="deskripsi" rows="4"
+                                                    placeholder="Masukkan deskripsi kategori">{{ old('deskripsi', $editData->deskripsi) }}</textarea>
                                             </div>
-                                            <small class="text-muted">* Kosongkan jika tidak ingin mengubah password</small>
                                         </div>
                                         <div class="col-12">
                                             <div class="d-flex gap-3">
                                                 <button type="submit" class="btn-modern btn-primary-modern">
-                                                    <i class="fas fa-save me-2"></i>Update User
+                                                    <i class="fas fa-save me-2"></i>Update Kategori
                                                 </button>
-                                                <a href="{{ route('users.index') }}" class="btn-modern btn-secondary-modern">
+                                                <a href="{{ route('kategori_berita.index') }}"
+                                                    class="btn-modern btn-secondary-modern">
                                                     <i class="fas fa-times me-2"></i>Batal
                                                 </a>
                                             </div>
@@ -104,33 +107,33 @@
             <div class="action-bar mb-4">
                 <div class="action-left">
                     <h4 class="mb-0 fw-bold text-dark">
-                        <i class="fas fa-users me-2 text-primary"></i>
-                        Daftar User Portal
+                        <i class="fas fa-tags me-2 text-primary"></i>
+                        Daftar Kategori Berita
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Total {{ $users->count() }} user terdaftar</p>
+                    <p class="text-muted mb-0 mt-1">Total {{ $dataKategori->count() }} kategori terdaftar</p>
                 </div>
                 <div class="action-right">
-                    <a href="{{ route('users.create') }}" class="btn-modern btn-primary-modern">
-                        <i class="fas fa-plus me-2"></i>Tambah User Baru
+                    <a href="{{ route('kategori_berita.create') }}" class="btn-modern btn-primary-modern">
+                        <i class="fas fa-plus me-2"></i>Tambah Kategori Baru
                     </a>
                 </div>
             </div>
 
             <!-- Card Grid -->
-            @if ($users->count() > 0)
+            @if ($dataKategori->count() > 0)
                 <div class="row g-4">
-                    @foreach ($users as $user)
+                    @foreach ($dataKategori as $item)
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
                                 <div class="card-warga-header">
                                     <div class="user-avatar-modern">
-                                        <i class="fas fa-user-cog"></i>
+                                        <i class="fas fa-tag"></i>
                                     </div>
                                     <div class="user-info">
-                                        <h6 class="user-name">{{ $user->name }}</h6>
+                                        <h6 class="user-name">{{ $item->nama }}</h6>
                                         <span class="badge-gender badge-male">
-                                            <i class="fas fa-user-tie me-1"></i>
-                                            Administrator
+                                            <i class="fas fa-link me-1"></i>
+                                            {{ $item->slug }}
                                         </span>
                                     </div>
                                 </div>
@@ -138,45 +141,48 @@
                                 <div class="card-warga-body">
                                     <div class="info-item">
                                         <div class="info-icon bg-primary">
-                                            <i class="fas fa-envelope"></i>
+                                            <i class="fas fa-align-left"></i>
                                         </div>
                                         <div class="info-content">
-                                            <span class="info-label">Email</span>
-                                            <span class="info-value">{{ $user->email }}</span>
+                                            <span class="info-label">Deskripsi</span>
+                                            <span
+                                                class="info-value">{{ $item->deskripsi ?: 'Tidak ada deskripsi' }}</span>
                                         </div>
                                     </div>
 
                                     <div class="info-item">
                                         <div class="info-icon bg-success">
-                                            <i class="fas fa-calendar-plus"></i>
+                                            <i class="fas fa-hashtag"></i>
                                         </div>
                                         <div class="info-content">
-                                            <span class="info-label">Dibuat</span>
-                                            <span class="info-value">{{ $user->created_at->format('d M Y') }}</span>
+                                            <span class="info-label">Slug</span>
+                                            <span class="info-value">{{ $item->slug }}</span>
                                         </div>
                                     </div>
 
                                     <div class="info-item">
                                         <div class="info-icon bg-warning">
-                                            <i class="fas fa-sync"></i>
+                                            <i class="fas fa-calendar-alt"></i>
                                         </div>
                                         <div class="info-content">
-                                            <span class="info-label">Diupdate</span>
-                                            <span class="info-value">{{ $user->updated_at->format('d M Y') }}</span>
+                                            <span class="info-label">Dibuat</span>
+                                            <span class="info-value">{{ $item->created_at->format('d M Y') }}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="card-warga-footer">
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn-action btn-action-edit">
+                                    <a href="{{ route('kategori_berita.edit', $item->kategori_id) }}"
+                                        class="btn-action btn-action-edit">
                                         <i class="fas fa-edit"></i>
                                         <span>Edit</span>
                                     </a>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('kategori_berita.destroy', $item->kategori_id) }}"
+                                        method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action btn-action-delete"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
+                                            onclick="return confirm('Apakah Anda yakin ingin menghapus kategori berita ini?')">
                                             <i class="fas fa-trash"></i>
                                             <span>Hapus</span>
                                         </button>
@@ -189,12 +195,13 @@
             @else
                 <div class="empty-state-modern">
                     <div class="empty-icon">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-tags"></i>
                     </div>
-                    <h4 class="empty-title">Belum Ada Data User</h4>
-                    <p class="empty-text">Mulai tambahkan user pertama Anda untuk mengelola sistem portal desa</p>
-                    <a href="{{ route('users.create') }}" class="btn-modern btn-primary-modern">
-                        <i class="fas fa-plus me-2"></i>Tambah User Pertama
+                    <h4 class="empty-title">Belum Ada Kategori Berita</h4>
+                    <p class="empty-text">Mulai tambahkan kategori berita pertama Anda untuk mengelola konten portal desa
+                    </p>
+                    <a href="{{ route('kategori_berita.create') }}" class="btn-modern btn-primary-modern">
+                        <i class="fas fa-plus me-2"></i>Tambah Kategori Pertama
                     </a>
                 </div>
             @endif

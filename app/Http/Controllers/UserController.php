@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $data['users'] = User::all();
         $data['editData'] = null;
-        return view('guest.pages.user.index', $data);
+        return view('pages.user.index', $data);
     }
 
     /**
@@ -24,7 +24,7 @@ class UserController extends Controller
     public function create()
     {
         $data['editData'] = null;
-        return view('guest.pages.user.create', $data);
+        return view('pages.user.create', $data);
     }
 
     /**
@@ -44,7 +44,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        return redirect()->route('guest.pages.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil ditambahkan');
     }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $data['user'] = User::findOrFail($id);
         $data['editData'] = $data['user'];
-        return view('guest.pages.user.edit', $data);
+        return view('pages.user.edit', $data);
     }
 
     /**
@@ -92,7 +92,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('pages.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil diupdate');
     }
 
@@ -104,7 +104,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('pages.users.index')
+        return redirect()->route('users.index')
             ->with('success', 'User berhasil dihapus');
     }
 }

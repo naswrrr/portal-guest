@@ -1,9 +1,9 @@
-@extends('guest.layouts.kategori_berita.app')
+@extends('layouts.guest.app')
 
 @section('content')
     {{-- start main content --}}
     <!-- Navbar start -->
-    @include('guest.layouts.warga.navbar', ['activePage' => 'kategori_berita'])
+    @include('layouts.guest.navbar', ['activePage' => 'kategori_berita'])
     <!-- Navbar End -->
 
     <!-- Content Start -->

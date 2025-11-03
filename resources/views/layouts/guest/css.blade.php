@@ -20,89 +20,6 @@
 
     <!-- Custom Color Override -->
     <style>
-        :root {
-            --bs-primary: #5D8AA8 !important; /* Biru muda yang lembut */
-            --bs-primary-rgb: 93, 138, 168 !important;
-            --bs-primary-dark: #4a6e86 !important;
-            --bs-primary-light: #7fa6c1 !important;
-            --bs-secondary: #F3F4F6 !important; /* Abu-abu sangat muda */
-        }
-
-        .bg-primary {
-            background-color: var(--bs-primary) !important;
-        }
-
-        .text-primary {
-            color: var(--bs-primary) !important;
-        }
-
-        .btn-primary {
-            background-color: var(--bs-primary) !important;
-            border-color: var(--bs-primary) !important;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--bs-primary-dark) !important;
-            border-color: var(--bs-primary-dark) !important;
-        }
-
-        .btn-outline-primary {
-            color: var(--bs-primary) !important;
-            border-color: var(--bs-primary) !important;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--bs-primary) !important;
-            color: white !important;
-        }
-
-        .navbar-light .navbar-nav .nav-link.active {
-            color: var(--bs-primary) !important;
-        }
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: var(--bs-primary) !important;
-        }
-
-        .spinner-grow.text-primary {
-            color: var(--bs-primary) !important;
-        }
-
-        .back-to-top {
-            background-color: var(--bs-primary) !important;
-            border-color: var(--bs-primary) !important;
-        }
-
-        .back-to-top:hover {
-            background-color: var(--bs-primary-dark) !important;
-            border-color: var(--bs-primary-dark) !important;
-        }
-
-        .btn-hover-bg.btn-primary:hover {
-            background-color: var(--bs-primary-dark) !important;
-            color: white !important;
-        }
-
-        .btn-hover-color:hover {
-            color: var(--bs-primary) !important;
-        }
-
-        .tab-class .nav .nav-item a.active,
-        .tab-class .nav .nav-item a.active span {
-            background: var(--bs-primary) !important;
-            color: white !important;
-        }
-
-        .copyright {
-            background: #2c3e50 !important; /* Warna dark yang lebih cocok dengan biru */
-        }
-    </style>
-    {{-- End CSS --}}
-
-
-{{-- custom css --}}
-<style>
     /* Global Styles */
     :root {
         --primary-color: #007bff;
@@ -871,4 +788,224 @@
             padding: 20px !important;
         }
     }
+
+    .floating-whatsapp {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 1000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .whatsapp-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .whatsapp-main-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid white;
+            text-decoration: none;
+        }
+
+        .whatsapp-main-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-main-button i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .whatsapp-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #FF4444;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border: 2px solid white;
+            animation: pulse-badge 2s infinite;
+        }
+
+        .whatsapp-tooltip {
+            background: white;
+            padding: 12px 16px;
+            border-radius: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 250px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .whatsapp-container:hover .whatsapp-tooltip {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .whatsapp-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .whatsapp-avatar i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .whatsapp-info {
+            flex: 1;
+        }
+
+        .whatsapp-info h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            color: #25D366;
+        }
+
+        .whatsapp-info p {
+            margin: 2px 0 0 0;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .whatsapp-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 3px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+            animation: blink 2s infinite;
+        }
+
+        .status-text {
+            font-size: 11px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .whatsapp-chat-bubble {
+            background: #25D366;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 18px 18px 0 18px;
+            font-size: 12px;
+            margin-top: 8px;
+            position: relative;
+            animation: slideIn 0.5s ease;
+        }
+
+        .whatsapp-chat-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 10px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #25D366;
+        }
+
+        /* Animations */
+        @keyframes pulse-badge {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0.3;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .whatsapp-main-button {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .floating-whatsapp {
+                bottom: 20px;
+                right: 15px;
+            }
+
+            .whatsapp-main-button {
+                width: 55px;
+                height: 55px;
+            }
+
+            .whatsapp-main-button i {
+                font-size: 24px;
+            }
+
+            .whatsapp-tooltip {
+                max-width: 220px;
+                padding: 10px 14px;
+            }
+        }
 </style>

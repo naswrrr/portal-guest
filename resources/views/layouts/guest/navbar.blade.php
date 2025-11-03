@@ -28,12 +28,20 @@
             </button>
             <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="{{ url('/') }}" class="nav-item nav-link {{ $activePage == 'home' ? 'active' : '' }}">Home</a>
-                    <a href="{{ route('about') }}" class="nav-item nav-link {{ $activePage == 'about' ? 'active' : '' }}">About</a>
-                    <a href="{{ route('users.index') }}" class="nav-item nav-link {{ $activePage == 'users' ? 'active' : '' }}">User</a>
-                    <a href="{{ route('warga.index') }}" class="nav-item nav-link {{ $activePage == 'warga' ? 'active' : '' }}">Data Warga</a>
-                    <a href="{{ route('kategori_berita.index') }}" class="nav-item nav-link {{ $activePage == 'kategori_berita' ? 'active' : '' }}">Kategori Berita</a>
-                    <a href="{{ route('contact') }}" class="nav-item nav-link {{ $activePage == 'contact' ? 'active' : '' }}">Contact</a>
+                    <a href="{{ url('/') }}"
+                        class="nav-item nav-link {{ request()->routeIs('/') ? 'active' : '' }}">Home</a>
+                    <a href="{{ route('about') }}"
+                        class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}">About</a>
+                    <a href="{{ route('users.index') }}"
+                        class="nav-item nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">User</a>
+                    <a href="{{ route('warga.index') }}"
+                        class="nav-item nav-link {{ request()->routeIs('warga.*') ? 'active' : '' }}">Data Warga</a>
+                    <a href="{{ route('kategori_berita.index') }}"
+                        class="nav-item nav-link {{ request()->routeIs('kategori_berita.*') ? 'active' : '' }}">Kategori
+                        Berita</a>
+                    <a href="{{ route('contact') }}"
+                        class="nav-item nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
+
 
                     {{-- Auth Section --}}
                     @auth

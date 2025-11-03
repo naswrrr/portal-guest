@@ -1,9 +1,9 @@
-@extends('guest.layouts.user.app')
+@extends('layouts.guest.app')
 
 @section('content')
     {{-- start main content --}}
     <!-- Navbar start -->
-    @include('guest.layouts.warga.navbar', ['activePage' => 'users'])
+    @include('layouts.guest.navbar', ['activePage' => 'users'])
     <!-- Navbar End -->
 
     <!-- Content Start -->
@@ -13,11 +13,11 @@
             <!-- Page Header Start -->
             <div class="page-header-modern text-center mb-5">
                 <div class="header-icon">
-                    <i class="fas fa-user-edit"></i>
+                    <i class="fas fa-user-plus"></i>
                 </div>
-                <h5 class="text-primary fw-bold text-uppercase mb-2">Edit User</h5>
-                <h1 class="display-4 fw-bold mb-3">Perbarui Data User</h1>
-                <p class="text-muted fs-5 mb-0">Update informasi user dengan data terbaru</p>
+                <h5 class="text-primary fw-bold text-uppercase mb-2">Tambah User</h5>
+                <h1 class="display-4 fw-bold mb-3">Tambah User Baru</h1>
+                <p class="text-muted fs-5 mb-0">Tambahkan user baru untuk mengakses sistem portal desa</p>
             </div>
             <!-- Page Header End -->
 
@@ -25,10 +25,10 @@
             <div class="action-bar mb-4">
                 <div class="action-left">
                     <h4 class="mb-0 fw-bold text-dark">
-                        <i class="fas fa-user-edit me-2 text-primary"></i>
-                        Edit Data User
+                        <i class="fas fa-user-plus me-2 text-primary"></i>
+                        Form Tambah User
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Perbarui informasi user {{ $user->name }}</p>
+                    <p class="text-muted mb-0 mt-1">Isi form berikut untuk menambahkan user baru</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('users.index') }}" class="btn-modern btn-secondary-modern">
@@ -55,20 +55,19 @@
                 </div>
             @endif
 
-            <!-- Card Edit -->
+            <!-- Card Create -->
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="card-modern card-edit">
+                    <div class="card-modern card-create">
                         <div class="card-header-modern">
                             <div class="header-content">
-                                <i class="fas fa-edit"></i>
-                                <h5>Form Edit Data User</h5>
+                                <i class="fas fa-plus"></i>
+                                <h5>Form Tambah Data User</h5>
                             </div>
                         </div>
                         <div class="card-body p-4">
-                            <form action="{{ route('users.update', $user->id) }}" method="POST">
+                            <form action="{{ route('users.store') }}" method="POST">
                                 @csrf
-                                @method('PUT')
                                 <div class="row g-4">
                                     <!-- NAMA USER -->
                                     <div class="col-12">
@@ -78,7 +77,7 @@
                                                 <i class="fas fa-user"></i>
                                             </span>
                                             <input type="text" class="form-control-modern @error('name') is-invalid @enderror"
-                                                id="name" name="name" value="{{ old('name', $user->name) }}"
+                                                id="name" name="name" value="{{ old('name') }}"
                                                 placeholder="Masukkan nama user" required>
                                         </div>
                                         @error('name')
@@ -94,7 +93,7 @@
                                                 <i class="fas fa-envelope"></i>
                                             </span>
                                             <input type="email" class="form-control-modern @error('email') is-invalid @enderror"
-                                                id="email" name="email" value="{{ old('email', $user->email) }}"
+                                                id="email" name="email" value="{{ old('email') }}"
                                                 placeholder="Masukkan email" required>
                                         </div>
                                         @error('email')
@@ -102,28 +101,39 @@
                                         @enderror
                                     </div>
 
-                                    <!-- PASSWORD BARU -->
+                                    <!-- PASSWORD -->
                                     <div class="col-md-6">
-                                        <label for="password" class="form-label-modern">Password Baru</label>
+                                        <label for="password" class="form-label-modern">Password <span class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-lock"></i>
                                             </span>
                                             <input type="password" class="form-control-modern @error('password') is-invalid @enderror"
                                                 id="password" name="password"
-                                                placeholder="Masukkan password baru">
+                                                placeholder="Masukkan password" required>
                                         </div>
                                         @error('password')
                                             <div class="text-danger small mt-2">{{ $message }}</div>
                                         @enderror
-                                        <small class="text-muted">* Kosongkan jika tidak ingin mengubah password</small>
+                                    </div>
+
+                                    <!-- KONFIRMASI PASSWORD -->
+                                    <div class="col-12">
+                                        <label for="password_confirmation" class="form-label-modern">Konfirmasi Password <span class="text-danger">*</span></label>
+                                        <div class="input-group-modern">
+                                            <span class="input-icon">
+                                                <i class="fas fa-lock"></i>
+                                            </span>
+                                            <input type="password" class="form-control-modern" id="password_confirmation" name="password_confirmation"
+                                                placeholder="Masukkan konfirmasi password" required>
+                                        </div>
                                     </div>
 
                                     <!-- TOMBOL ACTION -->
                                     <div class="col-12 mt-4">
                                         <div class="d-flex gap-3 justify-content-end">
                                             <button type="submit" class="btn-modern btn-primary-modern">
-                                                <i class="fas fa-save me-2"></i>Update User
+                                                <i class="fas fa-save me-2"></i>Simpan User
                                             </button>
                                             <a href="{{ route('users.index') }}" class="btn-modern btn-secondary-modern">
                                                 <i class="fas fa-times me-2"></i>Batal
