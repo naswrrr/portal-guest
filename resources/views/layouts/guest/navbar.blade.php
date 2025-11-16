@@ -32,16 +32,29 @@
                         class="nav-item nav-link {{ request()->routeIs('/') ? 'active' : '' }}">Home</a>
                     <a href="{{ route('about') }}"
                         class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}">About</a>
-                    <a href="{{ route('users.index') }}"
-                        class="nav-item nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">User</a>
-                    <a href="{{ route('warga.index') }}"
-                        class="nav-item nav-link {{ request()->routeIs('warga.*') ? 'active' : '' }}">Data Warga</a>
-                    <a href="{{ route('kategori_berita.index') }}"
-                        class="nav-item nav-link {{ request()->routeIs('kategori_berita.*') ? 'active' : '' }}">Kategori
-                        Berita</a>
+
+                    <!-- Dropdown Pages -->
+                    <div class="nav-item dropdown">
+                        <a href="#"
+                            class="nav-link dropdown-toggle {{ request()->routeIs('users.*', 'warga.*', 'kategori_berita.*') ? 'active' : '' }}"
+                            data-bs-toggle="dropdown">
+                            Pages
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="{{ route('users.index') }}"
+                                class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}">User</a>
+                            <a href="{{ route('warga.index') }}"
+                                class="dropdown-item {{ request()->routeIs('warga.*') ? 'active' : '' }}">Data Warga</a>
+                            <a href="{{ route('kategori_berita.index') }}"
+                                class="dropdown-item {{ request()->routeIs('kategori_berita.*') ? 'active' : '' }}">Kategori
+                                Berita</a>
+                            <a href="{{ route('berita.index') }}"
+                                class="dropdown-item {{ request()->routeIs('berita.*') ? 'active' : '' }}">Berita</a>
+                        </div>
+                    </div>
+
                     <a href="{{ route('contact') }}"
                         class="nav-item nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
-
 
                     {{-- Auth Section --}}
                     @auth

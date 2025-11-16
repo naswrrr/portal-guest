@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class KategoriBerita extends Model
 {
@@ -14,4 +15,13 @@ class KategoriBerita extends Model
         'slug',
         'deskripsi'
     ];
+
+    /**
+     * Relasi one-to-many ke tabel berita
+     * Satu kategori bisa memiliki banyak berita
+     */
+    public function berita(): HasMany
+    {
+        return $this->hasMany(Berita::class, 'kategori_id', 'kategori_id');
+    }
 }

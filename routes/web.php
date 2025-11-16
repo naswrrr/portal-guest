@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\KategoriBeritaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\KategoriBeritaController;
 
 // PUBLIC ROUTES
 Route::get('/', function () {
@@ -32,3 +33,5 @@ Route::get('/contact', function () {
 Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
+
+Route::resource('berita', BeritaController::class);

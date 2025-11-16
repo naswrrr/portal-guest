@@ -3,7 +3,7 @@
 @section('content')
     {{-- start main content --}}
     <!-- Navbar start -->
-    @include('layouts.guest.navbar', ['activePage' => 'warga'])
+    @include('layouts.guest.navbar')
     <!-- Navbar End -->
 
     <!-- Content Start -->
