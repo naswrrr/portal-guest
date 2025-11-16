@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
@@ -11,13 +12,13 @@ class BeritaController extends Controller
     public function index()
     {
         $berita = Berita::with('kategori')->latest()->get();
-        return view('pages.berita.index', compact('berita'));
+        return view('berita.index', compact('berita'));
     }
 
     public function create()
     {
         $kategories = KategoriBerita::all();
-        return view('pages.berita.create', compact('kategories'));
+        return view('berita.create', compact('kategories'));
     }
 
     public function store(Request $request)
@@ -43,23 +44,23 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dibuat!');
     }
 
-    // PAKAI PARAMETER $beritum KARENA SYSTEM MINTA BEGITU
-    public function show($beritum)
+    // GUNAKAN $id MANUAL UNTUK HINDARI BUG
+    public function show($id)
     {
-        $berita = Berita::findOrFail($beritum);
-        return view('pages.berita.show', compact('berita'));
+        $berita = Berita::with('kategori')->findOrFail($id);
+        return view('berita.show', compact('berita'));
     }
 
-    public function edit($beritum)
+    public function edit($id)
     {
-        $berita = Berita::findOrFail($beritum);
+        $berita = Berita::findOrFail($id);
         $kategories = KategoriBerita::all();
-        return view('pages.berita.edit', compact('berita', 'kategories'));
+        return view('berita.edit', compact('berita', 'kategories'));
     }
 
-    public function update(Request $request, $beritum)
+    public function update(Request $request, $id)
     {
-        $berita = Berita::findOrFail($beritum);
+        $berita = Berita::findOrFail($id);
 
         $request->validate([
             'judul' => 'required|string|max:255',
@@ -82,9 +83,9 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('success', 'Berita berhasil diupdate!');
     }
 
-    public function destroy($beritum)
+    public function destroy($id)
     {
-        $berita = Berita::findOrFail($beritum);
+        $berita = Berita::findOrFail($id);
         $berita->delete();
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus!');
     }
