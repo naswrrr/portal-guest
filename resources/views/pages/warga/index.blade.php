@@ -35,7 +35,7 @@
                 </div>
             @endif
 
-            <!-- Form Edit (Muncul saat edit) -->
+            <!-- Form Edit -->
             @if (isset($editData))
                 <div class="row mb-5">
                     <div class="col-12">
@@ -46,78 +46,68 @@
                                     <h5>Edit Data Warga</h5>
                                 </div>
                             </div>
+
                             <div class="card-body p-4">
                                 <form action="{{ route('warga.update', $editData->warga_id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
+
                                     <div class="row g-4">
                                         <div class="col-12">
-                                            <label for="nama" class="form-label-modern">Nama Lengkap</label>
+                                            <label class="form-label-modern">Nama Lengkap</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-user"></i>
-                                                </span>
-                                                <input type="text" class="form-control-modern" id="nama" name="nama"
-                                                    value="{{ old('nama', $editData->nama) }}" placeholder="Masukkan nama lengkap" required>
+                                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                                <input type="text" name="nama" class="form-control-modern"
+                                                    value="{{ old('nama', $editData->nama) }}" required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
-                                            <label for="nik" class="form-label-modern">NIK</label>
+                                            <label class="form-label-modern">NIK</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-id-card"></i>
-                                                </span>
-                                                <input type="text" class="form-control-modern" id="nik" name="nik"
-                                                    value="{{ old('nik', $editData->nik) }}" placeholder="16 digit NIK" maxlength="16" required>
+                                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                                <input type="text" name="nik" maxlength="16" class="form-control-modern"
+                                                    value="{{ old('nik', $editData->nik) }}" required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
-                                            <label for="no_kk" class="form-label-modern">No. Kartu Keluarga</label>
+                                            <label class="form-label-modern">No. KK</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-house-user"></i>
-                                                </span>
-                                                <input type="text" class="form-control-modern" id="no_kk" name="no_kk"
-                                                    value="{{ old('no_kk', $editData->no_kk) }}" placeholder="16 digit No. KK" maxlength="16" required>
+                                                <span class="input-icon"><i class="fas fa-house-user"></i></span>
+                                                <input type="text" name="no_kk" maxlength="16" class="form-control-modern"
+                                                    value="{{ old('no_kk', $editData->no_kk) }}" required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
-                                            <label for="jenis_kelamin" class="form-label-modern">Jenis Kelamin</label>
+                                            <label class="form-label-modern">Jenis Kelamin</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-venus-mars"></i>
-                                                </span>
-                                                <select class="form-control-modern" id="jenis_kelamin" name="jenis_kelamin" required>
-                                                    <option value="">Pilih Jenis Kelamin</option>
-                                                    <option value="Laki-laki" {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>
-                                                        Laki-laki</option>
-                                                    <option value="Perempuan" {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>
-                                                        Perempuan</option>
+                                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                                <select name="jenis_kelamin" class="form-control-modern" required>
+                                                    <option value="">Pilih</option>
+                                                    <option value="Laki-laki" {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                                    <option value="Perempuan" {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-12">
-                                            <label for="alamat" class="form-label-modern">Alamat Lengkap</label>
-                                            <div class="input-group-modern">
-                                                <span class="input-icon textarea-icon">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                </span>
-                                                <textarea class="form-control-modern" id="alamat" name="alamat" rows="4" placeholder="Masukkan alamat lengkap" required>{{ old('alamat', $editData->alamat) }}</textarea>
-                                            </div>
+                                            <label class="form-label-modern">Alamat Lengkap</label>
+                                            <textarea name="alamat" rows="4" class="form-control-modern" required>{{ old('alamat', $editData->alamat) }}</textarea>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="d-flex gap-3">
-                                                <button type="submit" class="btn-modern btn-primary-modern">
-                                                    <i class="fas fa-save me-2"></i>Update Data
-                                                </button>
-                                                <a href="{{ route('warga.index') }}" class="btn-modern btn-secondary-modern">
-                                                    <i class="fas fa-times me-2"></i>Batal
-                                                </a>
-                                            </div>
+
+                                        <div class="col-12 d-flex gap-3">
+                                            <button class="btn-modern btn-primary-modern"><i class="fas fa-save me-2"></i>Update</button>
+                                            <a href="{{ route('warga.index') }}" class="btn-modern btn-secondary-modern">
+                                                <i class="fas fa-times me-2"></i>Batal
+                                            </a>
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -126,11 +116,10 @@
             <!-- Action Bar -->
             <div class="action-bar mb-4">
                 <div class="action-left">
-                    <h4 class="mb-0 fw-bold text-dark">
-                        <i class="fas fa-users me-2 text-primary"></i>
-                        Daftar Warga Desa
+                    <h4 class="fw-bold text-dark">
+                        <i class="fas fa-users me-2 text-primary"></i>Daftar Warga Desa
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Total {{ $dataWarga->count() }} warga terdaftar</p>
+                    <p class="text-muted">Total {{ $dataWarga->total() }} warga terdaftar</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('warga.create') }}" class="btn-modern btn-primary-modern">
@@ -139,12 +128,56 @@
                 </div>
             </div>
 
+            <!-- 🔍 Search + Filter + Sort -->
+           <form action="{{ route('warga.index') }}" method="GET" class="mb-4">
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <label class="form-label-modern">Cari Nama / NIK</label>
+            <input type="text" name="search" class="form-control-modern"
+                value="{{ request('search') }}" placeholder="Cari warga...">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label-modern">Filter Jenis Kelamin</label>
+            <select name="gender" class="form-control-modern">
+                <option value="">Semua</option>
+                <option value="Laki-laki" {{ request('gender') == 'Laki-laki' ? 'selected' : '' }}>
+                    Laki-laki
+                </option>
+                <option value="Perempuan" {{ request('gender') == 'Perempuan' ? 'selected' : '' }}>
+                    Perempuan
+                </option>
+            </select>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label-modern">Urutkan</label>
+            <select name="sort" class="form-control-modern">
+                <option value="">Default</option>
+                <option value="nama_asc" {{ request('sort') == 'nama_asc' ? 'selected' : '' }}>Nama A-Z</option>
+                <option value="nama_desc" {{ request('sort') == 'nama_desc' ? 'selected' : '' }}>Nama Z-A</option>
+                <option value="nik_asc" {{ request('sort') == 'nik_asc' ? 'selected' : '' }}>NIK Kecil-Besar</option>
+                <option value="nik_desc" {{ request('sort') == 'nik_desc' ? 'selected' : '' }}>NIK Besar-Kecil</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button class="btn-modern btn-primary-modern w-100">
+                <i class="fas fa-search me-2"></i> Cari
+            </button>
+        </div>
+
+    </div>
+</form>
+
             <!-- Card Grid -->
             @if ($dataWarga->count() > 0)
                 <div class="row g-4">
                     @foreach ($dataWarga as $item)
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
+
                                 <div class="card-warga-header">
                                     <div class="user-avatar-modern">
                                         <i class="fas fa-user"></i>
@@ -152,17 +185,16 @@
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $item->nama }}</h6>
                                         <span class="badge-gender {{ $item->jenis_kelamin == 'Laki-laki' ? 'badge-male' : 'badge-female' }}">
-                                            <i class="fas {{ $item->jenis_kelamin == 'Laki-laki' ? 'fa-mars' : 'fa-venus' }} me-1"></i>
+                                            <i class="fas {{ $item->jenis_kelamin == 'Laki-laki' ? 'fa-mars' : 'fa-venus' }}"></i>
                                             {{ $item->jenis_kelamin }}
                                         </span>
                                     </div>
                                 </div>
 
                                 <div class="card-warga-body">
+
                                     <div class="info-item">
-                                        <div class="info-icon bg-primary">
-                                            <i class="fas fa-fingerprint"></i>
-                                        </div>
+                                        <div class="info-icon bg-primary"><i class="fas fa-fingerprint"></i></div>
                                         <div class="info-content">
                                             <span class="info-label">NIK</span>
                                             <span class="info-value">{{ $item->nik }}</span>
@@ -170,60 +202,59 @@
                                     </div>
 
                                     <div class="info-item">
-                                        <div class="info-icon bg-success">
-                                            <i class="fas fa-home"></i>
-                                        </div>
+                                        <div class="info-icon bg-success"><i class="fas fa-home"></i></div>
                                         <div class="info-content">
-                                            <span class="info-label">No. Kartu Keluarga</span>
+                                            <span class="info-label">No. KK</span>
                                             <span class="info-value">{{ $item->no_kk }}</span>
                                         </div>
                                     </div>
 
                                     <div class="info-item">
-                                        <div class="info-icon bg-warning">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </div>
+                                        <div class="info-icon bg-warning"><i class="fas fa-map-marker-alt"></i></div>
                                         <div class="info-content">
                                             <span class="info-label">Alamat</span>
                                             <span class="info-value">{{ Str::limit($item->alamat, 80) }}</span>
                                         </div>
                                     </div>
+
                                 </div>
 
                                 <div class="card-warga-footer">
                                     <a href="{{ route('warga.edit', $item->warga_id) }}" class="btn-action btn-action-edit">
-                                        <i class="fas fa-edit"></i>
-                                        <span>Edit</span>
+                                        <i class="fas fa-edit"></i> Edit
                                     </a>
+
                                     <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-action btn-action-delete"
-                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data warga ini?')">
-                                            <i class="fas fa-trash"></i>
-                                            <span>Hapus</span>
+                                        <button class="btn-action btn-action-delete"
+                                            onclick="return confirm('Hapus data ini?')">
+                                            <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
                 </div>
+
+                <!-- PAGINATION -->
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $dataWarga->appends(request()->query())->links('pagination::bootstrap-5') }}
+                </div>
+
             @else
                 <div class="empty-state-modern">
-                    <div class="empty-icon">
-                        <i class="fas fa-user-friends"></i>
-                    </div>
-                    <h4 class="empty-title">Belum Ada Data Warga</h4>
-                    <p class="empty-text">Mulai tambahkan data warga pertama Anda untuk mengelola informasi warga desa</p>
+                    <div class="empty-icon"><i class="fas fa-user-friends"></i></div>
+                    <h4>Belum Ada Data Warga</h4>
+                    <p>Tambahkan data warga pertama Anda</p>
                     <a href="{{ route('warga.create') }}" class="btn-modern btn-primary-modern">
                         <i class="fas fa-plus me-2"></i>Tambah Warga Pertama
                     </a>
                 </div>
             @endif
+
         </div>
     </div>
-    <!-- Content End -->
-    {{-- end main content --}}
 @endsection
-

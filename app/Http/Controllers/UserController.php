@@ -8,34 +8,43 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $data['users'] = User::all();
+        $query = User::query();
+
+        // Search berdasarkan nama/email
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->search.'%')
+                  ->orWhere('email', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        // Filter role (opsional, kalo ga ada role bisa dihapus)
+        if ($request->filter) {
+            $query->where('role', $request->filter);
+        }
+
+        // Pagination (6 per halaman)
+        $data['users'] = $query->paginate(6)->appends($request->all());
+
+        // Edit data untuk tampilkan form edit di index
         $data['editData'] = null;
+
         return view('pages.user.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        $data['editData'] = null;
-        return view('pages.user.create', $data);
+        return view('pages.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed' // required saat create
+            'password' => 'required|min:8|confirmed'
         ]);
 
         User::create([
@@ -48,36 +57,22 @@ class UserController extends Controller
             ->with('success', 'User berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $data['users'] = User::paginate(6);  // biar grid tetap tampil
+        $data['editData'] = User::findOrFail($id);
+
+        return view('pages.user.index', $data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        $data['user'] = User::findOrFail($id);
-        $data['editData'] = $data['user'];
-        return view('pages.user.edit', $data);
-    }
+        $user = User::findOrFail($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-         $user = User::findOrFail($id);
-
-        // password nullable saat update
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|min:8|confirmed' // nullable saat update
+            'password' => 'nullable|min:8|confirmed'
         ]);
 
         $data = [
@@ -85,7 +80,6 @@ class UserController extends Controller
             'email' => $request->email,
         ];
 
-        // Password hanya diupdate jika diisi
         if ($request->password) {
             $data['password'] = Hash::make($request->password);
         }
@@ -96,13 +90,9 @@ class UserController extends Controller
             ->with('success', 'User berhasil diupdate');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        User::findOrFail($id)->delete();
 
         return redirect()->route('users.index')
             ->with('success', 'User berhasil dihapus');

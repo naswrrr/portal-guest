@@ -9,16 +9,41 @@ use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $berita = Berita::with('kategori')->latest()->get();
-        return view('berita.index', compact('berita'));
+$query = Berita::with('kategori')->latest();
+
+    // Search by judul / penulis
+    if ($request->search) {
+        $query->where(function ($q) use ($request) {
+            $q->where('judul', 'like', '%' . $request->search . '%')
+              ->orWhere('penulis', 'like', '%' . $request->search . '%');
+        });
+    }
+
+    // Filter kategori
+    if ($request->kategori_id) {
+        $query->where('kategori_id', $request->kategori_id);
+    }
+
+    // Filter status
+    if ($request->status) {
+        $query->where('status', $request->status);
+    }
+
+    // Pagination (6 per page)
+    $berita = $query->paginate(6)->withQueryString();
+
+    // Semua kategori buat dropdown filter
+    $kategories = KategoriBerita::all();
+
+    return view('pages.berita.index', compact('berita', 'kategories'));
     }
 
     public function create()
     {
         $kategories = KategoriBerita::all();
-        return view('berita.create', compact('kategories'));
+        return view('pages.berita.create', compact('kategories'));
     }
 
     public function store(Request $request)
@@ -48,14 +73,14 @@ class BeritaController extends Controller
     public function show($id)
     {
         $berita = Berita::with('kategori')->findOrFail($id);
-        return view('berita.show', compact('berita'));
+        return view('pages.berita.show', compact('berita'));
     }
 
     public function edit($id)
     {
         $berita = Berita::findOrFail($id);
         $kategories = KategoriBerita::all();
-        return view('berita.edit', compact('berita', 'kategories'));
+        return view('pages.berita.edit', compact('berita', 'kategories'));
     }
 
     public function update(Request $request, $id)

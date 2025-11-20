@@ -47,8 +47,7 @@
                                 </div>
                             </div>
                             <div class="card-body p-4">
-                                <form action="{{ route('kategori_berita.update', $editData->kategori_id) }}"
-                                    method="POST">
+                                <form action="{{ route('kategori_berita.update', $editData->kategori_id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <div class="row g-4">
@@ -110,7 +109,7 @@
                         <i class="fas fa-tags me-2 text-primary"></i>
                         Daftar Kategori Berita
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Total {{ $dataKategori->count() }} kategori terdaftar</p>
+                    <p class="text-muted mb-0 mt-1">Total {{ $dataKategori->total() }} kategori terdaftar</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('kategori_berita.create') }}" class="btn-modern btn-primary-modern">
@@ -118,6 +117,51 @@
                     </a>
                 </div>
             </div>
+
+            <!-- 🔍 Search + Filter + Sort -->
+            <form action="{{ route('kategori_berita.index') }}" method="GET" class="mb-4">
+                <div class="row g-3">
+
+                    <!-- SEARCH -->
+                    <div class="col-md-4">
+                        <label class="form-label-modern">Cari Kategori</label>
+                        <input type="text" name="search" class="form-control-modern" value="{{ request('search') }}"
+                            placeholder="Cari kategori...">
+                    </div>
+
+                    <!-- SORT -->
+                    <div class="col-md-3">
+                        <label class="form-label-modern">Urutkan</label>
+                        <select name="filter" class="form-control-modern">
+                            <option value="">Default</option>
+                            <option value="latest" {{ request('filter') == 'latest' ? 'selected' : '' }}>
+                                Terbaru
+                            </option>
+                            <option value="oldest" {{ request('filter') == 'oldest' ? 'selected' : '' }}>
+                                Terlama
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="btn-modern btn-primary-modern w-100">
+                            <i class="fas fa-search me-2"></i> Apply
+                        </button>
+                    </div>
+
+                    <!-- CLEAR BUTTON (opsional muncul kalau ada search/filter) -->
+                    @if (request('search') || request('filter'))
+                        <div class="col-md-2 d-flex align-items-end">
+                            <a href="{{ route('kategori_berita.index') }}" class="btn-modern btn-secondary-modern w-100">
+                                <i class="fas fa-times me-2"></i> Clear
+                            </a>
+                        </div>
+                    @endif
+
+                </div>
+            </form>
+
 
             <!-- Card Grid -->
             @if ($dataKategori->count() > 0)
@@ -192,21 +236,24 @@
                         </div>
                     @endforeach
                 </div>
+
+                <!-- PAGINATION -->
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $dataKategori->links('pagination::bootstrap-5') }}
+                </div>
             @else
                 <div class="empty-state-modern">
                     <div class="empty-icon">
                         <i class="fas fa-tags"></i>
                     </div>
                     <h4 class="empty-title">Belum Ada Kategori Berita</h4>
-                    <p class="empty-text">Mulai tambahkan kategori berita pertama Anda untuk mengelola konten portal desa
-                    </p>
+                    <p class="empty-text">Mulai tambahkan kategori pertama Anda untuk mengelola konten portal desa.</p>
                     <a href="{{ route('kategori_berita.create') }}" class="btn-modern btn-primary-modern">
                         <i class="fas fa-plus me-2"></i>Tambah Kategori Pertama
                     </a>
                 </div>
             @endif
+
         </div>
     </div>
-    <!-- Content End -->
-    {{-- end main content --}}
 @endsection

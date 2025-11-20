@@ -2,11 +2,6 @@
 
 @section('content')
     {{-- start main content --}}
-    <!-- Navbar start -->
-    {{-- @include('layouts.guest.navbar', ['activePage' => 'users']) --}}
-    <!-- Navbar End -->
-
-    <!-- Content Start -->
     <div class="container-fluid content-section">
         <div class="container py-5">
 
@@ -35,7 +30,7 @@
                 </div>
             @endif
 
-            <!-- Form Edit (Muncul saat edit) -->
+            <!-- Form Edit -->
             @if (isset($editData))
                 <div class="row mb-5">
                     <div class="col-12">
@@ -51,47 +46,46 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="row g-4">
+
                                         <div class="col-12">
                                             <label for="name" class="form-label-modern">Nama User</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-user"></i>
-                                                </span>
-                                                <input type="text" class="form-control-modern" id="name" name="name"
-                                                    value="{{ old('name', $editData->name) }}" placeholder="Masukkan nama user" required>
+                                                <span class="input-icon"><i class="fas fa-user"></i></span>
+                                                <input type="text" class="form-control-modern" name="name"
+                                                    value="{{ old('name', $editData->name) }}" required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
-                                            <label for="email" class="form-label-modern">Email</label>
+                                            <label class="form-label-modern">Email</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-envelope"></i>
-                                                </span>
-                                                <input type="email" class="form-control-modern" id="email" name="email"
-                                                    value="{{ old('email', $editData->email) }}" placeholder="Masukkan email" required>
+                                                <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                                <input type="email" class="form-control-modern" name="email"
+                                                    value="{{ old('email', $editData->email) }}" required>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
-                                            <label for="password" class="form-label-modern">Password Baru</label>
+                                            <label class="form-label-modern">Password Baru</label>
                                             <div class="input-group-modern">
-                                                <span class="input-icon">
-                                                    <i class="fas fa-lock"></i>
-                                                </span>
-                                                <input type="password" class="form-control-modern" id="password"
-                                                    name="password" placeholder="Masukkan password baru">
+                                                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                                                <input type="password" class="form-control-modern" name="password">
                                             </div>
                                             <small class="text-muted">* Kosongkan jika tidak ingin mengubah password</small>
                                         </div>
+
                                         <div class="col-12">
                                             <div class="d-flex gap-3">
                                                 <button type="submit" class="btn-modern btn-primary-modern">
                                                     <i class="fas fa-save me-2"></i>Update User
                                                 </button>
-                                                <a href="{{ route('users.index') }}" class="btn-modern btn-secondary-modern">
+                                                <a href="{{ route('users.index') }}"
+                                                    class="btn-modern btn-secondary-modern">
                                                     <i class="fas fa-times me-2"></i>Batal
                                                 </a>
                                             </div>
                                         </div>
+
                                     </div>
                                 </form>
                             </div>
@@ -107,7 +101,7 @@
                         <i class="fas fa-users me-2 text-primary"></i>
                         Daftar User Portal
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Total {{ $users->count() }} user terdaftar</p>
+                    <p class="text-muted mb-0 mt-1">Total {{ $users->total() }} user</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('users.create') }}" class="btn-modern btn-primary-modern">
@@ -116,12 +110,47 @@
                 </div>
             </div>
 
+            <!-- Search Modern -->
+            <form method="GET" action="{{ route('users.index') }}" class="mb-4">
+                <div class="row g-3">
+
+                    <!-- Input Search -->
+                    <div class="col-md-4">
+                        <label class="form-label-modern">Cari User</label>
+                        <div class="input-group-modern">
+                            <span class="input-icon"><i class="fas fa-search"></i></span>
+                            <input type="text" name="search" class="form-control-modern"
+                                placeholder="Cari nama atau email..." value="{{ request('search') }}">
+                        </div>
+                    </div>
+
+                    <!-- Tombol Cari -->
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="btn-modern btn-primary-modern w-100">
+                            <i class="fas fa-search me-2"></i>Cari
+                        </button>
+                    </div>
+
+                    <!-- Tombol Clear (muncul jika filter aktif) -->
+                    @if (request('search'))
+                        <div class="col-md-2 d-flex align-items-end">
+                            <a href="{{ route('users.index') }}" class="btn-modern btn-secondary-modern w-100">
+                                <i class="fas fa-times me-2"></i>Clear
+                            </a>
+                        </div>
+                    @endif
+
+                </div>
+            </form>
+
+
             <!-- Card Grid -->
             @if ($users->count() > 0)
                 <div class="row g-4">
                     @foreach ($users as $user)
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
+
                                 <div class="card-warga-header">
                                     <div class="user-avatar-modern">
                                         <i class="fas fa-user-cog"></i>
@@ -172,7 +201,8 @@
                                         <i class="fas fa-edit"></i>
                                         <span>Edit</span>
                                     </a>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action btn-action-delete"
@@ -182,15 +212,19 @@
                                         </button>
                                     </form>
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
                 </div>
+
+                <!-- Pagination -->
+                <div class="mt-5 d-flex justify-content-center">
+                    {{ $users->links('pagination::bootstrap-5') }}
+                </div>
             @else
                 <div class="empty-state-modern">
-                    <div class="empty-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
+                    <div class="empty-icon"><i class="fas fa-users"></i></div>
                     <h4 class="empty-title">Belum Ada Data User</h4>
                     <p class="empty-text">Mulai tambahkan user pertama Anda untuk mengelola sistem portal desa</p>
                     <a href="{{ route('users.create') }}" class="btn-modern btn-primary-modern">
@@ -198,9 +232,7 @@
                     </a>
                 </div>
             @endif
+
         </div>
     </div>
-    <!-- Content End -->
-    {{-- end main content --}}
-    @endsection
-
+@endsection

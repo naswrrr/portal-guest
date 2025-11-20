@@ -2,11 +2,8 @@
 
 @section('content')
     {{-- start main content --}}
-    <!-- Navbar start -->
     @include('layouts.guest.navbar')
-    <!-- Navbar End -->
 
-    <!-- Content Start -->
     <div class="container-fluid content-section">
         <div class="container py-5">
 
@@ -42,7 +39,7 @@
                         <i class="fas fa-newspaper me-2 text-primary"></i>
                         Daftar Berita Desa
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Total {{ $berita->count() }} berita terdaftar</p>
+                    <p class="text-muted mb-0 mt-1">Total {{ $berita->total() }} berita terdaftar</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('berita.create') }}" class="btn-modern btn-primary-modern">
@@ -50,6 +47,62 @@
                     </a>
                 </div>
             </div>
+
+            <!-- 🔎 Search + Filter -->
+            <form method="GET" class="mb-4">
+                <div class="row g-3">
+
+                    <!-- SEARCH -->
+                    <div class="col-md-4">
+                        <label class="form-label-modern">Cari Berita</label>
+                        <input type="text" name="search" class="form-control-modern"
+                            placeholder="Cari judul atau penulis..." value="{{ request('search') }}">
+                    </div>
+
+                    <!-- FILTER KATEGORI -->
+                    <div class="col-md-3">
+                        <label class="form-label-modern">Kategori</label>
+                        <select name="kategori_id" class="form-control-modern">
+                            <option value="">Semua Kategori</option>
+                            @foreach ($kategories as $kat)
+                                <option value="{{ $kat->kategori_id }}"
+                                    {{ request('kategori_id') == $kat->kategori_id ? 'selected' : '' }}>
+                                    {{ $kat->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- FILTER STATUS -->
+                    <div class="col-md-3">
+                        <label class="form-label-modern">Status</label>
+                        <select name="status" class="form-control-modern">
+                            <option value="">Semua Status</option>
+                            <option value="terbit" {{ request('status') == 'terbit' ? 'selected' : '' }}>Terbit</option>
+                            <option value="draft" {{ request('status') == 'draft' ? 'selected' : '' }}>Draft</option>
+                        </select>
+                    </div>
+
+                    <!-- BUTTON APPLY -->
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="btn-modern btn-primary-modern w-100">
+                            <i class="fas fa-search me-2"></i> Cari
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- CLEAR BUTTON (muncul kalau ada filter aktif) -->
+                @if (request('search') || request('status') || request('kategori_id'))
+                    <div class="row mt-3">
+                        <div class="col-md-2">
+                            <a href="{{ route('berita.index') }}" class="btn-modern btn-secondary-modern w-100">
+                                <i class="fas fa-times me-2"></i> Clear
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            </form>
 
             <!-- Card Grid -->
             @if ($berita->count() > 0)
@@ -63,8 +116,10 @@
                                     </div>
                                     <div class="user-info">
                                         <h6 class="user-name">{{ Str::limit($item->judul, 30) }}</h6>
-                                        <span class="badge-gender {{ $item->status == 'terbit' ? 'badge-male' : 'badge-female' }}">
-                                            <i class="fas fa-{{ $item->status == 'terbit' ? 'check-circle' : 'pencil-alt' }} me-1"></i>
+                                        <span
+                                            class="badge-gender {{ $item->status == 'terbit' ? 'badge-male' : 'badge-female' }}">
+                                            <i
+                                                class="fas fa-{{ $item->status == 'terbit' ? 'check-circle' : 'pencil-alt' }} me-1"></i>
                                             {{ $item->status == 'terbit' ? 'Terbit' : 'Draft' }}
                                         </span>
                                     </div>
@@ -97,21 +152,27 @@
                                         </div>
                                         <div class="info-content">
                                             <span class="info-label">Terbit</span>
-                                            <span class="info-value">{{ $item->terbit_at ? $item->terbit_at->format('d M Y') : 'Belum' }}</span>
+                                            <span
+                                                class="info-value">{{ $item->terbit_at ? $item->terbit_at->format('d M Y') : 'Belum' }}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="card-warga-footer">
-                                    <a href="{{ route('berita.show', $item->berita_id) }}" class="btn-action btn-action-view">
+                                    <a href="{{ route('berita.show', $item->berita_id) }}"
+                                        class="btn-action btn-action-view">
                                         <i class="fas fa-eye"></i>
                                         <span>Lihat</span>
                                     </a>
-                                    <a href="{{ route('berita.edit', $item->berita_id) }}" class="btn-action btn-action-edit">
+
+                                    <a href="{{ route('berita.edit', $item->berita_id) }}"
+                                        class="btn-action btn-action-edit">
                                         <i class="fas fa-edit"></i>
                                         <span>Edit</span>
                                     </a>
-                                    <form action="{{ route('berita.destroy', $item->berita_id) }}" method="POST" class="d-inline">
+
+                                    <form action="{{ route('berita.destroy', $item->berita_id) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action btn-action-delete"
@@ -124,6 +185,11 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="mt-4">
+                    {{ $berita->links('pagination::bootstrap-5') }}
                 </div>
             @else
                 <div class="empty-state-modern">
@@ -139,6 +205,4 @@
             @endif
         </div>
     </div>
-    <!-- Content End -->
-    {{-- end main content --}}
 @endsection

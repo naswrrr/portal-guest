@@ -7,16 +7,50 @@ use Illuminate\Http\Request;
 
 class WargaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data['dataWarga'] = Warga::all();
-        $data['editData'] = null;
-        return view('pages.warga.index', $data);
+         $query = Warga::query();
+
+    // Search
+    if ($request->search) {
+        $query->where(function ($q) use ($request) {
+            $q->where('nama', 'like', '%' . $request->search . '%')
+              ->orWhere('nik', 'like', '%' . $request->search . '%')
+              ->orWhere('alamat', 'like', '%' . $request->search . '%');
+        });
     }
 
-    public function create()
-    {
-        return view('pages.warga.create');
+    // Filter jenis kelamin
+    if ($request->gender) {
+        $query->where('jenis_kelamin', $request->gender);
+    }
+
+    // Sorting
+    if ($request->sort) {
+        switch ($request->sort) {
+            case 'nama_asc':
+                $query->orderBy('nama', 'asc');
+                break;
+
+            case 'nama_desc':
+                $query->orderBy('nama', 'desc');
+                break;
+
+            case 'nik_asc':
+                $query->orderBy('nik', 'asc');
+                break;
+
+            case 'nik_desc':
+                $query->orderBy('nik', 'desc');
+                break;
+        }
+    }
+
+    // Pagination
+    $data['dataWarga'] = $query->paginate(9)->appends($request->all());
+    $data['editData'] = null;
+
+    return view('pages.warga.index', $data);
     }
 
     public function store(Request $request)

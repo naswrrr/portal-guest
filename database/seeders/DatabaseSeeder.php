@@ -10,7 +10,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             KategoriBeritaSeeder::class,
-            BeritaSeeder::class,
+            BeritaTableSeeder::class,  // Update nama class di sini
+            WargaSeeder::class,
+            UsersSeeder::class,
+
         ]);
     }
 }
+

@@ -10,11 +10,30 @@ class KategoriBeritaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['dataKategori'] = KategoriBerita::all();
-        $data['editData'] = null;
-        return view('pages.kategori_berita.index', $data);
+        $query = KategoriBerita::query();
+
+    // --- SEARCH ---
+    if ($request->search) {
+        $query->where('nama', 'like', '%' . $request->search . '%')
+              ->orWhere('slug', 'like', '%' . $request->search . '%');
+    }
+
+    // --- FILTER (opsional, kalo mau berdasarkan created_at) ---
+    if ($request->filter == 'latest') {
+        $query->orderBy('created_at', 'desc');
+    } elseif ($request->filter == 'oldest') {
+        $query->orderBy('created_at', 'asc');
+    }
+
+    // --- PAGINATION ---
+    $data['dataKategori'] = $query->paginate(6)->withQueryString();
+
+    // Untuk edit (null default)
+    $data['editData'] = null;
+
+    return view('pages.kategori_berita.index', $data);
     }
 
     /**
