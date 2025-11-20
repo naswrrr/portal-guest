@@ -240,8 +240,8 @@
                 </div>
 
                 <!-- PAGINATION -->
-                <div class="mt-4 d-flex justify-content-center">
-                    {{ $dataWarga->appends(request()->query())->links('pagination::bootstrap-5') }}
+                <div class="mt-4">
+                    {{ $dataWarga->links('pagination::bootstrap-5') }}
                 </div>
 
             @else

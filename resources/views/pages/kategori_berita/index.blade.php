@@ -238,7 +238,7 @@
                 </div>
 
                 <!-- PAGINATION -->
-                <div class="mt-4 d-flex justify-content-center">
+                <div class="mt-4">
                     {{ $dataKategori->links('pagination::bootstrap-5') }}
                 </div>
             @else
@@ -246,14 +246,13 @@
                     <div class="empty-icon">
                         <i class="fas fa-tags"></i>
                     </div>
-                    <h4 class="empty-title">Belum Ada Kategori Berita</h4>
-                    <p class="empty-text">Mulai tambahkan kategori pertama Anda untuk mengelola konten portal desa.</p>
+                    <h4 class="empty-title">Belum Ada Kategori</h4>
+                    <p class="empty-text">Tambahkan kategori pertama Anda.</p>
                     <a href="{{ route('kategori_berita.create') }}" class="btn-modern btn-primary-modern">
                         <i class="fas fa-plus me-2"></i>Tambah Kategori Pertama
                     </a>
                 </div>
             @endif
-
         </div>
     </div>
 @endsection
