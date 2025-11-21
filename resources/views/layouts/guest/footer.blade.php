@@ -28,27 +28,13 @@
     </div>
 
     <div class="floating-whatsapp">
-        <div class="whatsapp-container">
             <div class="whatsapp-tooltip">
-                <div class="whatsapp-avatar">
-                    <i class="fab fa-whatsapp"></i>
-                </div>
-                <div class="whatsapp-info">
-                    <h4>Admin Bina Desa</h4>
-                    <p>Butuh bantuan? Chat dengan kami!</p>
-                    <div class="whatsapp-status">
-                        <div class="status-dot"></div>
-                        <span class="status-text">Online</span>
-                    </div>
-                    <div class="whatsapp-chat-bubble">Ada yang bisa kami bantu? 👋</div>
-                </div>
             </div>
             <a href="https://wa.me/6281234567890?text=Halo%20Admin%20Portal%20Bina%20Desa,%20saya%20ingin%20bertanya%20tentang:"
                 class="whatsapp-main-button" target="_blank" title="Chat via WhatsApp">
                 <i class="fab fa-whatsapp"></i>
                 <div class="whatsapp-badge">1</div>
             </a>
-        </div>
     </div>
 </div>
 <!-- Copyright End -->
