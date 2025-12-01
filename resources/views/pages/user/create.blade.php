@@ -66,17 +66,19 @@
                             </div>
                         </div>
                         <div class="card-body p-4">
-                            <form action="{{ route('users.store') }}" method="POST">
+                            <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row g-4">
                                     <!-- NAMA USER -->
                                     <div class="col-12">
-                                        <label for="name" class="form-label-modern">Nama User <span class="text-danger">*</span></label>
+                                        <label for="name" class="form-label-modern">Nama User <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-user"></i>
                                             </span>
-                                            <input type="text" class="form-control-modern @error('name') is-invalid @enderror"
+                                            <input type="text"
+                                                class="form-control-modern @error('name') is-invalid @enderror"
                                                 id="name" name="name" value="{{ old('name') }}"
                                                 placeholder="Masukkan nama user" required>
                                         </div>
@@ -87,12 +89,14 @@
 
                                     <!-- EMAIL -->
                                     <div class="col-md-6">
-                                        <label for="email" class="form-label-modern">Email <span class="text-danger">*</span></label>
+                                        <label for="email" class="form-label-modern">Email <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-envelope"></i>
                                             </span>
-                                            <input type="email" class="form-control-modern @error('email') is-invalid @enderror"
+                                            <input type="email"
+                                                class="form-control-modern @error('email') is-invalid @enderror"
                                                 id="email" name="email" value="{{ old('email') }}"
                                                 placeholder="Masukkan email" required>
                                         </div>
@@ -101,16 +105,30 @@
                                         @enderror
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">Role <span class="text-danger">*</span></label>
+                                        <div class="input-group-modern">
+                                            <span class="input-icon"><i class="fas fa-user-tag"></i></span>
+                                            <select name="role" class="form-control-modern" required>
+                                                <option value="">-- Pilih Role --</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="editor">Editor</option>
+                                                <option value="user">User</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <!-- PASSWORD -->
                                     <div class="col-md-6">
-                                        <label for="password" class="form-label-modern">Password <span class="text-danger">*</span></label>
+                                        <label for="password" class="form-label-modern">Password <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-lock"></i>
                                             </span>
-                                            <input type="password" class="form-control-modern @error('password') is-invalid @enderror"
-                                                id="password" name="password"
-                                                placeholder="Masukkan password" required>
+                                            <input type="password"
+                                                class="form-control-modern @error('password') is-invalid @enderror"
+                                                id="password" name="password" placeholder="Masukkan password" required>
                                         </div>
                                         @error('password')
                                             <div class="text-danger small mt-2">{{ $message }}</div>
@@ -119,14 +137,31 @@
 
                                     <!-- KONFIRMASI PASSWORD -->
                                     <div class="col-12">
-                                        <label for="password_confirmation" class="form-label-modern">Konfirmasi Password <span class="text-danger">*</span></label>
+                                        <label for="password_confirmation" class="form-label-modern">Konfirmasi Password
+                                            <span class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-lock"></i>
                                             </span>
-                                            <input type="password" class="form-control-modern" id="password_confirmation" name="password_confirmation"
-                                                placeholder="Masukkan konfirmasi password" required>
+                                            <input type="password" class="form-control-modern" id="password_confirmation"
+                                                name="password_confirmation" placeholder="Masukkan konfirmasi password"
+                                                required>
                                         </div>
+                                    </div>
+
+                                    <!-- FOTO -->
+                                    <div class="col-12">
+                                        <label for="foto" class="form-label-modern">Foto Profil</label>
+                                        <div class="input-group-modern">
+                                            <span class="input-icon">
+                                                <i class="fas fa-image"></i>
+                                            </span>
+                                            <input type="file" name="foto"
+                                                class="form-control-modern @error('foto') is-invalid @enderror">
+                                        </div>
+                                        @error('foto')
+                                            <div class="text-danger small mt-2">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                     <!-- TOMBOL ACTION -->
