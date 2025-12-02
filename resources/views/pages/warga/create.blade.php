@@ -65,110 +65,97 @@
                                 <h5>Form Tambah Data Warga</h5>
                             </div>
                         </div>
+
                         <div class="card-body p-4">
-                            <form action="{{ route('warga.store') }}" method="POST">
+                            <form action="{{ route('warga.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
+
                                 <div class="row g-4">
-                                    <!-- NAMA LENGKAP -->
+
+                                    <!-- NAMA -->
                                     <div class="col-12">
-                                        <label for="nama" class="form-label-modern">Nama Lengkap <span class="text-danger">*</span></label>
+                                        <label class="form-label-modern">Nama Lengkap <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
-                                            <span class="input-icon">
-                                                <i class="fas fa-user"></i>
-                                            </span>
-                                            <input type="text" class="form-control-modern @error('nama') is-invalid @enderror"
-                                                id="nama" name="nama" value="{{ old('nama') }}"
-                                                placeholder="Masukkan nama lengkap" required>
+                                            <span class="input-icon"><i class="fas fa-user"></i></span>
+                                            <input type="text" name="nama" class="form-control-modern"
+                                                value="{{ old('nama') }}" placeholder="Masukkan nama lengkap" required>
                                         </div>
-                                        @error('nama')
-                                            <div class="text-danger small mt-2">{{ $message }}</div>
-                                        @enderror
                                     </div>
 
-                                    <!-- NIK -->
+                                    <!-- NO KTP -->
                                     <div class="col-md-6">
-                                        <label for="nik" class="form-label-modern">NIK <span class="text-danger">*</span></label>
+                                        <label class="form-label-modern">No. KTP <span class="text-danger">*</span></label>
                                         <div class="input-group-modern">
-                                            <span class="input-icon">
-                                                <i class="fas fa-id-card"></i>
-                                            </span>
-                                            <input type="text" class="form-control-modern @error('nik') is-invalid @enderror"
-                                                id="nik" name="nik" value="{{ old('nik') }}"
-                                                placeholder="16 digit NIK" maxlength="16" required>
+                                            <span class="input-icon"><i class="fas fa-id-card"></i></span>
+                                            <input type="text" name="no_ktp" class="form-control-modern"
+                                                value="{{ old('no_ktp') }}" maxlength="16" required>
                                         </div>
-                                        @error('nik')
-                                            <div class="text-danger small mt-2">{{ $message }}</div>
-                                        @enderror
-                                        <small class="text-muted">* Harus 16 digit dan unik</small>
-                                    </div>
-
-                                    <!-- NO KK -->
-                                    <div class="col-md-6">
-                                        <label for="no_kk" class="form-label-modern">No. Kartu Keluarga <span class="text-danger">*</span></label>
-                                        <div class="input-group-modern">
-                                            <span class="input-icon">
-                                                <i class="fas fa-house-user"></i>
-                                            </span>
-                                            <input type="text" class="form-control-modern @error('no_kk') is-invalid @enderror"
-                                                id="no_kk" name="no_kk" value="{{ old('no_kk') }}"
-                                                placeholder="16 digit No. KK" maxlength="16" required>
-                                        </div>
-                                        @error('no_kk')
-                                            <div class="text-danger small mt-2">{{ $message }}</div>
-                                        @enderror
-                                        <small class="text-muted">* Harus 16 digit</small>
                                     </div>
 
                                     <!-- JENIS KELAMIN -->
                                     <div class="col-md-6">
-                                        <label for="jenis_kelamin" class="form-label-modern">Jenis Kelamin <span class="text-danger">*</span></label>
+                                        <label class="form-label-modern">Jenis Kelamin <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
-                                            <span class="input-icon">
-                                                <i class="fas fa-venus-mars"></i>
-                                            </span>
-                                            <select class="form-control-modern @error('jenis_kelamin') is-invalid @enderror"
-                                                id="jenis_kelamin" name="jenis_kelamin" required>
+                                            <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
+                                            <select name="jenis_kelamin" class="form-control-modern" required>
                                                 <option value="">Pilih Jenis Kelamin</option>
-                                                <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
-                                                    Laki-laki</option>
-                                                <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>
-                                                    Perempuan</option>
+                                                <option value="Laki-laki">Laki-laki</option>
+                                                <option value="Perempuan">Perempuan</option>
                                             </select>
                                         </div>
-                                        @error('jenis_kelamin')
-                                            <div class="text-danger small mt-2">{{ $message }}</div>
-                                        @enderror
                                     </div>
 
-                                    <!-- TEMPAT LAHIR -->
+                                    <!-- AGAMA -->
                                     <div class="col-md-6">
-                                        <label for="tempat_lahir" class="form-label-modern">Tempat Lahir</label>
+                                        <label class="form-label-modern">Agama <span class="text-danger">*</span></label>
                                         <div class="input-group-modern">
-                                            <span class="input-icon">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                            </span>
-                                            <input type="text" class="form-control-modern" id="tempat_lahir" name="tempat_lahir"
-                                                value="{{ old('tempat_lahir') }}"
-                                                placeholder="Masukkan tempat lahir">
+                                            <span class="input-icon"><i class="fas fa-pray"></i></span>
+                                            <input type="text" name="agama" class="form-control-modern"
+                                                value="{{ old('agama') }}" required>
                                         </div>
                                     </div>
 
-                                    <!-- ALAMAT -->
+                                    <!-- PEKERJAAN -->
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">Pekerjaan <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group-modern">
+                                            <span class="input-icon"><i class="fas fa-briefcase"></i></span>
+                                            <input type="text" name="pekerjaan" class="form-control-modern"
+                                                value="{{ old('pekerjaan') }}" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- TELP -->
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">Telepon</label>
+                                        <div class="input-group-modern">
+                                            <span class="input-icon"><i class="fas fa-phone"></i></span>
+                                            <input type="text" name="telp" class="form-control-modern"
+                                                value="{{ old('telp') }}">
+                                        </div>
+                                    </div>
+
+                                    <!-- EMAIL -->
+                                    <div class="col-md-6">
+                                        <label class="form-label-modern">Email</label>
+                                        <div class="input-group-modern">
+                                            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                            <input type="email" name="email" class="form-control-modern"
+                                                value="{{ old('email') }}">
+                                        </div>
+                                    </div>
+
+                                    <!-- FOTO MULTIPLE -->
                                     <div class="col-12">
-                                        <label for="alamat" class="form-label-modern">Alamat Lengkap <span class="text-danger">*</span></label>
-                                        <div class="input-group-modern">
-                                            <span class="input-icon textarea-icon">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                            </span>
-                                            <textarea class="form-control-modern @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="4"
-                                                placeholder="Masukkan alamat lengkap" required>{{ old('alamat') }}</textarea>
-                                        </div>
-                                        @error('alamat')
-                                            <div class="text-danger small mt-2">{{ $message }}</div>
-                                        @enderror
+                                        <label class="form-label-modern">Foto Warga (multiple)</label>
+                                        <input type="file" name="foto" class="form-control-modern" multiple>
+                                        <small class="text-muted">* Opsional, bisa lebih dari 1 foto</small>
                                     </div>
 
-                                    <!-- TOMBOL ACTION -->
+                                    <!-- BUTTON -->
                                     <div class="col-12 mt-4">
                                         <div class="d-flex gap-3 justify-content-end">
                                             <button type="submit" class="btn-modern btn-primary-modern">
@@ -179,14 +166,15 @@
                                             </a>
                                         </div>
                                     </div>
+
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-    <!-- Content End -->
-    {{-- end main content --}}
+
 @endsection

@@ -35,98 +35,13 @@
                 </div>
             @endif
 
-            <!-- Form Edit -->
-            @if (isset($editData))
-                <div class="row mb-5">
-                    <div class="col-12">
-                        <div class="card-modern card-edit">
-                            <div class="card-header-modern">
-                                <div class="header-content">
-                                    <i class="fas fa-edit"></i>
-                                    <h5>Edit Data Warga</h5>
-                                </div>
-                            </div>
-
-                            <div class="card-body p-4">
-                                <form action="{{ route('warga.update', $editData->warga_id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-
-                                    <div class="row g-4">
-                                        <div class="col-12">
-                                            <label class="form-label-modern">Nama Lengkap</label>
-                                            <div class="input-group-modern">
-                                                <span class="input-icon"><i class="fas fa-user"></i></span>
-                                                <input type="text" name="nama" class="form-control-modern"
-                                                    value="{{ old('nama', $editData->nama) }}" required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">NIK</label>
-                                            <div class="input-group-modern">
-                                                <span class="input-icon"><i class="fas fa-id-card"></i></span>
-                                                <input type="text" name="nik" maxlength="16"
-                                                    class="form-control-modern" value="{{ old('nik', $editData->nik) }}"
-                                                    required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">No. KK</label>
-                                            <div class="input-group-modern">
-                                                <span class="input-icon"><i class="fas fa-house-user"></i></span>
-                                                <input type="text" name="no_kk" maxlength="16"
-                                                    class="form-control-modern" value="{{ old('no_kk', $editData->no_kk) }}"
-                                                    required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">Jenis Kelamin</label>
-                                            <div class="input-group-modern">
-                                                <span class="input-icon"><i class="fas fa-venus-mars"></i></span>
-                                                <select name="jenis_kelamin" class="form-control-modern" required>
-                                                    <option value="">Pilih</option>
-                                                    <option value="Laki-laki"
-                                                        {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>
-                                                        Laki-laki</option>
-                                                    <option value="Perempuan"
-                                                        {{ old('jenis_kelamin', $editData->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>
-                                                        Perempuan</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <label class="form-label-modern">Alamat Lengkap</label>
-                                            <textarea name="alamat" rows="4" class="form-control-modern" required>{{ old('alamat', $editData->alamat) }}</textarea>
-                                        </div>
-
-                                        <div class="col-12 d-flex gap-3">
-                                            <button class="btn-modern btn-primary-modern"><i
-                                                    class="fas fa-save me-2"></i>Update</button>
-                                            <a href="{{ route('warga.index') }}" class="btn-modern btn-secondary-modern">
-                                                <i class="fas fa-times me-2"></i>Batal
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            @endif
-
             <!-- Action Bar -->
             <div class="action-bar mb-4">
                 <div class="action-left">
                     <h4 class="fw-bold text-dark">
                         <i class="fas fa-users me-2 text-primary"></i>Daftar Warga Desa
                     </h4>
-                    <p class="text-muted">Total {{ $dataWarga->total() }} warga terdaftar</p>
+                    <p class="text-muted">Total {{ $warga->total() }} warga terdaftar</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('warga.create') }}" class="btn-modern btn-primary-modern">
@@ -162,8 +77,7 @@
                         <label class="form-label-modern">Urutkan</label>
                         <select name="sort" class="form-control-modern">
                             <option value="">Default</option>
-                            <option value="nama_asc" {{ request('sort') == 'nama_asc' ? 'selected' : '' }}>Nama A-Z
-                            </option>
+                            <option value="nama_asc" {{ request('sort') == 'nama_asc' ? 'selected' : '' }}>Nama A-Z</option>
                             <option value="nama_desc" {{ request('sort') == 'nama_desc' ? 'selected' : '' }}>Nama Z-A
                             </option>
                             <option value="nik_asc" {{ request('sort') == 'nik_asc' ? 'selected' : '' }}>NIK Kecil-Besar
@@ -183,16 +97,24 @@
             </form>
 
             <!-- Card Grid -->
-            @if ($dataWarga->count() > 0)
+            @if ($warga->count() > 0)
                 <div class="row g-4">
-                    @foreach ($dataWarga as $item)
+                    @foreach ($warga as $item)
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
 
                                 <div class="card-warga-header">
                                     <div class="user-avatar-modern">
-                                        <i class="fas fa-user"></i>
+                                        @if ($item->media && $item->media->first())
+                                            <img src="{{ Storage::url($item->media->first()->file_path) }}"
+                                                alt="Foto Warga"
+                                                style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
+                                        @else
+                                            <i class="fas fa-user"></i>
+                                        @endif
+
                                     </div>
+
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $item->nama }}</h6>
                                         <span
@@ -207,29 +129,44 @@
                                 <div class="card-warga-body">
 
                                     <div class="info-item">
-                                        <div class="info-icon bg-primary"><i class="fas fa-fingerprint"></i></div>
+                                        <div class="info-icon bg-primary"><i class="fas fa-id-card"></i></div>
                                         <div class="info-content">
-                                            <span class="info-label">NIK</span>
-                                            <span class="info-value">{{ $item->nik }}</span>
+                                            <span class="info-label">No. KTP</span>
+                                            <span class="info-value">{{ $item->no_ktp }}</span>
                                         </div>
                                     </div>
 
                                     <div class="info-item">
-                                        <div class="info-icon bg-success"><i class="fas fa-home"></i></div>
+                                        <div class="info-icon bg-success"><i class="fas fa-praying-hands"></i></div>
                                         <div class="info-content">
-                                            <span class="info-label">No. KK</span>
-                                            <span class="info-value">{{ $item->no_kk }}</span>
+                                            <span class="info-label">Agama</span>
+                                            <span class="info-value">{{ $item->agama }}</span>
                                         </div>
                                     </div>
 
                                     <div class="info-item">
-                                        <div class="info-icon bg-warning"><i class="fas fa-map-marker-alt"></i></div>
+                                        <div class="info-icon bg-warning"><i class="fas fa-briefcase"></i></div>
                                         <div class="info-content">
-                                            <span class="info-label">Alamat</span>
-                                            <span class="info-value">{{ Str::limit($item->alamat, 80) }}</span>
+                                            <span class="info-label">Pekerjaan</span>
+                                            <span class="info-value">{{ $item->pekerjaan }}</span>
                                         </div>
                                     </div>
 
+                                    <div class="info-item">
+                                        <div class="info-icon bg-info"><i class="fas fa-phone"></i></div>
+                                        <div class="info-content">
+                                            <span class="info-label">Telp</span>
+                                            <span class="info-value">{{ $item->telp ?? '-' }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="info-item">
+                                        <div class="info-icon bg-secondary"><i class="fas fa-envelope"></i></div>
+                                        <div class="info-content">
+                                            <span class="info-label">Email</span>
+                                            <span class="info-value">{{ $item->email ?? '-' }}</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="card-warga-footer">
@@ -254,9 +191,8 @@
                     @endforeach
                 </div>
 
-                <!-- PAGINATION -->
                 <div class="mt-4">
-                    {{ $dataWarga->links('pagination::bootstrap-5') }}
+                    {{ $warga->links('pagination::bootstrap-5') }}
                 </div>
             @else
                 <div class="empty-state-modern">

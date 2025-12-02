@@ -10,19 +10,20 @@ class WargaSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create('id_ID'); // pakai lokal Indonesia biar lebih real
+        $faker = Faker::create('id_ID'); // data lebih real Indonesia
 
         foreach (range(1, 100) as $index) {
             DB::table('warga')->insert([
+                'no_ktp'        => $faker->unique()->numerify('################'), // 16 digit
                 'nama'          => $faker->name,
-                'nik'           => $faker->unique()->numerify('################'), // 16 digit
-                'no_kk'         => $faker->numerify('################'), // 16 digit random
                 'jenis_kelamin' => $faker->randomElement(['Laki-laki', 'Perempuan']),
-                'alamat'        => $faker->address,
+                'agama'         => $faker->randomElement(['Islam','Kristen','Katholik','Hindu','Buddha','Konghucu']),
+                'pekerjaan'     => $faker->jobTitle,
+                'telp'          => $faker->phoneNumber,
+                'email'         => $faker->safeEmail,
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ]);
         }
     }
 }
-

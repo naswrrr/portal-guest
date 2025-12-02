@@ -1,113 +1,175 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Models\Media;
 use App\Models\Warga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class WargaController extends Controller
 {
+    // =====================================
+    // LIST WARGA
+    // =====================================
     public function index(Request $request)
     {
-         $query = Warga::query();
+        $query = Warga::with('media');
 
-    // Search
-    if ($request->search) {
-        $query->where(function ($q) use ($request) {
-            $q->where('nama', 'like', '%' . $request->search . '%')
-              ->orWhere('nik', 'like', '%' . $request->search . '%')
-              ->orWhere('alamat', 'like', '%' . $request->search . '%');
-        });
-    }
-
-    // Filter jenis kelamin
-    if ($request->gender) {
-        $query->where('jenis_kelamin', $request->gender);
-    }
-
-    // Sorting
-    if ($request->sort) {
-        switch ($request->sort) {
-            case 'nama_asc':
-                $query->orderBy('nama', 'asc');
-                break;
-
-            case 'nama_desc':
-                $query->orderBy('nama', 'desc');
-                break;
-
-            case 'nik_asc':
-                $query->orderBy('nik', 'asc');
-                break;
-
-            case 'nik_desc':
-                $query->orderBy('nik', 'desc');
-                break;
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', "%{$request->search}%")
+                    ->orWhere('no_ktp', 'like', "%{$request->search}%")
+                    ->orWhere('email', 'like', "%{$request->search}%");
+            });
         }
+
+        if ($request->gender) {
+            $query->where('jenis_kelamin', $request->gender);
+        }
+
+        if ($request->sort == 'nama_asc') {
+            $query->orderBy('nama', 'asc');
+        }
+
+        if ($request->sort == 'nama_desc') {
+            $query->orderBy('nama', 'desc');
+        }
+
+        if ($request->sort == 'nik_asc') {
+            $query->orderBy('no_ktp', 'asc');
+        }
+
+        if ($request->sort == 'nik_desc') {
+            $query->orderBy('no_ktp', 'desc');
+        }
+
+        $warga = $query->paginate(10);
+
+        return view('pages.warga.index', compact('warga'));
     }
 
-    // Pagination
-    $data['dataWarga'] = $query->paginate(9)->appends($request->all());
-    $data['editData'] = null;
-
-    return view('pages.warga.index', $data);
+    // =====================================
+    // CREATE
+    // =====================================
+    public function create()
+    {
+        return view('pages.warga.create');
     }
 
+    // =====================================
+    // STORE
+    // =====================================
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama' => 'required|string|max:100',
-            'nik' => 'required|string|size:16|unique:warga,nik',
-            'no_kk' => 'required|string|size:16',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'alamat' => 'required|string'
+        $request->validate([
+            'no_ktp'        => 'required|unique:warga,no_ktp',
+            'nama'          => 'required',
+            'jenis_kelamin' => 'required',
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'nullable',
+            'email'         => 'nullable|email',
+            'foto.*'        => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        Warga::create([
-            'nama' => $request->nama,
-            'nik' => $request->nik,
-            'no_kk' => $request->no_kk,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'alamat' => $request->alamat
-    ]);
+        $warga = Warga::create($request->except('foto'));
 
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan!');
+        // Simpan foto multiple
+        if ($request->hasFile('foto')) {
+            foreach ($request->file('foto') as $file) {
+
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path     = $file->storeAs("warga/{$warga->warga_id}", $filename, 'public');
+
+                Media::create([
+                    'ref_table' => 'warga',
+                    'ref_id'    => $warga->warga_id,
+                    'file_name' => $filename,
+                    'file_path' => $path,
+                    'mime_type' => $file->getClientMimeType(),
+                    'caption'   => 'Foto Warga',
+                ]);
+
+            }
+        }
+
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil ditambahkan.');
     }
 
-    public function show(string $id)
+    // =====================================
+    // EDIT
+    // =====================================
+    public function edit($id)
     {
         $warga = Warga::findOrFail($id);
-        return view('pages.warga.show', compact('warga'));
+
+        $foto = Media::where('ref_table', 'warga')
+            ->where('ref_id', $id)
+            ->get(); // multiple
+
+        return view('pages.warga.edit', compact('warga', 'foto'));
     }
 
-    public function edit(string $id)
-    {
-         $warga = Warga::findOrFail($id);
-         return view('pages.warga.edit', compact('warga'));
-    }
-
-    public function update(Request $request, string $id)
+    // =====================================
+    // UPDATE
+    // =====================================
+    public function update(Request $request, $id)
     {
         $warga = Warga::findOrFail($id);
 
-        $validated = $request->validate([
-            'nama' => 'required|string|max:100',
-            'nik' => 'required|string|size:16|unique:warga,nik,' . $warga->warga_id . ',warga_id',
-            'no_kk' => 'required|string|size:16',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'alamat' => 'required|string'
+        $request->validate([
+            'no_ktp'        => 'required|unique:warga,no_ktp,' . $id . ',warga_id',
+            'nama'          => 'required',
+            'jenis_kelamin' => 'required',
+            'agama'         => 'required',
+            'pekerjaan'     => 'required',
+            'telp'          => 'nullable',
+            'email'         => 'nullable|email',
+            'foto.*'        => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $warga->update($validated);
+        $warga->update($request->except('foto'));
 
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui!');
+        // Tambah foto baru
+        if ($request->hasFile('foto')) {
+            foreach ($request->file('foto') as $file) {
+
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $path     = $file->storeAs("warga/{$warga->warga_id}", $filename, 'public');
+
+                Media::create([
+                    'ref_table' => 'warga',
+                    'ref_id'    => $warga->warga_id,
+                    'file_name' => $filename,
+                    'file_path' => $path,
+                    'mime_type' => $file->getClientMimeType(),
+                    'caption'   => 'Foto Warga',
+                ]);
+            }
+        }
+
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil diperbarui.');
     }
 
-    public function destroy(string $id)
+    // =====================================
+    // DELETE
+    // =====================================
+    public function destroy($id)
     {
         $warga = Warga::findOrFail($id);
+
+        $fotos = Media::where('ref_table', 'warga')->where('ref_id', $id)->get();
+
+        foreach ($fotos as $foto) {
+            if (Storage::disk('public')->exists($foto->file_path)) {
+                Storage::disk('public')->delete($foto->file_path);
+            }
+            $foto->delete();
+        }
+
         $warga->delete();
 
-        return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus!');
+        return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus.');
     }
+
 }

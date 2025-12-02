@@ -21,7 +21,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // RESOURCE ROUTES (bisa diakses tanpa middleware)
 Route::resource('users', UserController::class);
+
 Route::resource('warga', WargaController::class);
+
 Route::resource('kategori_berita', KategoriBeritaController::class);
 
 // Di routes/web.php
