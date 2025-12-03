@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\KategoriBeritaController;
 
 // PUBLIC ROUTES
@@ -44,3 +45,14 @@ Route::get('/berita/{id}', [BeritaController::class, 'show'])->name('berita.show
 Route::get('/berita/{id}/edit', [BeritaController::class, 'edit'])->name('berita.edit');
 Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
 Route::delete('/berita/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
+
+// routes/web.php
+Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+Route::get('/profil/create', [ProfilController::class, 'create'])->name('profil.create');
+Route::post('/profil', [ProfilController::class, 'store'])->name('profil.store');
+Route::get('/profil/{id}', [ProfilController::class, 'show'])->name('profil.show'); // ← perlu ditambah
+Route::get('/profil/{id}/edit', [ProfilController::class, 'edit'])->name('profil.edit'); // ← dengan {id}
+Route::put('/profil/{id}', [ProfilController::class, 'update'])->name('profil.update'); // ← dengan {id}
+Route::delete('/profil/{id}', [ProfilController::class, 'destroy'])->name('profil.destroy'); // ← dengan {id}
+Route::get('/profil/{id}', [ProfilController::class, 'show'])->name('profil.show');
+
