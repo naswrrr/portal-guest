@@ -152,15 +152,13 @@
                             <div class="card-warga">
 
                                 <div class="card-warga-header">
-                                    <div class="user-avatar-modern">
+
                                         @if ($user->media && $user->media->first())
                                             <img src="{{ asset('storage/' . $user->media->first()->file_path) }}" alt="Foto User"
                                                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
-                                        @else
-                                            <i class="fas fa-user-cog"></i>
                                         @endif
 
-                                    </div>
+
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $user->name }}</h6>

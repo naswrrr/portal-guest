@@ -110,6 +110,15 @@
                     @foreach ($berita as $item)
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
+                                @if ($item->media->first())
+                                    <img src="{{ asset('storage/' . $item->media->first()->file_path) }}"
+                                        class="card-img-top"
+                                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+                                @else
+                                    <img src="https://via.placeholder.com/400x250?text=No+Image" class="card-img-top"
+                                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
+                                @endif
+
                                 <div class="card-warga-header">
                                     <div class="user-avatar-modern">
                                         <i class="fas fa-newspaper"></i>

@@ -113,11 +113,11 @@
     }
 
     .card-edit {
-        border: 2px solid #ffc107;
+        border: 2px solid #294c7c;
     }
 
     .card-header-modern {
-        background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+        background: linear-gradient(135deg, #2584b7 0%, #074e74 100%);
         padding: 20px 25px;
         border: none;
     }

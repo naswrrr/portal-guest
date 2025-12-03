@@ -66,17 +66,20 @@
                             </div>
                         </div>
                         <div class="card-body p-4">
-                            <form action="{{ route('berita.store') }}" method="POST">
+                            <form action="{{ route('berita.store') }}" method="POST" enctype="multipart/form-data">
+
                                 @csrf
                                 <div class="row g-4">
                                     <!-- JUDUL BERITA -->
                                     <div class="col-12">
-                                        <label for="judul" class="form-label-modern">Judul Berita <span class="text-danger">*</span></label>
+                                        <label for="judul" class="form-label-modern">Judul Berita <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-heading"></i>
                                             </span>
-                                            <input type="text" class="form-control-modern @error('judul') is-invalid @enderror"
+                                            <input type="text"
+                                                class="form-control-modern @error('judul') is-invalid @enderror"
                                                 id="judul" name="judul" value="{{ old('judul') }}"
                                                 placeholder="Masukkan judul berita" required>
                                         </div>
@@ -87,7 +90,8 @@
 
                                     <!-- KATEGORI -->
                                     <div class="col-md-6">
-                                        <label for="kategori_id" class="form-label-modern">Kategori <span class="text-danger">*</span></label>
+                                        <label for="kategori_id" class="form-label-modern">Kategori <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-tags"></i>
@@ -95,8 +99,9 @@
                                             <select class="form-control-modern @error('kategori_id') is-invalid @enderror"
                                                 id="kategori_id" name="kategori_id" required>
                                                 <option value="">Pilih Kategori</option>
-                                                @foreach($kategories as $kategori)
-                                                    <option value="{{ $kategori->kategori_id }}" {{ old('kategori_id') == $kategori->kategori_id ? 'selected' : '' }}>
+                                                @foreach ($kategories as $kategori)
+                                                    <option value="{{ $kategori->kategori_id }}"
+                                                        {{ old('kategori_id') == $kategori->kategori_id ? 'selected' : '' }}>
                                                         {{ $kategori->nama }}
                                                     </option>
                                                 @endforeach
@@ -109,12 +114,14 @@
 
                                     <!-- PENULIS -->
                                     <div class="col-md-6">
-                                        <label for="penulis" class="form-label-modern">Penulis <span class="text-danger">*</span></label>
+                                        <label for="penulis" class="form-label-modern">Penulis <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-user-edit"></i>
                                             </span>
-                                            <input type="text" class="form-control-modern @error('penulis') is-invalid @enderror"
+                                            <input type="text"
+                                                class="form-control-modern @error('penulis') is-invalid @enderror"
                                                 id="penulis" name="penulis" value="{{ old('penulis') }}"
                                                 placeholder="Masukkan nama penulis" required>
                                         </div>
@@ -125,14 +132,14 @@
 
                                     <!-- ISI BERITA -->
                                     <div class="col-12">
-                                        <label for="isi_html" class="form-label-modern">Isi Berita <span class="text-danger">*</span></label>
+                                        <label for="isi_html" class="form-label-modern">Isi Berita <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon textarea-icon">
                                                 <i class="fas fa-file-alt"></i>
                                             </span>
-                                            <textarea class="form-control-modern @error('isi_html') is-invalid @enderror"
-                                                id="isi_html" name="isi_html" rows="8"
-                                                placeholder="Masukkan isi berita" required>{{ old('isi_html') }}</textarea>
+                                            <textarea class="form-control-modern @error('isi_html') is-invalid @enderror" id="isi_html" name="isi_html"
+                                                rows="8" placeholder="Masukkan isi berita" required>{{ old('isi_html') }}</textarea>
                                         </div>
                                         @error('isi_html')
                                             <div class="text-danger small mt-2">{{ $message }}</div>
@@ -141,15 +148,18 @@
 
                                     <!-- STATUS -->
                                     <div class="col-md-6">
-                                        <label for="status" class="form-label-modern">Status <span class="text-danger">*</span></label>
+                                        <label for="status" class="form-label-modern">Status <span
+                                                class="text-danger">*</span></label>
                                         <div class="input-group-modern">
                                             <span class="input-icon">
                                                 <i class="fas fa-toggle-on"></i>
                                             </span>
                                             <select class="form-control-modern @error('status') is-invalid @enderror"
                                                 id="status" name="status" required>
-                                                <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>Draft</option>
-                                                <option value="terbit" {{ old('status') == 'terbit' ? 'selected' : '' }}>Terbit</option>
+                                                <option value="draft" {{ old('status') == 'draft' ? 'selected' : '' }}>
+                                                    Draft</option>
+                                                <option value="terbit" {{ old('status') == 'terbit' ? 'selected' : '' }}>
+                                                    Terbit</option>
                                             </select>
                                         </div>
                                         @error('status')
@@ -157,13 +167,22 @@
                                         @enderror
                                     </div>
 
+                                    <!-- UPLOAD GAMBAR -->
+                                    <div class="col-12">
+                                        <label class="form-label-modern">Upload Foto Berita</label>
+                                        <input type="file" name="media[]" class="form-control-modern" multiple>
+                                        <small class="text-muted">* Bisa pilih lebih dari 1 foto</small>
+                                    </div>
+
+
                                     <!-- TOMBOL ACTION -->
                                     <div class="col-12 mt-4">
                                         <div class="d-flex gap-3 justify-content-end">
                                             <button type="submit" class="btn-modern btn-primary-modern">
                                                 <i class="fas fa-save me-2"></i>Simpan Berita
                                             </button>
-                                            <a href="{{ route('berita.index') }}" class="btn-modern btn-secondary-modern">
+                                            <a href="{{ route('berita.index') }}"
+                                                class="btn-modern btn-secondary-modern">
                                                 <i class="fas fa-times me-2"></i>Batal
                                             </a>
                                         </div>

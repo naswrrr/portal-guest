@@ -104,16 +104,16 @@
                             <div class="card-warga">
 
                                 <div class="card-warga-header">
-                                    <div class="user-avatar-modern">
+
                                         @if ($item->media && $item->media->first())
                                             <img src="{{ Storage::url($item->media->first()->file_path) }}"
                                                 alt="Foto Warga"
                                                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
                                         @else
-                                            <i class="fas fa-user"></i>
+                                
                                         @endif
 
-                                    </div>
+
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $item->nama }}</h6>
