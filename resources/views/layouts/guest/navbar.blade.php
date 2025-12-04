@@ -36,20 +36,31 @@
                     <!-- Dropdown Pages -->
                     <div class="nav-item dropdown">
                         <a href="#"
-                            class="nav-link dropdown-toggle {{ request()->routeIs('users.*', 'warga.*', 'kategori_berita.*') ? 'active' : '' }}"
+                            class="nav-link dropdown-toggle {{ request()->routeIs('users.*', 'warga.*', 'kategori_berita.*', 'berita.*', 'profil.*') ? 'active' : '' }}"
                             data-bs-toggle="dropdown">
                             Pages
                         </a>
                         <div class="dropdown-menu">
+                            <a href="{{ route('profil.index') }}"
+                                class="dropdown-item {{ request()->routeIs('profil.*') ? 'active' : '' }}">
+                                Profil Desa
+                            </a>
                             <a href="{{ route('users.index') }}"
-                                class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}">User</a>
+                                class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                                User
+                            </a>
                             <a href="{{ route('warga.index') }}"
-                                class="dropdown-item {{ request()->routeIs('warga.*') ? 'active' : '' }}">Data Warga</a>
+                                class="dropdown-item {{ request()->routeIs('warga.*') ? 'active' : '' }}">
+                                Data Warga
+                            </a>
                             <a href="{{ route('kategori_berita.index') }}"
-                                class="dropdown-item {{ request()->routeIs('kategori_berita.*') ? 'active' : '' }}">Kategori
-                                Berita</a>
+                                class="dropdown-item {{ request()->routeIs('kategori_berita.*') ? 'active' : '' }}">
+                                Kategori Berita
+                            </a>
                             <a href="{{ route('berita.index') }}"
-                                class="dropdown-item {{ request()->routeIs('berita.*') ? 'active' : '' }}">Berita</a>
+                                class="dropdown-item {{ request()->routeIs('berita.*') ? 'active' : '' }}">
+                                Berita
+                            </a>
                         </div>
                     </div>
 

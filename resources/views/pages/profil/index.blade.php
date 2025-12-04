@@ -36,7 +36,7 @@
                         <i class="fas fa-home me-2 text-primary"></i>
                         Daftar Profil Desa
                     </h4>
-                    <p class="text-muted mb-0 mt-1">Total {{ $profils->count() }} profil desa terdaftar</p>
+                    <p class="text-muted mb-0 mt-1">Total {{ $profils->total() }} profil desa terdaftar</p>
                 </div>
                 <div class="action-right">
                     <a href="{{ route('profil.create') }}" class="btn-modern btn-primary-modern">
@@ -45,10 +45,70 @@
                 </div>
             </div>
 
+            <!-- 🔎 Search + Filter -->
+            <form method="GET" class="mb-4">
+                <div class="row g-3">
+
+                    <!-- SEARCH -->
+                    <div class="col-md-4">
+                        <label class="form-label-modern">Cari Profil</label>
+                        <input type="text" name="search" class="form-control-modern"
+                            placeholder="Cari desa / kecamatan / kabupaten..." value="{{ request('search') }}">
+                    </div>
+
+                    <!-- FILTER PROVINSI -->
+                    <div class="col-md-3">
+                        <label class="form-label-modern">Provinsi</label>
+                        <select name="provinsi" class="form-control-modern">
+                            <option value="">Semua Provinsi</option>
+                            @foreach ($distinctProvinsi as $prov)
+                                <option value="{{ $prov->provinsi }}"
+                                    {{ request('provinsi') == $prov->provinsi ? 'selected' : '' }}>
+                                    {{ $prov->provinsi }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- FILTER KABUPATEN -->
+                    <div class="col-md-3">
+                        <label class="form-label-modern">Kabupaten</label>
+                        <select name="kabupaten" class="form-control-modern">
+                            <option value="">Semua Kabupaten</option>
+                            @foreach ($distinctKabupaten as $kab)
+                                <option value="{{ $kab->kabupaten }}"
+                                    {{ request('kabupaten') == $kab->kabupaten ? 'selected' : '' }}>
+                                    {{ $kab->kabupaten }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- BUTTON APPLY -->
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button class="btn-modern btn-primary-modern w-100">
+                            <i class="fas fa-search me-2"></i> Cari
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- CLEAR BUTTON (muncul kalau ada filter aktif) -->
+                @if (request('search') || request('provinsi') || request('kabupaten'))
+                    <div class="row mt-3">
+                        <div class="col-md-2">
+                            <a href="{{ route('profil.index') }}" class="btn-modern btn-secondary-modern w-100">
+                                <i class="fas fa-times me-2"></i> Clear
+                            </a>
+                        </div>
+                    </div>
+                @endif
+            </form>
+
             <!-- Grid Profil -->
-            @if($profils->count() > 0)
+            @if ($profils->count() > 0)
                 <div class="row g-4">
-                    @foreach($profils as $profil)
+                    @foreach ($profils as $profil)
                         @php
                             $logo = \App\Models\Media::where('ref_table', 'profil')
                                 ->where('ref_id', $profil->profil_id)
@@ -56,24 +116,29 @@
                         @endphp
 
                         <div class="col-lg-6 col-xl-4">
+                            <!-- Ganti bagian card-warga-header -->
                             <div class="card-warga">
                                 <!-- Logo -->
                                 <div class="card-warga-header text-center py-4">
-                                    @if($logo)
-                                        <img src="{{ asset('storage/' . $logo->file_path) }}"
-                                             class="rounded-circle mb-3"
-                                             style="width: 100px; height: 100px; object-fit: cover;">
+                                    @if ($logo)
+                                        <img src="{{ asset('storage/' . $logo->file_path) }}" class="rounded-circle mb-3"
+                                            style="width: 100px; height: 100px; object-fit: cover;">
                                     @else
                                         <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center mb-3"
-                                             style="width: 100px; height: 100px;">
+                                            style="width: 100px; height: 100px;">
                                             <i class="fas fa-home fa-2x text-muted"></i>
                                         </div>
                                     @endif
                                     <h5 class="mb-1">{{ $profil->nama_desa }}</h5>
-                                    <span class="badge bg-primary">{{ $profil->kecamatan }}</span>
+                                    <!-- Pindahkan badge ke sini dan beri class untuk memecah teks -->
+                                    <span class="badge bg-primary text-wrap mt-1"
+                                        style="max-width: 200px; line-height: 1.4;">
+                                        {{ $profil->kecamatan }}
+                                    </span>
                                 </div>
 
                                 <div class="card-warga-body">
+                                    <!-- INFO ITEM PERTAMA: Kabupaten -->
                                     <div class="info-item">
                                         <div class="info-icon bg-primary">
                                             <i class="fas fa-map-marker-alt"></i>
@@ -117,16 +182,17 @@
 
                                 <div class="card-warga-footer">
                                     <a href="{{ route('profil.show', $profil->profil_id) }}"
-                                       class="btn-action btn-action-view">
+                                        class="btn-action btn-action-view">
                                         <i class="fas fa-eye"></i>
                                         <span>Detail</span>
                                     </a>
                                     <a href="{{ route('profil.edit', $profil->profil_id) }}"
-                                       class="btn-action btn-action-edit">
+                                        class="btn-action btn-action-edit">
                                         <i class="fas fa-edit"></i>
                                         <span>Edit</span>
                                     </a>
-                                    <form action="{{ route('profil.destroy', $profil->profil_id) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('profil.destroy', $profil->profil_id) }}" method="POST"
+                                        class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-action btn-action-delete"
@@ -139,6 +205,11 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+
+                <!-- ✅ PAGINATION YANG BENAR: DI DALAM -->
+                <div class="mt-4">
+                    {{ $profils->links('pagination::bootstrap-5') }}
                 </div>
             @else
                 <div class="empty-state-modern text-center py-5">

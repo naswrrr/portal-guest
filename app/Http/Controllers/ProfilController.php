@@ -8,12 +8,38 @@ use Illuminate\Http\Request;
 class ProfilController extends Controller
 {
     // Tampilkan profil (biasanya hanya satu record)
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil SEMUA profil
-        $profils = Profil::all();
+        $query = Profil::query();
 
-        return view('pages.profil.index', compact('profils'));
+        // SEARCH
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_desa', 'like', '%' . $request->search . '%')
+                    ->orWhere('kecamatan', 'like', '%' . $request->search . '%')
+                    ->orWhere('kabupaten', 'like', '%' . $request->search . '%')
+                    ->orWhere('provinsi', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // FILTER PROVINSI
+        if ($request->provinsi) {
+            $query->where('provinsi', $request->provinsi);
+        }
+
+        // FILTER KABUPATEN
+        if ($request->kabupaten) {
+            $query->where('kabupaten', $request->kabupaten);
+        }
+
+        // PAGINATION (10 per halaman)
+        $profils = $query->paginate(9)->withQueryString();
+
+        // Untuk filter dropdown unique
+        $distinctProvinsi  = Profil::select('provinsi')->distinct()->get();
+        $distinctKabupaten = Profil::select('kabupaten')->distinct()->get();
+
+        return view('pages.profil.index', compact('profils', 'distinctProvinsi', 'distinctKabupaten'));
     }
 
     public function create()
