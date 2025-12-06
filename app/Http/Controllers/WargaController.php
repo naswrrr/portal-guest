@@ -84,8 +84,7 @@ class WargaController extends Controller
                 Media::create([
                     'ref_table' => 'warga',
                     'ref_id'    => $warga->warga_id,
-                    'file_name' => $filename,
-                    'file_path' => $path,
+                    'file_name' => $path,
                     'mime_type' => $file->getClientMimeType(),
                     'caption'   => 'Foto Warga',
                 ]);
@@ -103,11 +102,11 @@ class WargaController extends Controller
     {
         $warga = Warga::findOrFail($id);
 
-        $foto = Media::where('ref_table', 'warga')
+        $fotos = Media::where('ref_table', 'warga')
             ->where('ref_id', $id)
-            ->get(); // multiple
+            ->get();
 
-        return view('pages.warga.edit', compact('warga', 'foto'));
+        return view('pages.warga.edit', compact('warga', 'fotos'));
     }
 
     // =====================================
@@ -130,18 +129,32 @@ class WargaController extends Controller
 
         $warga->update($request->except('foto'));
 
-        // Tambah foto baru
+        // ============================================
+        // 1. HAPUS SEMUA FOTO LAMA
+        // ============================================
+        $fotosLama = Media::where('ref_table', 'warga')
+            ->where('ref_id', $id)
+            ->get();
+
+        foreach ($fotosLama as $foto) {
+            if (Storage::disk('public')->exists($foto->file_name)) {
+                Storage::disk('public')->delete($foto->file_name);
+            }
+            $foto->delete();
+        }
+
+        // ============================================
+        // 2. SIMPAN FOTO BARU
+        // ============================================
         if ($request->hasFile('foto')) {
             foreach ($request->file('foto') as $file) {
-
                 $filename = time() . '_' . $file->getClientOriginalName();
                 $path     = $file->storeAs("warga/{$warga->warga_id}", $filename, 'public');
 
                 Media::create([
                     'ref_table' => 'warga',
                     'ref_id'    => $warga->warga_id,
-                    'file_name' => $filename,
-                    'file_path' => $path,
+                    'file_name' => $path,
                     'mime_type' => $file->getClientMimeType(),
                     'caption'   => 'Foto Warga',
                 ]);
@@ -161,8 +174,8 @@ class WargaController extends Controller
         $fotos = Media::where('ref_table', 'warga')->where('ref_id', $id)->get();
 
         foreach ($fotos as $foto) {
-            if (Storage::disk('public')->exists($foto->file_path)) {
-                Storage::disk('public')->delete($foto->file_path);
+            if (Storage::disk('public')->exists($foto->file_name)) { // ✅ GANTI
+                Storage::disk('public')->delete($foto->file_name);       // ✅ GANTI
             }
             $foto->delete();
         }

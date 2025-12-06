@@ -78,8 +78,7 @@ class UserController extends Controller
             Media::create([
                 'ref_table'  => 'users',
                 'ref_id'     => $user->id,
-                'file_name'  => $filename,
-                'file_path'  => $filePath, // FIX DISINI
+                'file_name'  => $filePath, // FIX DISINI
                 'caption'    => 'Foto User',
                 'mime_type'  => $file->getMimeType(),
                 'sort_order' => 1,
@@ -138,8 +137,7 @@ class UserController extends Controller
             Media::create([
                 'ref_table'  => 'users',
                 'ref_id'     => $user->id,
-                'file_name'  => $filename,
-                'file_path'  => $filePath, // FIX DISINI
+                'file_name'  => $filePath, // FIX DISINI
                 'caption'    => 'Foto User',
                 'mime_type'  => $file->getMimeType(),
                 'sort_order' => 1,
@@ -149,6 +147,7 @@ class UserController extends Controller
         return redirect()->route('users.index')
             ->with('success', 'User berhasil diupdate');
     }
+
     public function edit($id)
     {
         // Ambil user beserta relasi media

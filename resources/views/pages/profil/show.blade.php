@@ -193,7 +193,7 @@
                                         <div class="border rounded overflow-hidden shadow-sm">
                                             @if (str_contains($logo->mime_type, 'image'))
                                                 <!-- PAKAI STORAGE URL -->
-                                                <img src="{{ Storage::url($logo->file_path) }}" class="img-fluid w-100"
+                                                <img src="{{ Storage::url($logo->file_name) }}" class="img-fluid w-100"
                                                     style="height: 200px; object-fit: contain; cursor: pointer; background-color: #f8f9fa;"
                                                     alt="{{ $logo->caption }}" data-bs-toggle="modal"
                                                     data-bs-target="#logoModal">
@@ -229,12 +229,12 @@
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <div class="modal-body text-center">
-                                                    <img src="{{ Storage::url($logo->file_path) }}"
+                                                    <img src="{{ Storage::url($logo->file_name) }}"
                                                         class="img-fluid rounded" alt="{{ $logo->caption }}"
                                                         style="max-height: 70vh; max-width: 100%;">
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a href="{{ Storage::url($logo->file_path) }}"
+                                                    <a href="{{ Storage::url($logo->file_name) }}"
                                                         download="{{ $logo->file_name }}"
                                                         class="btn btn-sm btn-primary">
                                                         <i class="fas fa-download me-1"></i>Download
@@ -365,7 +365,7 @@
                         </div>
                         <div class="card-body text-center">
                             <div class="logo-preview mb-3">
-                                <img src="{{ Storage::url($logo->file_path) }}"
+                                <img src="{{ Storage::url($logo->file_name) }}"
                                      class="img-fluid rounded-circle border shadow-sm"
                                      style="width: 150px; height: 150px; object-fit: cover;"
                                      alt="Logo {{ $profil->nama_desa }}">

@@ -131,7 +131,7 @@
                                         </div>
                                         @if ($editData->media && $editData->media->first())
                                             <div class="mt-2">
-                                                <img src="{{ asset('storage/' . $editData->media->first()->file_path) }}"
+                                                <img src="{{ asset('storage/' . $editData->media->first()->file_name) }}"
                                                     alt="Foto Lama"
                                                     style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
                                                 <p class="text-muted small">Foto saat ini</p>

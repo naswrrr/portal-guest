@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -9,59 +8,40 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Show login form
     public function showLoginForm()
     {
         return view('pages.auth.login');
     }
 
-    // Show register form
     public function showRegisterForm()
     {
         return view('pages.auth.register');
     }
 
-    // Process register
     public function register(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed'
-        ], [
-            'name.required' => 'Nama harus diisi',
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.unique' => 'Email sudah terdaftar',
-            'password.required' => 'Password harus diisi',
-            'password.min' => 'Password minimal 6 karakter',
-            'password.confirmed' => 'Konfirmasi password tidak cocok'
+            'name'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
         ]);
 
-        // Buat user baru
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => $request->role ?? 'User',
         ]);
 
-        // Redirect ke login dengan success message
         return redirect()->route('login')
             ->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-    // Process login - PERBAIKAN: gunakan redirect langsung ke URL
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6'
-        ], [
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'password.required' => 'Password harus diisi',
-            'password.min' => 'Password minimal 6 karakter'
+            'email'    => 'required|email',
+            'password' => 'required|min:6',
         ]);
 
         $credentials = $request->only('email', 'password');
@@ -69,29 +49,25 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // OPTION 1: Redirect langsung ke URL (lebih aman)
-            return redirect('/')
+            return redirect()
+                ->route('dashboard')
                 ->with('success', 'Login berhasil! Selamat datang.');
-
-            // OPTION 2: Atau jika route home sudah benar
-            // return redirect()->route('home')
-            //     ->with('success', 'Login berhasil! Selamat datang.');
         }
 
+        // FIX → ERROR MASUK KE session('error')
         return back()
-            ->withErrors(['email' => 'Email atau password salah.'])
+            ->with('error', 'Email atau password salah.')
             ->withInput($request->except('password'));
     }
 
-    // Logout - PERBAIKAN: gunakan redirect langsung ke URL
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Redirect ke home page setelah logout
-        return redirect('/')
-            ->with('success', 'Logout berhasil!');
+        // FIX → redirect ke login
+        return redirect()->route('login')
+            ->with('success', 'Anda berhasil logout.');
     }
 }

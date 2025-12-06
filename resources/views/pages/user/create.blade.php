@@ -111,9 +111,8 @@
                                             <span class="input-icon"><i class="fas fa-user-tag"></i></span>
                                             <select name="role" class="form-control-modern" required>
                                                 <option value="">-- Pilih Role --</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="editor">Editor</option>
                                                 <option value="user">User</option>
+                                                <option value="admin">Admin</option>
                                             </select>
                                         </div>
                                     </div>

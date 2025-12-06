@@ -154,11 +154,9 @@
                                 <div class="card-warga-header">
 
                                         @if ($user->media && $user->media->first())
-                                            <img src="{{ asset('storage/' . $user->media->first()->file_path) }}" alt="Foto User"
+                                            <img src="{{ asset('storage/' . $user->media->first()->file_name) }}" alt="Foto User"
                                                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
                                         @endif
-
-
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $user->name }}</h6>

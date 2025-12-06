@@ -111,7 +111,7 @@
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
                                 @if ($item->media->first())
-                                    <img src="{{ asset('storage/' . $item->media->first()->file_path) }}"
+                                    <img src="{{ asset('storage/' . $item->media->first()->file_name) }}"
                                         class="card-img-top"
                                         style="width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0;">
                                 @else

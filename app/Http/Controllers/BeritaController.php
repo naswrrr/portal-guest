@@ -78,8 +78,7 @@ class BeritaController extends Controller
                 Media::create([
                     'ref_table' => 'berita',
                     'ref_id'    => $berita->berita_id,
-                    'file_name' => $filename,
-                    'file_path' => $path,
+                    'file_name' => $path,
                     'mime_type' => $file->getClientMimeType(),
                 ]);
             }
@@ -130,23 +129,7 @@ class BeritaController extends Controller
             'status'      => $request->status,
             'terbit_at'   => $request->status == 'terbit' ? now() : null,
         ]);
-
-        // ===============================
-        // HAPUS MEDIA LAMA (jika dicentang)
-        // ===============================
-        if ($request->has('hapus_media')) {
-            $mediaToDelete = Media::whereIn('media_id', $request->hapus_media)->get();
-
-            foreach ($mediaToDelete as $media) {
-                // Hapus file fisik
-                if (Storage::disk('public')->exists($media->file_path)) {
-                    Storage::disk('public')->delete($media->file_path);
-                }
-                // Hapus record
-                $media->delete();
-            }
-        }
-
+        
         // ===============================
         // UPLOAD MEDIA BARU
         // ===============================
@@ -162,8 +145,7 @@ class BeritaController extends Controller
                 Media::create([
                     'ref_table' => 'berita',
                     'ref_id'    => $berita->berita_id,
-                    'file_name' => $fileName,
-                    'file_path' => $filePath,
+                    'file_name' => $filePath,
                     'mime_type' => $file->getMimeType(),
                 ]);
             }

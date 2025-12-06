@@ -104,16 +104,17 @@
                             <div class="card-warga">
 
                                 <div class="card-warga-header">
-
-                                        @if ($item->media && $item->media->first())
-                                            <img src="{{ Storage::url($item->media->first()->file_path) }}"
-                                                alt="Foto Warga"
-                                                style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
-                                        @else
-                                
-                                        @endif
-
-
+                                    <!-- FIX: Ganti Storage::url() dengan asset() -->
+                                    @if ($item->media && $item->media->first())
+                                        <img src="{{ asset('storage/' . $item->media->first()->file_name) }}"
+                                            alt="Foto Warga"
+                                            style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
+                                    @else
+                                        <!-- Fallback jika tidak ada foto -->
+                                        <div style="width: 70px; height: 70px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-user text-muted fa-2x"></i>
+                                        </div>
+                                    @endif
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $item->nama }}</h6>

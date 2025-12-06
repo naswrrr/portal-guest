@@ -94,8 +94,7 @@ class ProfilController extends Controller
             Media::create([
                 'ref_table' => 'profil',
                 'ref_id'    => $profil->profil_id,
-                'file_name' => $filename,
-                'file_path' => 'media/profil/' . $filename,
+                'file_name' => 'media/profil/' . $filename,
                 'mime_type' => $file->getClientMimeType(),
             ]);
         }
@@ -149,8 +148,7 @@ class ProfilController extends Controller
             Media::create([
                 'ref_table' => 'profil',
                 'ref_id'    => $profil->profil_id,
-                'file_name' => $filename,
-                'file_path' => 'media/profil/' . $filename,
+                'file_name' => 'media/profil/' . $filename,
                 'mime_type' => $file->getClientMimeType(),
             ]);
         }
