@@ -8,17 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, $role): Response
     {
         if (Auth::check() && Auth::user()->role == $role) {
             return $next($request);
         }
 
-        return abort('403');
+        return abort(403, 'Akses ditolak');
     }
 }

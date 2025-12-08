@@ -92,8 +92,7 @@ class ProfilSeeder extends Seeder
             Media::create([
                 'ref_table'  => 'profil',
                 'ref_id'     => $profilId,
-                'file_name'  => $logoFile,
-                'file_path'  => 'media/profil/' . $logoFile, // ✅ FIXED: Sesuai controller
+                'file_name'  => 'media/profil/' . $logoFile, // ✅ FIXED: Sesuai controller
                 'caption'    => 'Logo ' . $namaDesa,
                 'mime_type'  => 'image/png',
                 'sort_order' => 1,
