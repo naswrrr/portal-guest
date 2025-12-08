@@ -383,8 +383,7 @@
                             <span class="input-icon">
                                 <i class="fas fa-user"></i>
                             </span>
-                            <input type="text"
-                                class="form-control-modern @error('name') is-invalid @enderror"
+                            <input type="text" class="form-control-modern @error('name') is-invalid @enderror"
                                 id="name" name="name" value="{{ old('name') }}"
                                 placeholder="Masukkan nama lengkap" required>
                         </div>
@@ -399,10 +398,9 @@
                             <span class="input-icon">
                                 <i class="fas fa-envelope"></i>
                             </span>
-                            <input type="email"
-                                class="form-control-modern @error('email') is-invalid @enderror"
-                                id="email" name="email" value="{{ old('email') }}"
-                                placeholder="Masukkan email" required>
+                            <input type="email" class="form-control-modern @error('email') is-invalid @enderror"
+                                id="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email"
+                                required>
                         </div>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -415,10 +413,8 @@
                             <span class="input-icon">
                                 <i class="fas fa-lock"></i>
                             </span>
-                            <input type="password"
-                                class="form-control-modern @error('password') is-invalid @enderror"
-                                id="password" name="password"
-                                placeholder="Masukkan password (min. 6 karakter)"
+                            <input type="password" class="form-control-modern @error('password') is-invalid @enderror"
+                                id="password" name="password" placeholder="Masukkan password (min. 6 karakter)"
                                 required>
                         </div>
                         @error('password')
@@ -427,14 +423,14 @@
                     </div>
 
                     <div class="form-group-modern">
-                        <label for="password_confirmation" class="form-label-modern required">Konfirmasi Password</label>
+                        <label for="password_confirmation" class="form-label-modern required">Konfirmasi
+                            Password</label>
                         <div class="input-group-modern">
                             <span class="input-icon">
                                 <i class="fas fa-lock"></i>
                             </span>
-                            <input type="password" class="form-control-modern"
-                                id="password_confirmation" name="password_confirmation"
-                                placeholder="Masukkan ulang password" required>
+                            <input type="password" class="form-control-modern" id="password_confirmation"
+                                name="password_confirmation" placeholder="Masukkan ulang password" required>
                         </div>
                     </div>
 
@@ -444,11 +440,10 @@
                             <span class="input-icon">
                                 <i class="fas fa-user-tag"></i>
                             </span>
-                            <select class="form-select-modern @error('role') is-invalid @enderror"
-                                id="role" name="role" required>
+                            <select class="form-select-modern" id="role" name="role" required>
                                 <option value="" selected disabled>-- Pilih Role --</option>
-                                <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                                <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="User" {{ old('role') == 'User' ? 'selected' : '' }}>User</option>
                             </select>
                         </div>
                         @error('role')
@@ -506,4 +501,5 @@
         });
     </script>
 </body>
+
 </html>

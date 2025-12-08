@@ -28,8 +28,8 @@
             </button>
             <div class="collapse navbar-collapse bg-light" id="navbarCollapse">
                 <div class="navbar-nav ms-auto">
-                    <a href="{{ url('/') }}"
-                        class="nav-item nav-link {{ request()->routeIs('/') ? 'active' : '' }}">Home</a>
+                    <a href="{{ url('/dashboard') }}"
+                        class="nav-item nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">Home</a>
                     <a href="{{ route('about') }}"
                         class="nav-item nav-link {{ request()->routeIs('about') ? 'active' : '' }}">About</a>
 
