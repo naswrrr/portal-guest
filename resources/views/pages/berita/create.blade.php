@@ -170,8 +170,10 @@
                                     <!-- UPLOAD GAMBAR -->
                                     <div class="col-12">
                                         <label class="form-label-modern">Upload Foto Berita</label>
-                                        <input type="file" name="media[]" class="form-control-modern" multiple>
-                                        <small class="text-muted">* Bisa pilih lebih dari 1 foto</small>
+                                        <input type="file" name="media[]" class="form-control-modern" multiple
+                                            accept="image/*">
+                                        <small class="text-muted">* Bisa pilih lebih dari 1 foto (jpg, jpeg, png,
+                                            webp)</small>
                                     </div>
 
 

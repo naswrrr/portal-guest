@@ -27,64 +27,6 @@
                 </div>
             </div>
 
-            <div class="row g-4">
-                <!-- Telepon -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="contact-service-item">
-                        <div class="service-icon-modern bg-primary">
-                            <i class="fas fa-phone-alt"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">Telepon</h5>
-                        <p class="text-muted mb-4">Hubungi kami via telepon untuk informasi cepat</p>
-                        <a href="tel:+01234567890" class="btn-modern btn-primary-modern w-100">
-                            <i class="fas fa-phone me-2"></i>+01234567890
-                        </a>
-                    </div>
-                </div>
-
-                <!-- WhatsApp -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="contact-service-item">
-                        <div class="service-icon-modern bg-success">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">WhatsApp</h5>
-                        <p class="text-muted mb-4">Chat langsung via WhatsApp untuk respon cepat</p>
-                        <a href="https://wa.me/6201234567890" target="_blank" class="btn-modern btn-primary-modern w-100">
-                            <i class="fab fa-whatsapp me-2"></i>+62 812 3456 7890
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Email -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="contact-service-item">
-                        <div class="service-icon-modern bg-danger">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">Email</h5>
-                        <p class="text-muted mb-4">Kirim pesan detail via email untuk pertanyaan kompleks</p>
-                        <a href="mailto:BinaDesa@gmail.com" class="btn-modern btn-primary-modern w-100">
-                            <i class="fas fa-envelope me-2"></i>BinaDesa@gmail.com
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Lokasi -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="contact-service-item">
-                        <div class="service-icon-modern bg-warning">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <h5 class="fw-bold mb-3">Alamat</h5>
-                        <p class="text-muted mb-4">Kunjungi kantor kami untuk konsultasi langsung</p>
-                        <a href="https://maps.google.com" target="_blank" class="btn-modern btn-primary-modern w-100">
-                            <i class="fas fa-map-marker-alt me-2"></i>Lihat Peta
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Additional Information Section -->
             <div class="row mt-5">
                 <div class="col-12">

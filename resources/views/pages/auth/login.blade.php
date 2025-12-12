@@ -316,52 +316,54 @@
 
             <!-- Page Header Start -->
             <div class="page-header-modern text-center">
-                <div class="header-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h5 class="text-white text-uppercase mb-2">Portal Bina Desa</h5>
+
+                <!-- LOGO -->
+                <img src="{{ asset('assets-guest/img/logo.png') }}" alt="Logo Desa"
+                    style="width: 170px; height: 170px; object-fit: contain; margin-bottom: 20px;">
+
                 <h1 class="display-4 fw-bold mb-3">Login Sistem</h1>
                 <p class="text-white-50 fs-5 mb-0">Masuk untuk mengelola data desa</p>
             </div>
             <!-- Page Header End -->
 
+
             <div class="card-body">
 
                 {{-- FLASH ERROR --}}
                 @if (session('error'))
-                <div class="alert-modern alert-warning" role="alert">
-                    <i class="fas fa-exclamation-circle alert-icon"></i>
-                    <div class="alert-content">
-                        {{ session('error') }}
+                    <div class="alert-modern alert-warning" role="alert">
+                        <i class="fas fa-exclamation-circle alert-icon"></i>
+                        <div class="alert-content">
+                            {{ session('error') }}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
                 @endif
 
                 {{-- FLASH SUCCESS --}}
                 @if (session('success'))
-                <div class="alert-modern alert-success" role="alert">
-                    <i class="fas fa-check-circle alert-icon"></i>
-                    <div class="alert-content">
-                        {{ session('success') }}
+                    <div class="alert-modern alert-success" role="alert">
+                        <i class="fas fa-check-circle alert-icon"></i>
+                        <div class="alert-content">
+                            {{ session('success') }}
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
                 @endif
 
                 {{-- LARAVEL VALIDATION ERRORS --}}
                 @if ($errors->any())
-                <div class="alert-modern alert-danger" role="alert">
-                    <i class="fas fa-exclamation-triangle alert-icon"></i>
-                    <div class="alert-content">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                    <div class="alert-modern alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle alert-icon"></i>
+                        <div class="alert-content">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
                 @endif
 
                 <form method="POST" action="{{ route('login') }}">
@@ -425,4 +427,5 @@
     </script>
 
 </body>
+
 </html>

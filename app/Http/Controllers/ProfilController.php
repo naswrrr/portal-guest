@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 
 class ProfilController extends Controller
 {
-    // Tampilkan profil (biasanya hanya satu record)
+    // ===========================
+    // INDEX: daftar profil
+    // ===========================
     public function index(Request $request)
     {
-        $query = Profil::query();
+        $query = Profil::with('media');
 
-        // SEARCH
+        // Filter dan search (sama seperti sebelumnya)
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama_desa', 'like', '%' . $request->search . '%')
@@ -21,38 +23,118 @@ class ProfilController extends Controller
                     ->orWhere('provinsi', 'like', '%' . $request->search . '%');
             });
         }
-
-        // FILTER PROVINSI
         if ($request->provinsi) {
             $query->where('provinsi', $request->provinsi);
         }
 
-        // FILTER KABUPATEN
         if ($request->kabupaten) {
             $query->where('kabupaten', $request->kabupaten);
         }
 
-        // PAGINATION (10 per halaman)
         $profils = $query->paginate(9)->withQueryString();
 
-        // Untuk filter dropdown unique
         $distinctProvinsi  = Profil::select('provinsi')->distinct()->get();
         $distinctKabupaten = Profil::select('kabupaten')->distinct()->get();
+
+        // PASANG LOGO ATAU PLACEHOLDER
+        foreach ($profils as $profil) {
+            $media = $profil->media->first();
+            if ($media && file_exists(public_path('storage/' . $media->file_name))) {
+                // File media ada → pakai storage
+                $profil->logo = asset('storage/' . $media->file_name);
+            } else {
+                // Placeholder → pakai path public langsung
+                $profil->logo = asset('assets-guest/img/profil1.jpg');
+            }
+        }
 
         return view('pages.profil.index', compact('profils', 'distinctProvinsi', 'distinctKabupaten'));
     }
 
+    // ===========================
+    // SHOW: detail profil
+    // ===========================
+    public function show($id)
+    {
+        $profil = Profil::with('media')->findOrFail($id);
+
+        // Gunakan first media kalau ada, jika tidak pakai placeholder
+        $media        = $profil->media->first();
+        $profil->logo = ($media && file_exists(public_path('storage/' . $media->file_name)))
+            ? asset('storage/' . $media->file_name)
+            : asset('assets-guest/img/profil1.jpg');
+
+        return view('pages.profil.show', compact('profil'));
+    }
+
+    // ===========================
+    // CREATE
+    // ===========================
     public function create()
     {
         return view('pages.profil.create');
     }
 
+    // ===========================
+    // EDIT
+    // ===========================
     public function edit($id)
     {
         $profil = Profil::findOrFail($id);
         return view('pages.profil.edit', compact('profil'));
     }
 
+    // ===========================
+    // STORE
+    // ===========================
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_desa'     => 'required|string|max:255',
+            'kecamatan'     => 'required|string|max:255',
+            'kabupaten'     => 'required|string|max:255',
+            'provinsi'      => 'required|string|max:255',
+            'alamat_kantor' => 'required|string',
+            'email'         => 'nullable|email|max:255',
+            'telepon'       => 'nullable|string|max:30',
+            'visi'          => 'nullable|string',
+            'misi'          => 'nullable|string',
+            'logo'          => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
+        ]);
+
+        // Simpan data profil
+        $profil = Profil::create([
+            'nama_desa'     => $validated['nama_desa'],
+            'kecamatan'     => $validated['kecamatan'],
+            'kabupaten'     => $validated['kabupaten'],
+            'provinsi'      => $validated['provinsi'],
+            'alamat_kantor' => $validated['alamat_kantor'],
+            'email'         => $validated['email'] ?? null,
+            'telepon'       => $validated['telepon'] ?? null,
+            'visi'          => $validated['visi'] ?? null,
+            'misi'          => $validated['misi'] ?? null,
+        ]);
+
+        // Upload logo jika ada
+        if ($request->hasFile('logo')) {
+            $file     = $request->file('logo');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('media/profil', $filename, 'public');
+
+            Media::create([
+                'ref_table' => 'profil',
+                'ref_id'    => $profil->profil_id,
+                'file_name' => 'media/profil/' . $filename,
+                'mime_type' => $file->getClientMimeType(),
+            ]);
+        }
+
+        return redirect()->route('profil.index')->with('success', 'Profil desa berhasil ditambahkan!');
+    }
+
+    // ===========================
+    // UPDATE
+    // ===========================
     public function update(Request $request, $id)
     {
         $profil = Profil::findOrFail($id);
@@ -70,23 +152,20 @@ class ProfilController extends Controller
             'logo'          => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
         ]);
 
-        // update data
+        // Update data profil
         $profil->update($request->only([
-            'nama_desa',
-            'kecamatan',
-            'kabupaten',
-            'provinsi',
-            'alamat_kantor',
-            'email',
-            'telepon',
-            'visi',
-            'misi',
+            'nama_desa', 'kecamatan', 'kabupaten', 'provinsi',
+            'alamat_kantor', 'email', 'telepon', 'visi', 'misi',
         ]));
 
-        // Upload logo
+        // Update logo jika ada
         if ($request->hasFile('logo')) {
-            Media::where('ref_table', 'profil')->where('ref_id', $profil->profil_id)->delete();
+            // Hapus logo lama
+            Media::where('ref_table', 'profil')
+                ->where('ref_id', $profil->profil_id)
+                ->delete();
 
+            // Simpan logo baru
             $file     = $request->file('logo');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->storeAs('media/profil', $filename, 'public');
@@ -102,74 +181,12 @@ class ProfilController extends Controller
         return redirect()->route('profil.index')->with('success', 'Profil berhasil diperbarui!');
     }
 
-    public function store(Request $request)
-    {
-        // ============================
-        // 1. VALIDASI INPUT - SESUAI DATABASE
-        // ============================
-        $validated = $request->validate([
-            'nama_desa'     => 'required|string|max:255',
-            'kecamatan'     => 'required|string|max:255',
-            'kabupaten'     => 'required|string|max:255',
-            'provinsi'      => 'required|string|max:255',
-            'alamat_kantor' => 'required|string', // ← GUNAKAN alamat_kantor BUKAN alamat
-            'email'         => 'nullable|email|max:255',
-            'telepon'       => 'nullable|string|max:30',
-            'visi'          => 'nullable|string',
-            'misi'          => 'nullable|string',
-
-            'logo'          => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
-        ]);
-
-        // ============================
-        // 2. SIMPAN DATA KE DATABASE
-        // ============================
-        $profil = Profil::create([
-            'nama_desa'     => $validated['nama_desa'],
-            'kecamatan'     => $validated['kecamatan'],
-            'kabupaten'     => $validated['kabupaten'],
-            'provinsi'      => $validated['provinsi'],
-            'alamat_kantor' => $validated['alamat_kantor'], // ← SIMPAN DI SINI
-            'email'         => $validated['email'] ?? null,
-            'telepon'       => $validated['telepon'] ?? null,
-            'visi'          => $validated['visi'] ?? null,
-            'misi'          => $validated['misi'] ?? null,
-            // TIDAK ADA: kepala_desa, alamat, website, foto
-        ]);
-
-        // ============================
-        // 3. SIMPAN LOGO (kalau ada) ke tabel media
-        // ============================
-        if ($request->hasFile('logo')) {
-            $file     = $request->file('logo');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('media/profil', $filename, 'public');
-
-            Media::create([
-                'ref_table' => 'profil',
-                'ref_id'    => $profil->profil_id,
-                'file_name' => 'media/profil/' . $filename,
-                'mime_type' => $file->getClientMimeType(),
-            ]);
-        }
-
-        // ============================
-        // 4. REDIRECT KEMBALI KE INDEX
-        // ============================
-        return redirect()
-            ->route('profil.index')
-            ->with('success', 'Profil desa berhasil ditambahkan!');
-    }
-
-    // ProfilController.php
-    public function show($id)
+    public function destroy($id)
     {
         $profil = Profil::findOrFail($id);
-        $logo   = Media::where('ref_table', 'profil')
-            ->where('ref_id', $profil->profil_id)
-            ->first();
+        $profil->delete();
 
-        return view('pages.profil.show', compact('profil', 'logo'));
+        return redirect()->route('profil.index')->with('success', 'Profil berhasil dihapus.');
     }
 
 }

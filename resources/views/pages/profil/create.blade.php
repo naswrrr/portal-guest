@@ -84,11 +84,12 @@
                                     <div class="col-md-6">
                                         <label class="form-label-modern">Provinsi *</label>
                                         <div class="input-group-modern">
-                                            <span class="input-icon"><i class="fas fa-location-dot"></i></span>
+                                            <span class="input-icon"><i class="fas fa-map-marked-alt"></i></span>
                                             <input type="text" name="provinsi" class="form-control-modern"
                                                 value="{{ old('provinsi') }}" placeholder="Masukkan provinsi" required>
                                         </div>
                                     </div>
+
 
                                     <!-- Email -->
                                     <div class="col-md-6">

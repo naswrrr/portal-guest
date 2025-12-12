@@ -56,8 +56,7 @@
                         <div class="input-group-modern">
                             <span class="input-icon"><i class="fas fa-search"></i></span>
                             <input type="text" name="search" class="form-control-modern"
-                                placeholder="Cari nama desa, kecamatan, kabupaten..."
-                                value="{{ request('search') }}">
+                                placeholder="Cari nama desa, kecamatan, kabupaten..." value="{{ request('search') }}">
                         </div>
                     </div>
 
@@ -112,22 +111,15 @@
             @if ($profils->count() > 0)
                 <div class="row g-4">
                     @foreach ($profils as $profil)
-                        @php
-                            $logo = \App\Models\Media::where('ref_table', 'profil')
-                                ->where('ref_id', $profil->profil_id)
-                                ->first();
-                        @endphp
-
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
 
                                 <!-- HEADER DENGAN FOTO -->
                                 <div class="card-warga-header">
-                                    @if ($logo)
-                                        <img src="{{ asset('storage/' . $logo->file_name) }}"
-                                            style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
+                                    <img src="{{ asset($profil->logo) }}"
+                                        style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;"
+                                        alt="{{ $profil->nama_desa }}">
 
-                                    @endif
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $profil->nama_desa }}</h6>
@@ -138,6 +130,7 @@
                                         </span>
                                     </div>
                                 </div>
+
 
                                 <!-- BODY - SAMA LAYOUT DENGAN USER.INDEX -->
                                 <div class="card-warga-body">

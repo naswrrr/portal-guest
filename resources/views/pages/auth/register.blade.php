@@ -434,23 +434,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group-modern">
-                        <label for="role" class="form-label-modern required">Role</label>
-                        <div class="input-group-modern @error('role') is-invalid @enderror">
-                            <span class="input-icon">
-                                <i class="fas fa-user-tag"></i>
-                            </span>
-                            <select class="form-select-modern" id="role" name="role" required>
-                                <option value="" selected disabled>-- Pilih Role --</option>
-                                <option value="Admin" {{ old('role') == 'Admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="User" {{ old('role') == 'User' ? 'selected' : '' }}>User</option>
-                            </select>
-                        </div>
-                        @error('role')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
                     <button type="submit" class="btn-modern btn-primary-modern mt-2">
                         <i class="fas fa-user-plus"></i>
                         <span>Daftar Sekarang</span>

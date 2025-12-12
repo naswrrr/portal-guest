@@ -19,9 +19,14 @@
             </div>
         </div>
         <nav class="navbar navbar-light bg-light navbar-expand-xl">
-            <a href="{{ url('/') }}" class="navbar-brand ms-3">
-                <h1 class="text-primary display-5">Portal Bina Desa</h1>
+
+            <a href="{{ url('/') }}" class="navbar-brand ms-3 d-flex align-items-center">
+
+                <img src="{{ asset('assets-guest/img/logo navbar.png') }}" alt="Logo Desa"
+                    style="width: 300px; height: 75px; object-fit: contain; margin-right: 14px;">
+
             </a>
+
             <button class="navbar-toggler py-2 px-3 me-3" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars text-primary"></span>
@@ -36,33 +41,39 @@
                     <!-- Dropdown Pages -->
                     <div class="nav-item dropdown">
                         <a href="#"
-                            class="nav-link dropdown-toggle {{ request()->routeIs('users.*', 'warga.*', 'kategori_berita.*', 'berita.*', 'profil.*') ? 'active' : '' }}"
+                            class="nav-link dropdown-toggle {{ request()->routeIs('users.*', 'warga.*', 'kategori_berita.*', 'berita.*', 'profil.*', 'identitas') ? 'active' : '' }}"
                             data-bs-toggle="dropdown">
                             Pages
                         </a>
                         <div class="dropdown-menu">
-                            <a href="{{ route('profil.index') }}"
-                                class="dropdown-item {{ request()->routeIs('profil.*') ? 'active' : '' }}">
-                                Profil Desa
-                            </a>
-                            <a href="{{ route('users.index') }}"
-                                class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                                User
-                            </a>
+
                             <a href="{{ route('warga.index') }}"
                                 class="dropdown-item {{ request()->routeIs('warga.*') ? 'active' : '' }}">
                                 Data Warga
                             </a>
+
+                            <a href="{{ route('profil.index') }}"
+                                class="dropdown-item {{ request()->routeIs('profil.*') ? 'active' : '' }}">
+                                Profil Desa
+                            </a>
+
                             <a href="{{ route('kategori_berita.index') }}"
                                 class="dropdown-item {{ request()->routeIs('kategori_berita.*') ? 'active' : '' }}">
                                 Kategori Berita
                             </a>
+
                             <a href="{{ route('berita.index') }}"
                                 class="dropdown-item {{ request()->routeIs('berita.*') ? 'active' : '' }}">
                                 Berita
                             </a>
+
+                            <a href="{{ route('identitas') }}"
+                                class="dropdown-item {{ request()->routeIs('identitas') ? 'active' : '' }}">
+                                Identitas Pengembang
+                            </a>
                         </div>
                     </div>
+
 
                     <a href="{{ route('contact') }}"
                         class="nav-item nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>

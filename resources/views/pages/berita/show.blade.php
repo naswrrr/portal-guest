@@ -1,11 +1,24 @@
 @extends('layouts.guest.app')
 
 @section('content')
-    {{-- start main content --}}
     @include('layouts.guest.navbar')
 
     <div class="container-fluid content-section">
         <div class="container py-5">
+
+            <!-- Page Header Start -->
+            <div class="page-header-modern text-center mb-5">
+                <div class="header-icon">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <h5 class="text-primary fw-bold text-uppercase mb-2">Detail Berita</h5>
+                <h1 class="display-4 fw-bold mb-3">{{ Str::limit($berita->judul, 50) }}</h1>
+                <p class="text-muted fs-5 mb-0">
+                    {{ $berita->kategori->nama ?? 'Informasi' }} | Dibuat: {{ $berita->created_at->format('d M Y') }}
+                </p>
+            </div>
+            <!-- Page Header End -->
+
 
             <!-- Action Bar -->
             <div class="action-bar mb-4">
@@ -20,19 +33,17 @@
                     </p>
                 </div>
                 <div class="action-right">
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('berita.index') }}" class="btn-modern btn-secondary-modern">
-                            <i class="fas fa-arrow-left me-2"></i>Kembali
-                        </a>
-                    </div>
+                    <a href="{{ route('berita.index') }}" class="btn-modern btn-secondary-modern">
+                        <i class="fas fa-arrow-left me-2"></i>Kembali
+                    </a>
                 </div>
             </div>
 
             <div class="row">
+                <!-- Main Content -->
                 <div class="col-lg-8">
-                    <!-- Berita Detail Card -->
                     <!-- Info Card -->
-                    <div class="card-modern">
+                    <div class="card-modern mb-4">
                         <div class="card-header-modern">
                             <div class="header-content">
                                 <i class="fas fa-info-circle"></i>
@@ -49,7 +60,7 @@
                                         <h6 class="user-name">Detail Berita</h6>
                                         <span class="badge-gender badge-male">
                                             <i class="fas fa-newspaper me-1"></i>
-                                            Informasi
+                                            {{ $berita->kategori->nama ?? 'Informasi' }}
                                         </span>
                                     </div>
                                 </div>
@@ -97,14 +108,11 @@
 
                     <!-- Foto Cover Section -->
                     @php
-                        $mediaFiles = App\Models\Media::where('ref_table', 'berita')
-                            ->where('ref_id', $berita->berita_id)
-                            ->orderBy('sort_order')
-                            ->get();
+                        $mediaFiles = $berita->media()->orderBy('sort_order')->get();
                         $mediaCount = $mediaFiles->count();
                     @endphp
 
-                    <div class="card-modern">
+                    <div class="card-modern mb-4">
                         <div class="card-header-modern">
                             <div class="header-content">
                                 <i class="fas fa-images"></i>
@@ -119,8 +127,7 @@
                                         <div class="col-md-4 col-lg-3 mb-3">
                                             <div class="border rounded overflow-hidden shadow-sm">
                                                 @if (str_contains($file->mime_type, 'image'))
-                                                    <!-- PAKAI STORAGE URL -->
-                                                    <img src="{{ Storage::url($file->file_path) }}" class="img-fluid w-100"
+                                                    <img src="{{ Storage::url($file->file_name) }}" class="img-fluid w-100"
                                                         style="height: 150px; object-fit: cover; cursor: pointer;"
                                                         alt="{{ $file->caption }}" data-bs-toggle="modal"
                                                         data-bs-target="#imageModal{{ $file->media_id }}"
@@ -143,7 +150,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Modal for image preview -->
                                             @if (str_contains($file->mime_type, 'image'))
                                                 <div class="modal fade" id="imageModal{{ $file->media_id }}">
                                                     <div class="modal-dialog modal-lg">
@@ -155,20 +161,18 @@
                                                                     data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body text-center">
-                                                                <img src="{{ Storage::url($file->file_path) }}"
+                                                                <img src="{{ Storage::url($file->file_name) }}"
                                                                     class="img-fluid rounded" alt="{{ $file->caption }}"
                                                                     style="max-height: 70vh;">
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <a href="{{ Storage::url($file->file_path) }}"
+                                                                <a href="{{ Storage::url($file->file_name) }}"
                                                                     download="{{ $file->file_name }}"
                                                                     class="btn btn-sm btn-primary">
                                                                     <i class="fas fa-download me-1"></i>Download
                                                                 </a>
                                                                 <button type="button" class="btn btn-sm btn-secondary"
-                                                                    data-bs-dismiss="modal">
-                                                                    Tutup
-                                                                </button>
+                                                                    data-bs-dismiss="modal">Tutup</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -176,15 +180,6 @@
                                             @endif
                                         </div>
                                     @endforeach
-                                </div>
-
-                                <!-- Media Info -->
-                                <div class="alert alert-info mt-4">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    <small>
-                                        Data disimpan di tabel <code>media</code> dengan
-                                        <code>ref_table='berita'</code> dan <code>ref_id={{ $berita->berita_id }}</code>
-                                    </small>
                                 </div>
                             @else
                                 <div class="text-center py-5">

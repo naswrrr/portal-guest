@@ -91,26 +91,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- ROLE -->
-                                    <div class="col-md-6">
-                                        <label class="form-label-modern">Role <span class="text-danger">*</span></label>
-                                        <div class="input-group-modern">
-                                            <span class="input-icon"><i class="fas fa-user-tag"></i></span>
-                                            <select name="role" class="form-control-modern" required>
-                                                <option value="">-- Pilih Role --</option>
-                                                <option value="admin"
-                                                    {{ old('role', $editData->role) == 'admin' ? 'selected' : '' }}>Admin
-                                                </option>
-                                                <option value="editor"
-                                                    {{ old('role', $editData->role) == 'editor' ? 'selected' : '' }}>Editor
-                                                </option>
-                                                <option value="user"
-                                                    {{ old('role', $editData->role) == 'user' ? 'selected' : '' }}>User
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-
                                     <!-- PASSWORD BARU -->
                                     <div class="col-md-6">
                                         <label class="form-label-modern">Password Baru</label>

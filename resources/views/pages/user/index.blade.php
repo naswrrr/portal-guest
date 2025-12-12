@@ -153,18 +153,28 @@
 
                                 <div class="card-warga-header">
 
-                                        @if ($user->media && $user->media->first())
-                                            <img src="{{ asset('storage/' . $user->media->first()->file_name) }}" alt="Foto User"
-                                                style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
-                                        @endif
+                                    @if ($user->media && $user->media->first())
+                                        <img src="{{ asset('storage/' . $user->media->first()->file_name) }}"
+                                            alt="Foto User"
+                                            style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
+                                    @endif
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $user->name }}</h6>
-                                        <span class="badge-gender badge-male">
-                                            <i class="fas fa-user-tie me-1"></i>
-                                            Administrator
-                                        </span>
+                                        @if ($user->role === 'Admin')
+                                            <span class="badge-gender badge-male">
+                                                <i class="fas fa-user-shield me-1"></i>
+                                                Administrator
+                                            </span>
+                                        @else
+                                            <span class="badge-gender badge-male">
+                                                <i class="fas fa-user-tie me-1"></i>
+                                                User
+                                            </span>
+                                        @endif
                                     </div>
+
+
                                 </div>
 
                                 <div class="card-warga-body">

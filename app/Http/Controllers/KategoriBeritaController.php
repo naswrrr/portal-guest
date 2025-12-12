@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
+
 use App\Models\KategoriBerita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -14,26 +14,26 @@ class KategoriBeritaController extends Controller
     {
         $query = KategoriBerita::query();
 
-    // --- SEARCH ---
-    if ($request->search) {
-        $query->where('nama', 'like', '%' . $request->search . '%')
-              ->orWhere('slug', 'like', '%' . $request->search . '%');
-    }
+        // --- SEARCH ---
+        if ($request->search) {
+            $query->where('nama', 'like', '%' . $request->search . '%')
+                ->orWhere('slug', 'like', '%' . $request->search . '%');
+        }
 
-    // --- FILTER (opsional, kalo mau berdasarkan created_at) ---
-    if ($request->filter == 'latest') {
-        $query->orderBy('created_at', 'desc');
-    } elseif ($request->filter == 'oldest') {
-        $query->orderBy('created_at', 'asc');
-    }
+        // --- FILTER (opsional, kalo mau berdasarkan created_at) ---
+        if ($request->filter == 'latest') {
+            $query->orderBy('created_at', 'desc');
+        } elseif ($request->filter == 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        }
 
-    // --- PAGINATION ---
-    $data['dataKategori'] = $query->paginate(6)->withQueryString();
+        // --- PAGINATION ---
+        $data['dataKategori'] = $query->paginate(6)->withQueryString();
 
-    // Untuk edit (null default)
-    $data['editData'] = null;
+        // Untuk edit (null default)
+        $data['editData'] = null;
 
-    return view('pages.kategori_berita.index', $data);
+        return view('pages.kategori_berita.index', $data);
     }
 
     /**
@@ -49,30 +49,30 @@ class KategoriBeritaController extends Controller
      */
     public function store(Request $request)
     {
-    $request->validate([
-        'nama' => 'required|string|max:255',
-        'deskripsi' => 'nullable|string'
-    ]);
+        $request->validate([
+            'nama'      => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+        ]);
 
-    // Buat slug yang unique
-    $slug = \Str::slug($request->nama);
-    $counter = 1;
-    $originalSlug = $slug;
+        // Buat slug yang unique
+        $slug         = \Str::slug($request->nama);
+        $counter      = 1;
+        $originalSlug = $slug;
 
-    // Cek jika slug sudah ada, tambahkan angka
-    while (KategoriBerita::where('slug', $slug)->exists()) {
-        $slug = $originalSlug . '-' . $counter;
-        $counter++;
-    }
+        // Cek jika slug sudah ada, tambahkan angka
+        while (KategoriBerita::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
 
-    KategoriBerita::create([
-        'nama' => $request->nama,
-        'slug' => $slug, // PAKAI SLUG YANG SUDAH DICEK
-        'deskripsi' => $request->deskripsi
-    ]);
+        KategoriBerita::create([
+            'nama'      => $request->nama,
+            'slug'      => $slug, // PAKAI SLUG YANG SUDAH DICEK
+            'deskripsi' => $request->deskripsi,
+        ]);
 
-    return redirect()->route('kategori_berita.index')
-        ->with('success', 'Kategori berita berhasil ditambahkan!');
+        return redirect()->route('kategori_berita.index')
+            ->with('success', 'Kategori berita berhasil ditambahkan!');
     }
 
     /**
@@ -80,7 +80,7 @@ class KategoriBeritaController extends Controller
      */
     public function show(string $id)
     {
-        $data['editData'] = KategoriBerita::findOrFail($id);
+        $data['editData']     = KategoriBerita::findOrFail($id);
         $data['dataKategori'] = KategoriBerita::all();
         return view('pages.kategori_berita.index', $data);
     }
@@ -90,10 +90,10 @@ class KategoriBeritaController extends Controller
      */
     public function edit(string $id)
     {
-        $data['editData'] = KategoriBerita::findOrFail($id);
-        $data['dataKategori'] = KategoriBerita::all();
+        $kategori     = KategoriBerita::findOrFail($id);
+        $dataKategori = KategoriBerita::all(); // opsional kalau masih dibutuhkan di view
 
-        return view('pages.kategori_berita.index', $data);
+        return view('pages.kategori_berita.edit', compact('kategori', 'dataKategori'));
     }
 
     /**
@@ -104,14 +104,14 @@ class KategoriBeritaController extends Controller
         $kategori = KategoriBerita::findOrFail($id);
 
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'deskripsi' => 'nullable|string'
+            'nama'      => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
         ]);
 
         $kategori->update([
-            'nama' => $request->nama,
-            'slug' => Str::slug($request->nama),
-            'deskripsi' => $request->deskripsi
+            'nama'      => $request->nama,
+            'slug'      => Str::slug($request->nama),
+            'deskripsi' => $request->deskripsi,
         ]);
 
         return redirect()->route('kategori_berita.index')
@@ -127,6 +127,6 @@ class KategoriBeritaController extends Controller
         $kategori->delete();
 
         return redirect()->route('kategori_berita.index')
-        ->with('success', 'Kategori berita berhasil dihapus!');
+            ->with('success', 'Kategori berita berhasil dihapus!');
     }
 }

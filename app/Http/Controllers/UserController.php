@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Media;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -23,11 +24,6 @@ class UserController extends Controller
             });
         }
 
-        // Filter role
-        if ($request->filter) {
-            $query->where('role', $request->filter);
-        }
-
         $data['users']    = $query->paginate(6)->appends($request->all());
         $data['editData'] = null;
 
@@ -43,55 +39,57 @@ class UserController extends Controller
     }
 
     // ===============================
-// STORE USER BARU
-// ===============================
+    // STORE USER BARU
+    // ===============================
     public function store(Request $request)
     {
         $request->validate([
             'name'     => 'required|string|max:100',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
-            'role'     => 'required|in:Admin,User',
             'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Simpan user
+        // Semua user baru otomatis User
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
-            'role'     => $request->role,
+            'role'     => 'User', // tetap User
             'password' => Hash::make($request->password),
         ]);
 
-        // Upload foto -> tabel media
+        // Upload foto jika ada
         if ($request->hasFile('foto')) {
-
             $file     = $request->file('foto');
             $filename = time() . "_" . $file->getClientOriginalName();
-
-            // Path yang akan disimpan di database
             $filePath = "uploads/users/{$user->id}/{$filename}";
-
-            // Simpan file ke storage/app/public/...
             $file->storeAs("uploads/users/{$user->id}", $filename, 'public');
 
             Media::create([
                 'ref_table'  => 'users',
                 'ref_id'     => $user->id,
-                'file_name'  => $filePath, // FIX DISINI
+                'file_name'  => $filePath,
                 'caption'    => 'Foto User',
                 'mime_type'  => $file->getMimeType(),
                 'sort_order' => 1,
             ]);
         }
 
-        return redirect()->route('users.index')
-            ->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
-// ===============================
-// UPDATE USER
-// ===============================
+    // ===============================
+    // FORM EDIT USER
+    // ===============================
+    public function edit($id)
+    {
+        $data['editData'] = User::with('media')->findOrFail($id);
+        return view('pages.user.edit', $data);
+    }
+
+    // ===============================
+    // UPDATE USER
+    // ===============================
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -99,17 +97,18 @@ class UserController extends Controller
         $request->validate([
             'name'     => 'required|string|max:100',
             'email'    => 'required|email|unique:users,email,' . $id,
-            'role'     => 'required|string',
             'password' => 'nullable|min:8|confirmed',
             'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Data update
+        // Role hanya bisa diubah oleh admin login (misal id = 1)
         $data = [
             'name'  => $request->name,
             'email' => $request->email,
-            'role'  => $request->role,
         ];
+        if (Auth::user()->id === 1) { // user admin
+            $data['role'] = $request->role ?? 'User';
+        }
 
         if ($request->password) {
             $data['password'] = Hash::make($request->password);
@@ -119,7 +118,6 @@ class UserController extends Controller
 
         // Upload foto baru jika ada
         if ($request->hasFile('foto')) {
-
             // Hapus record media lama
             Media::where('ref_table', 'users')
                 ->where('ref_id', $user->id)
@@ -127,33 +125,29 @@ class UserController extends Controller
 
             $file     = $request->file('foto');
             $filename = time() . "_" . $file->getClientOriginalName();
-
-            // Path yang akan disimpan di database
             $filePath = "uploads/users/{$user->id}/{$filename}";
-
-            // upload baru (pakai disk public)
             $file->storeAs("uploads/users/{$user->id}", $filename, 'public');
 
             Media::create([
                 'ref_table'  => 'users',
                 'ref_id'     => $user->id,
-                'file_name'  => $filePath, // FIX DISINI
+                'file_name'  => $filePath,
                 'caption'    => 'Foto User',
                 'mime_type'  => $file->getMimeType(),
                 'sort_order' => 1,
             ]);
         }
 
-        return redirect()->route('users.index')
-            ->with('success', 'User berhasil diupdate');
+        return redirect()->route('users.index')->with('success', 'User berhasil diupdate');
     }
 
-    public function edit($id)
+    public function destroy($id)
     {
-        // Ambil user beserta relasi media
-        $data['editData'] = User::with('media')->findOrFail($id);
+        $user = User::findOrFail($id);
+        $user->delete();
 
-        return view('pages.user.edit', $data);
+        return redirect()->route('users.index')
+            ->with('success', 'User berhasil dihapus');
     }
 
 }

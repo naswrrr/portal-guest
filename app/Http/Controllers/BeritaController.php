@@ -1,48 +1,47 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Berita;
-use App\Models\KategoriBerita;
 use App\Models\Media;
-use Illuminate\Http\Request;
+use App\Models\Berita;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\KategoriBerita;
+use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Berita::with('kategori')->latest();
+        $query = Berita::with(['kategori', 'media'])->latest();
 
-        // Search by judul / penulis
+        // SEARCH
         if ($request->search) {
             $query->where(function ($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->search . '%')
-                    ->orWhere('penulis', 'like', '%' . $request->search . '%');
+                $q->where('judul', 'like', "%{$request->search}%")
+                  ->orWhere('penulis', 'like', "%{$request->search}%");
             });
         }
 
-        // Filter kategori
+        // FILTER KATEGORI
         if ($request->kategori_id) {
             $query->where('kategori_id', $request->kategori_id);
         }
 
-        // Filter status
+        // FILTER STATUS
         if ($request->status) {
             $query->where('status', $request->status);
         }
 
-        // Pagination (6 per page)
-        $berita = $query->paginate(6)->withQueryString();
-
-        // Semua kategori buat dropdown filter
-        $kategories = KategoriBerita::all();
+        $berita     = $query->paginate(6)->withQueryString();
+        $kategories = KategoriBerita::orderBy('nama')->get();
 
         return view('pages.berita.index', compact('berita', 'kategories'));
     }
 
     public function create()
     {
-        $kategories = KategoriBerita::all();
+        $kategories = KategoriBerita::orderBy('nama')->get();
         return view('pages.berita.create', compact('kategories'));
     }
 
@@ -54,32 +53,34 @@ class BeritaController extends Controller
             'isi_html'    => 'required|string',
             'penulis'     => 'required|string|max:100',
             'status'      => 'required|in:draft,terbit',
-            'media'       => 'nullable',
-            'media.*'     => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048', // validasi file
+            'media.*'     => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
         ]);
 
-        // 1. Simpan berita dahulu
+        // SLUG unik
+        $slug = $this->generateUniqueSlug($request->judul);
+
         $berita = Berita::create([
             'judul'       => $request->judul,
-            'slug'        => Str::slug($request->judul),
+            'slug'        => $slug,
             'kategori_id' => $request->kategori_id,
             'isi_html'    => $request->isi_html,
             'penulis'     => $request->penulis,
             'status'      => $request->status,
-            'terbit_at'   => $request->status == 'terbit' ? now() : null,
+            'terbit_at'   => $request->status === 'terbit' ? now() : null,
         ]);
 
-        // 2. Jika ada upload file
+        // UPLOAD MEDIA
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $file) {
-                $filename = time() . '-' . $file->getClientOriginalName();
+
+                $filename = uniqid() . '-' . time() . '.' . $file->getClientOriginalExtension();
                 $path     = $file->storeAs('media/berita', $filename, 'public');
 
                 Media::create([
                     'ref_table' => 'berita',
                     'ref_id'    => $berita->berita_id,
                     'file_name' => $path,
-                    'mime_type' => $file->getClientMimeType(),
+                    'mime_type' => $file->getMimeType(),
                 ]);
             }
         }
@@ -87,27 +88,24 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dibuat!');
     }
 
-    // GUNAKAN $id MANUAL UNTUK HINDARI BUG
     public function show($id)
     {
-        // Ambil data berita beserta relasi
         $berita = Berita::with(['kategori', 'media'])->findOrFail($id);
-
         return view('pages.berita.show', compact('berita'));
     }
 
     public function edit($id)
     {
-        $berita     = Berita::findOrFail($id);
-        $kategories = KategoriBerita::all();
+        $berita     = Berita::with('media')->findOrFail($id);
+        $kategories = KategoriBerita::orderBy('nama')->get();
+
         return view('pages.berita.edit', compact('berita', 'kategories'));
     }
 
     public function update(Request $request, $id)
     {
-        $berita = Berita::findOrFail($id);
+        $berita = Berita::with('media')->findOrFail($id);
 
-        // Validasi
         $request->validate([
             'judul'         => 'required|string|max:255',
             'kategori_id'   => 'required|exists:kategori_berita,kategori_id',
@@ -115,37 +113,44 @@ class BeritaController extends Controller
             'penulis'       => 'required|string|max:100',
             'status'        => 'required|in:draft,terbit',
             'media.*'       => 'nullable|image|max:2048',
-            'hapus_media'   => 'array',
+            'hapus_media'   => 'nullable|array',
             'hapus_media.*' => 'integer',
         ]);
 
-        // Update berita
+        // SLUG unik (exclude current id)
+        $slug = $this->generateUniqueSlug($request->judul, $id);
+
         $berita->update([
             'judul'       => $request->judul,
-            'slug'        => Str::slug($request->judul),
+            'slug'        => $slug,
             'kategori_id' => $request->kategori_id,
             'isi_html'    => $request->isi_html,
             'penulis'     => $request->penulis,
             'status'      => $request->status,
-            'terbit_at'   => $request->status == 'terbit' ? now() : null,
+            'terbit_at'   => $request->status === 'terbit' ? now() : null,
         ]);
-        
-        // ===============================
+
+        // HAPUS MEDIA TERPILIH
+        if (!empty($request->hapus_media)) {
+            foreach ($request->hapus_media as $mediaId) {
+                $media = Media::find($mediaId);
+                if ($media) {
+                    Storage::disk('public')->delete($media->file_name);
+                    $media->delete();
+                }
+            }
+        }
+
         // UPLOAD MEDIA BARU
-        // ===============================
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $file) {
-                $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $filePath = 'media/berita/' . $fileName;
+                $filename = uniqid() . '-' . time() . '.' . $file->getClientOriginalExtension();
+                $path     = $file->storeAs('media/berita', $filename, 'public');
 
-                // Simpan file ke storage
-                $file->storeAs('media/berita', $fileName, 'public');
-
-                // Simpan ke database
                 Media::create([
                     'ref_table' => 'berita',
                     'ref_id'    => $berita->berita_id,
-                    'file_name' => $filePath,
+                    'file_name' => $path,
                     'mime_type' => $file->getMimeType(),
                 ]);
             }
@@ -154,4 +159,38 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('success', 'Berita berhasil diperbarui!');
     }
 
+    public function destroy($id)
+    {
+        $berita = Berita::with('media')->findOrFail($id);
+
+        foreach ($berita->media as $media) {
+            Storage::disk('public')->delete($media->file_name);
+            $media->delete();
+        }
+
+        $berita->delete();
+
+        return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus!');
+    }
+
+    // =====================
+    // SLUG UNIK
+    // =====================
+    private function generateUniqueSlug($judul, $excludeId = null)
+    {
+        $slug = Str::slug($judul);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (
+            Berita::where('slug', $slug)
+                ->when($excludeId, fn ($q) => $q->where('berita_id', '!=', $excludeId))
+                ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
 }

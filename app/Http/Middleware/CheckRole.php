@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -8,12 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next, string $role): Response
     {
         if (Auth::check() && Auth::user()->role == $role) {
             return $next($request);
         }
 
-        return abort(403, 'Akses ditolak');
+        return abort('403');
     }
 }
