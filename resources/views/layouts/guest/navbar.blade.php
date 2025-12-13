@@ -23,7 +23,7 @@
             <a href="{{ url('/') }}" class="navbar-brand ms-3 d-flex align-items-center">
 
                 <img src="{{ asset('assets-guest/img/logo navbar.png') }}" alt="Logo Desa"
-                    style="width: 300px; height: 75px; object-fit: contain; margin-right: 14px;">
+                    style="width: 200px; height: 75px; object-fit: contain; margin-right: 14px;">
 
             </a>
 
