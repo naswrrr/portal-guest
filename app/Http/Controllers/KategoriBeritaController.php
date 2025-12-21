@@ -80,9 +80,9 @@ class KategoriBeritaController extends Controller
      */
     public function show(string $id)
     {
-        $data['editData']     = KategoriBerita::findOrFail($id);
-        $data['dataKategori'] = KategoriBerita::all();
-        return view('pages.kategori_berita.index', $data);
+        $kategori = KategoriBerita::findOrFail($id);
+
+        return view('pages.kategori_berita.show', compact('kategori'));
     }
 
     /**

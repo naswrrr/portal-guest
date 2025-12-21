@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\KategoriBeritaController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
-use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\KategoriBeritaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +33,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
-    Route::get('/dashboard', function () {
-        return view('pages.guest'); // <-- ganti view PASTI
-    })->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('pages.guest');
+})->name('dashboard');
 
 /*
 |--------------------------------------------------------------------------
@@ -46,13 +47,6 @@ Route::middleware(['checkislogin'])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Dashboard (HARUS PAKAI HALAMAN AUTH BUKAN GUEST)
-
-    /*
-    |--------------------------------------------------------------------------
-    | ADMIN ONLY (RESOURCE)
-    |--------------------------------------------------------------------------
-    */
     Route::middleware('checkrole:Admin')->group(function () {
 
         //User CRUD
@@ -62,6 +56,7 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 
         //Warga CRUD
 
@@ -70,6 +65,7 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::get('/warga/{id}/edit', [WargaController::class, 'edit'])->name('warga.edit');
         Route::put('/warga/{id}', [WargaController::class, 'update'])->name('warga.update');
         Route::delete('/warga/{id}', [WargaController::class, 'destroy'])->name('warga.destroy');
+        Route::get('/warga/{id}', [WargaController::class, 'show'])->name('warga.show');
 
         //Kategori Berita CRUD
 
@@ -95,6 +91,21 @@ Route::middleware(['checkislogin'])->group(function () {
         Route::get('/berita/{id}/edit', [BeritaController::class, 'edit'])->name('berita.edit');
         Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
         Route::delete('/berita/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
+
+        // Agenda (CRUD)
+        Route::get('/agenda/create', [AgendaController::class, 'create'])->name('agenda.create');
+        Route::post('/agenda', [AgendaController::class, 'store'])->name('agenda.store');
+        Route::get('/agenda/{id}/edit', [AgendaController::class, 'edit'])->name('agenda.edit');
+        Route::put('/agenda/{id}', [AgendaController::class, 'update'])->name('agenda.update');
+        Route::delete('/agenda/{id}', [AgendaController::class, 'destroy'])->name('agenda.destroy');
+
+        //Galeri (CRUD)
+        Route::get('/galeri/create', [GaleriController::class, 'create'])->name('galeri.create');
+        Route::post('/galeri', [GaleriController::class, 'store'])->name('galeri.store');
+        Route::get('/galeri/{id}/edit', [GaleriController::class, 'edit'])->name('galeri.edit');
+        Route::put('/galeri/{id}', [GaleriController::class, 'update'])->name('galeri.update');
+        Route::delete('/galeri/{id}', [GaleriController::class, 'destroy'])->name('galeri.destroy');
+
     });
 
     /*
@@ -109,4 +120,8 @@ Route::middleware(['checkislogin'])->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/warga', [WargaController::class, 'index'])->name('warga.index');
     Route::get('/kategori_berita', [KategoriBeritaController::class, 'index'])->name('kategori_berita.index');
+    Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
+    Route::get('/agenda/{id}', [AgendaController::class, 'show'])->name('agenda.show');
+    Route::get('/galeri', [GaleriController::class, 'index'])->name('galeri.index');
+    Route::get('/galeri/{id}', [GaleriController::class, 'show'])->name('galeri.show');
 });

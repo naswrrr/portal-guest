@@ -105,18 +105,6 @@
                                         @enderror
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <label class="form-label-modern">Role <span class="text-danger">*</span></label>
-                                        <div class="input-group-modern">
-                                            <span class="input-icon"><i class="fas fa-user-tag"></i></span>
-                                            <select name="role" class="form-control-modern" required>
-                                                <option value="">-- Pilih Role --</option>
-                                                <option value="user">User</option>
-                                                <option value="admin">Admin</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
                                     <!-- PASSWORD -->
                                     <div class="col-md-6">
                                         <label for="password" class="form-label-modern">Password <span

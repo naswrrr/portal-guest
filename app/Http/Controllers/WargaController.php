@@ -174,8 +174,8 @@ class WargaController extends Controller
         $fotos = Media::where('ref_table', 'warga')->where('ref_id', $id)->get();
 
         foreach ($fotos as $foto) {
-            if (Storage::disk('public')->exists($foto->file_name)) { // ✅ GANTI
-                Storage::disk('public')->delete($foto->file_name);       // ✅ GANTI
+            if (Storage::disk('public')->exists($foto->file_name)) {
+                Storage::disk('public')->delete($foto->file_name);
             }
             $foto->delete();
         }
@@ -183,6 +183,13 @@ class WargaController extends Controller
         $warga->delete();
 
         return redirect()->route('warga.index')->with('success', 'Data warga berhasil dihapus.');
+    }
+
+    public function show($id)
+    {
+        $warga = Warga::with('media')->findOrFail($id);
+
+        return view('pages.warga.show', compact('warga'));
     }
 
 }

@@ -143,7 +143,6 @@
                 </div>
             </form>
 
-
             <!-- Card Grid -->
             @if ($users->count() > 0)
                 <div class="row g-4">
@@ -151,32 +150,28 @@
                         <div class="col-lg-6 col-xl-4">
                             <div class="card-warga">
 
+                                <!-- HEADER -->
                                 <div class="card-warga-header">
-
                                     @if ($user->media && $user->media->first())
                                         <img src="{{ asset('storage/' . $user->media->first()->file_name) }}"
-                                            alt="Foto User"
-                                            style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
+                                            style="width:70px;height:70px;object-fit:cover;border-radius:50%;">
+                                    @else
+                                        <div class="user-avatar-modern">
+                                            <i class="fas fa-user"></i>
+                                        </div>
                                     @endif
 
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $user->name }}</h6>
-                                        @if ($user->role === 'Admin')
-                                            <span class="badge-gender badge-male">
-                                                <i class="fas fa-user-shield me-1"></i>
-                                                Administrator
-                                            </span>
-                                        @else
-                                            <span class="badge-gender badge-male">
-                                                <i class="fas fa-user-tie me-1"></i>
-                                                User
-                                            </span>
-                                        @endif
+                                        <span class="badge-gender badge-male">
+                                            <i
+                                                class="fas {{ $user->role === 'Admin' ? 'fa-user-shield' : 'fa-user-tie' }} me-1"></i>
+                                            {{ $user->role }}
+                                        </span>
                                     </div>
-
-
                                 </div>
 
+                                <!-- BODY -->
                                 <div class="card-warga-body">
                                     <div class="info-item">
                                         <div class="info-icon bg-primary">
@@ -209,11 +204,18 @@
                                     </div>
                                 </div>
 
+                                <!-- FOOTER (SAMA PERSIS DENGAN PROFIL.INDEX) -->
                                 <div class="card-warga-footer">
+                                    <a href="{{ route('users.show', $user->id) }}" class="btn-action btn-action-view">
+                                        <i class="fas fa-eye"></i>
+                                        <span>Detail</span>
+                                    </a>
+
                                     <a href="{{ route('users.edit', $user->id) }}" class="btn-action btn-action-edit">
                                         <i class="fas fa-edit"></i>
                                         <span>Edit</span>
                                     </a>
+
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST"
                                         class="d-inline">
                                         @csrf
@@ -231,7 +233,6 @@
                     @endforeach
                 </div>
 
-                <!-- Pagination -->
                 <div class="mt-4">
                     {{ $users->links('pagination::bootstrap-5') }}
                 </div>
@@ -239,7 +240,7 @@
                 <div class="empty-state-modern">
                     <div class="empty-icon"><i class="fas fa-users"></i></div>
                     <h4 class="empty-title">Belum Ada Data User</h4>
-                    <p class="empty-text">Mulai tambahkan user pertama Anda untuk mengelola sistem portal desa</p>
+                    <p class="empty-text">Mulai tambahkan user pertama Anda</p>
                     <a href="{{ route('users.create') }}" class="btn-modern btn-primary-modern">
                         <i class="fas fa-plus me-2"></i>Tambah User Pertama
                     </a>

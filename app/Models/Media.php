@@ -13,7 +13,6 @@ class Media extends Model
         'ref_table',
         'ref_id',
         'file_name',
-        'file_path',
         'caption',
         'mime_type',
         'sort_order',

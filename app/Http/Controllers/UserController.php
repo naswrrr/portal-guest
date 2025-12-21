@@ -75,7 +75,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan login.');
+        return redirect()->route('users.index')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 
     // ===============================
@@ -148,6 +148,12 @@ class UserController extends Controller
 
         return redirect()->route('users.index')
             ->with('success', 'User berhasil dihapus');
+    }
+
+    public function show($id)
+    {
+        $user = User::with('media')->findOrFail($id);
+        return view('pages.user.show', compact('user'));
     }
 
 }

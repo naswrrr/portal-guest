@@ -222,7 +222,7 @@
                                         @if($logo)
                                             <div class="mb-3">
                                                 <p class="mb-2">Logo Saat Ini:</p>
-                                                <img src="{{ asset('storage/' . $logo->file_path) }}"
+                                                <img src="{{ asset('storage/' . $logo->file_name) }}"
                                                      class="img-thumbnail rounded"
                                                      style="max-height: 150px;">
                                                 <div class="mt-2">

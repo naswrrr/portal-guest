@@ -25,11 +25,11 @@
 
                 <!-- Foto + Nama -->
                 <div class="text-center mb-4">
-                    <img src="{{ asset('assets-guest/img/kendal.jpg') }}"
+                    <img src="{{ asset('assets-guest/img/identitas admin.jpeg') }}"
                         class="rounded-circle shadow-lg border border-4 border-white"
                         style="width:150px; height:150px; object-fit:cover;" alt="Foto Developer">
 
-                    <h2 class="fw-bold mt-3 mb-1 text-dark">Nasywa Jenner</h2>
+                    <h2 class="fw-bold mt-3 mb-1 text-dark">Nasywa Azzahro Bahirah</h2>
                     <p class="text-muted fs-5 mb-0">Full Stack Developer</p>
 
                     <!-- Divider -->

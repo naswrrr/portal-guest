@@ -44,7 +44,7 @@ class ProfilController extends Controller
                 $profil->logo = asset('storage/' . $media->file_name);
             } else {
                 // Placeholder → pakai path public langsung
-                $profil->logo = asset('assets-guest/img/profil1.jpg');
+                $profil->logo = asset('assets-guest/img/profile.jpg');
             }
         }
 
@@ -62,7 +62,7 @@ class ProfilController extends Controller
         $media        = $profil->media->first();
         $profil->logo = ($media && file_exists(public_path('storage/' . $media->file_name)))
             ? asset('storage/' . $media->file_name)
-            : asset('assets-guest/img/profil1.jpg');
+            : asset('assets-guest/img/profile.jpg');
 
         return view('pages.profil.show', compact('profil'));
     }

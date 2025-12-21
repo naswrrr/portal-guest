@@ -29,27 +29,73 @@
             align-items: center;
             font-family: 'Roboto', sans-serif;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
 
+        /* Slideshow Background */
+        .slideshow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .slideshow-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .slideshow-slide.active {
+            opacity: 1;
+        }
+
+        /* Overlay untuk meningkatkan keterbacaan */
+        .slideshow-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+
+        /* Konten register di atas slideshow */
         .register-wrapper {
             max-width: 500px;
             margin: 0 auto;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         .register-card {
             background: white;
             border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
             overflow: hidden;
             border: none;
         }
 
         .page-header-modern {
-            background: linear-gradient(to right, #1e3c72, #2a5298);
+            background: linear-gradient(to right, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9));
             padding: 40px 30px;
             text-align: center;
             color: white;
+            position: relative;
+            z-index: 1;
         }
 
         .header-icon {
@@ -305,6 +351,32 @@
             height: 40px;
         }
 
+        /* Slideshow navigation dots */
+        .slideshow-dots {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .slideshow-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slideshow-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
         @media (max-width: 576px) {
             .page-header-modern {
                 padding: 30px 20px;
@@ -323,11 +395,34 @@
             .display-4 {
                 font-size: 1.75rem;
             }
+
+            .slideshow-dots {
+                bottom: 10px;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Slideshow Background -->
+    <div class="slideshow-container">
+        <div class="slideshow-overlay"></div>
+        <div class="slideshow-slide active" id="slide-1" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+        <div class="slideshow-slide" id="slide-2" style="background-image: url('https://images.unsplash.com/photo-1518834103328-93d45986dce1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+        <div class="slideshow-slide" id="slide-3" style="background-image: url('https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+        <div class="slideshow-slide" id="slide-4" style="background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+        <div class="slideshow-slide" id="slide-5" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');"></div>
+    </div>
+
+    <!-- Slideshow Navigation Dots -->
+    <div class="slideshow-dots">
+        <div class="slideshow-dot active" data-slide="0"></div>
+        <div class="slideshow-dot" data-slide="1"></div>
+        <div class="slideshow-dot" data-slide="2"></div>
+        <div class="slideshow-dot" data-slide="3"></div>
+        <div class="slideshow-dot" data-slide="4"></div>
+    </div>
+
     <!-- Spinner Start -->
     <div id="spinner" class="show">
         <div class="spinner-grow text-primary" role="status"></div>
@@ -338,10 +433,10 @@
         <div class="register-card">
             <!-- Page Header Start -->
             <div class="page-header-modern text-center">
-                <div class="header-icon">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <h5 class="text-white text-uppercase mb-2">Portal Bina Desa</h5>
+                <!-- LOGO (sama seperti di halaman login) -->
+                <img src="{{ asset('assets-guest/img/logo.png') }}" alt="Logo Desa"
+                    style="width: 120px; height: 120px; object-fit: contain; margin-bottom: 15px;">
+
                 <h1 class="display-4 fw-bold mb-3">Daftar Akun Baru</h1>
                 <p class="text-white-50 fs-5 mb-0">Bergabung untuk mengelola data desa</p>
             </div>
@@ -465,6 +560,54 @@
         $(document).ready(function() {
             // Remove spinner
             $('#spinner').fadeOut(500);
+
+            // Slideshow functionality
+            let currentSlide = 0;
+            const slides = $('.slideshow-slide');
+            const dots = $('.slideshow-dot');
+            const totalSlides = slides.length;
+
+            // Function to change slide
+            function changeSlide(slideIndex) {
+                // Remove active class from all slides and dots
+                slides.removeClass('active');
+                dots.removeClass('active');
+
+                // Add active class to current slide and dot
+                $(slides[slideIndex]).addClass('active');
+                $(dots[slideIndex]).addClass('active');
+
+                currentSlide = slideIndex;
+            }
+
+            // Auto slideshow
+            function nextSlide() {
+                let nextSlideIndex = (currentSlide + 1) % totalSlides;
+                changeSlide(nextSlideIndex);
+            }
+
+            // Start auto slideshow
+            let slideshowInterval = setInterval(nextSlide, 5000);
+
+            // Dot click event
+            dots.click(function() {
+                let slideIndex = $(this).data('slide');
+                changeSlide(slideIndex);
+
+                // Reset interval
+                clearInterval(slideshowInterval);
+                slideshowInterval = setInterval(nextSlide, 5000);
+            });
+
+            // Pause slideshow on hover (optional)
+            $('.slideshow-container').hover(
+                function() {
+                    clearInterval(slideshowInterval);
+                },
+                function() {
+                    slideshowInterval = setInterval(nextSlide, 5000);
+                }
+            );
 
             // Form validation feedback
             $('.form-control-modern, .form-select-modern').on('blur', function() {

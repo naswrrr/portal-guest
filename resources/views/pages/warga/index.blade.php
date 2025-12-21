@@ -111,7 +111,8 @@
                                             style="width: 70px; height: 70px; object-fit: cover; border-radius: 50%;">
                                     @else
                                         <!-- Fallback jika tidak ada foto -->
-                                        <div style="width: 70px; height: 70px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
+                                        <div
+                                            style="width: 70px; height: 70px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-user text-muted fa-2x"></i>
                                         </div>
                                     @endif
@@ -171,11 +172,20 @@
                                 </div>
 
                                 <div class="card-warga-footer">
+
+                                    {{-- DETAIL --}}
+                                    <a href="{{ route('warga.show', $item->warga_id) }}"
+                                        class="btn-action btn-action-detail">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </a>
+
+                                    {{-- EDIT --}}
                                     <a href="{{ route('warga.edit', $item->warga_id) }}"
                                         class="btn-action btn-action-edit">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
 
+                                    {{-- DELETE --}}
                                     <form action="{{ route('warga.destroy', $item->warga_id) }}" method="POST"
                                         class="d-inline">
                                         @csrf
@@ -185,7 +195,9 @@
                                             <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
+
                                 </div>
+
 
                             </div>
                         </div>
