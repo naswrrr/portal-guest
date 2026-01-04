@@ -7,67 +7,79 @@ use Illuminate\Support\Str;
 
 class KategoriBeritaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // ==================================================
+    // INDEX
+    // Menampilkan daftar kategori berita
+    // Fitur:
+    // - Search nama & slug
+    // - Filter berdasarkan created_at (latest / oldest)
+    // - Pagination
+    // ==================================================
     public function index(Request $request)
     {
         $query = KategoriBerita::query();
 
-        // --- SEARCH ---
+        // ================= SEARCH =================
+        // Jika ada input search, cari di nama & slug
         if ($request->search) {
             $query->where('nama', 'like', '%' . $request->search . '%')
-                ->orWhere('slug', 'like', '%' . $request->search . '%');
+                  ->orWhere('slug', 'like', '%' . $request->search . '%');
         }
 
-        // --- FILTER (opsional, kalo mau berdasarkan created_at) ---
+        // ================= FILTER =================
+        // Bisa filter berdasarkan tanggal dibuat
         if ($request->filter == 'latest') {
             $query->orderBy('created_at', 'desc');
         } elseif ($request->filter == 'oldest') {
             $query->orderBy('created_at', 'asc');
         }
 
-        // --- PAGINATION ---
+        // ================= PAGINATION =================
         $data['dataKategori'] = $query->paginate(6)->withQueryString();
 
-        // Untuk edit (null default)
+        // Untuk edit default null
         $data['editData'] = null;
 
         return view('pages.kategori_berita.index', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // ==================================================
+    // CREATE
+    // Menampilkan form tambah kategori berita baru
+    // ==================================================
     public function create()
     {
         return view('pages.kategori_berita.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // ==================================================
+    // STORE
+    // Menyimpan kategori berita baru
+    // Termasuk generate slug unik
+    // ==================================================
     public function store(Request $request)
     {
+        // ================= VALIDASI =================
         $request->validate([
             'nama'      => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
         ]);
 
-        // Buat slug yang unique
-        $slug         = \Str::slug($request->nama);
+        // ================= GENERATE SLUG UNIK =================
+        $slug         = \Str::slug($request->nama); // slug dasar
         $counter      = 1;
         $originalSlug = $slug;
 
-        // Cek jika slug sudah ada, tambahkan angka
+        // Jika slug sudah ada, tambahkan angka di belakang
         while (KategoriBerita::where('slug', $slug)->exists()) {
             $slug = $originalSlug . '-' . $counter;
             $counter++;
         }
 
+        // ================= SIMPAN DATA =================
         KategoriBerita::create([
             'nama'      => $request->nama,
-            'slug'      => $slug, // PAKAI SLUG YANG SUDAH DICEK
+            'slug'      => $slug, // pakai slug unik
             'deskripsi' => $request->deskripsi,
         ]);
 
@@ -75,42 +87,51 @@ class KategoriBeritaController extends Controller
             ->with('success', 'Kategori berita berhasil ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // ==================================================
+    // SHOW
+    // Menampilkan detail kategori berita
+    // ==================================================
     public function show(string $id)
     {
+        // Ambil data kategori berdasarkan id
         $kategori = KategoriBerita::findOrFail($id);
 
         return view('pages.kategori_berita.show', compact('kategori'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // ==================================================
+    // EDIT
+    // Menampilkan form edit kategori berita
+    // ==================================================
     public function edit(string $id)
     {
-        $kategori     = KategoriBerita::findOrFail($id);
-        $dataKategori = KategoriBerita::all(); // opsional kalau masih dibutuhkan di view
+        // Ambil data kategori untuk diedit
+        $kategori = KategoriBerita::findOrFail($id);
+
+        // Opsional: ambil semua data kategori (misal untuk dropdown di view)
+        $dataKategori = KategoriBerita::all();
 
         return view('pages.kategori_berita.edit', compact('kategori', 'dataKategori'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // ==================================================
+    // UPDATE
+    // Memperbarui data kategori berita
+    // ==================================================
     public function update(Request $request, string $id)
     {
         $kategori = KategoriBerita::findOrFail($id);
 
+        // ================= VALIDASI =================
         $request->validate([
             'nama'      => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
         ]);
 
+        // ================= UPDATE DATA =================
         $kategori->update([
             'nama'      => $request->nama,
-            'slug'      => Str::slug($request->nama),
+            'slug'      => Str::slug($request->nama), // update slug baru
             'deskripsi' => $request->deskripsi,
         ]);
 
@@ -118,12 +139,16 @@ class KategoriBeritaController extends Controller
             ->with('success', 'Kategori berita berhasil diperbarui!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // ==================================================
+    // DESTROY
+    // Menghapus kategori berita
+    // ==================================================
     public function destroy(string $id)
     {
+        // Ambil data kategori
         $kategori = KategoriBerita::findOrFail($id);
+
+        // Hapus data
         $kategori->delete();
 
         return redirect()->route('kategori_berita.index')

@@ -1,36 +1,50 @@
+{{-- Menggunakan layout utama guest --}}
 @extends('layouts.guest.app')
 
+{{-- Memulai section content --}}
 @section('content')
+
+    {{-- Memanggil navbar --}}
     @include('layouts.guest.navbar')
 
+    {{-- ================= KONTEN UTAMA ================= --}}
     <div class="container-fluid content-section">
         <div class="container py-5">
 
-            <!-- Action Bar -->
+            <!-- ================= ACTION BAR ================= -->
+            <!-- Menampilkan judul halaman dan tombol kembali -->
             <div class="action-bar mb-4">
                 <div class="action-left">
                     <h4 class="mb-0 fw-bold text-dark">
                         <i class="fas fa-eye me-2 text-primary"></i>
                         Detail Data User
                     </h4>
+
+                    {{-- Menampilkan nama user --}}
                     <p class="text-muted mb-0 mt-1">
                         <i class="fas fa-user me-1"></i>
                         "{{ $user->name }}"
                     </p>
                 </div>
+
+                {{-- Tombol kembali ke halaman index user --}}
                 <div class="action-right">
-                    <a href="{{ route('users.index') }}" class="btn-modern btn-secondary-modern">
+                    <a href="{{ route('users.index') }}"
+                       class="btn-modern btn-secondary-modern">
                         <i class="fas fa-arrow-left me-2"></i>Kembali
                     </a>
                 </div>
             </div>
 
             <div class="row">
-                <!-- KONTEN UTAMA -->
+
+                <!-- ================= KONTEN UTAMA ================= -->
                 <div class="col-lg-8">
 
-                    <!-- Informasi User -->
+                    <!-- ================= INFORMASI USER ================= -->
                     <div class="card-modern mb-4">
+
+                        {{-- Header card --}}
                         <div class="card-header-modern">
                             <div class="header-content">
                                 <i class="fas fa-id-badge"></i>
@@ -38,23 +52,29 @@
                             </div>
                         </div>
 
+                        {{-- Body card --}}
                         <div class="card-body p-0">
                             <div class="card-warga">
+
+                                <!-- Header profil user -->
                                 <div class="card-warga-header">
 
-                                    {{-- Foto User --}}
+                                    {{-- Menampilkan foto user jika ada --}}
                                     @if ($user->media && $user->media->first())
                                         <img src="{{ asset('storage/' . $user->media->first()->file_name) }}"
-                                            style="width:70px;height:70px;border-radius:50%;object-fit:cover;">
+                                             style="width:70px;height:70px;border-radius:50%;object-fit:cover;">
                                     @else
+                                        {{-- Avatar default jika tidak ada foto --}}
                                         <div class="user-avatar-modern">
                                             <i class="fas fa-user"></i>
                                         </div>
                                     @endif
 
+                                    {{-- Informasi nama dan role --}}
                                     <div class="user-info">
                                         <h6 class="user-name">{{ $user->name }}</h6>
 
+                                        {{-- Menentukan badge berdasarkan role --}}
                                         @if ($user->role === 'Admin')
                                             <span class="badge-gender badge-male">
                                                 <i class="fas fa-user-shield me-1"></i>
@@ -69,8 +89,10 @@
                                     </div>
                                 </div>
 
+                                <!-- ================= DETAIL DATA USER ================= -->
                                 <div class="card-warga-body">
 
+                                    {{-- Email user --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-primary">
                                             <i class="fas fa-envelope"></i>
@@ -81,6 +103,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- Role user --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-success">
                                             <i class="fas fa-user-tag"></i>
@@ -91,23 +114,29 @@
                                         </div>
                                     </div>
 
+                                    {{-- Tanggal pembuatan akun --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-warning">
                                             <i class="fas fa-calendar-plus"></i>
                                         </div>
                                         <div class="info-content">
                                             <span class="info-label">Dibuat</span>
-                                            <span class="info-value">{{ $user->created_at->format('d M Y') }}</span>
+                                            <span class="info-value">
+                                                {{ $user->created_at->format('d M Y') }}
+                                            </span>
                                         </div>
                                     </div>
 
+                                    {{-- Waktu terakhir update --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-info">
                                             <i class="fas fa-clock"></i>
                                         </div>
                                         <div class="info-content">
                                             <span class="info-label">Update Terakhir</span>
-                                            <span class="info-value">{{ $user->updated_at->format('d M Y H:i') }}</span>
+                                            <span class="info-value">
+                                                {{ $user->updated_at->format('d M Y H:i') }}
+                                            </span>
                                         </div>
                                     </div>
 
@@ -115,13 +144,12 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- SIDEBAR -->
+                <!-- ================= SIDEBAR ================= -->
                 <div class="col-lg-4">
 
-                    <!-- Aksi -->
+                    <!-- ================= AKSI ================= -->
                     <div class="card-modern mb-4">
                         <div class="card-header-modern">
                             <div class="header-content">
@@ -133,23 +161,28 @@
                         <div class="card-body">
                             <div class="d-grid gap-2">
 
+                                {{-- Tombol edit user --}}
                                 <a href="{{ route('users.edit', $user->id) }}"
-                                    class="btn-modern btn-warning-modern w-100">
+                                   class="btn-modern btn-warning-modern w-100">
                                     <i class="fas fa-edit me-2"></i>Edit User
                                 </a>
 
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="w-100">
+                                {{-- Form hapus user --}}
+                                <form action="{{ route('users.destroy', $user->id) }}"
+                                      method="POST"
+                                      class="w-100">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="btn-modern btn-danger-modern w-100"
-                                        onclick="return confirm('Hapus user ini?')">
+                                            class="btn-modern btn-danger-modern w-100"
+                                            onclick="return confirm('Hapus user ini?')">
                                         <i class="fas fa-trash me-2"></i>Hapus
                                     </button>
                                 </form>
 
+                                {{-- Tombol tambah user --}}
                                 <a href="{{ route('users.create') }}"
-                                    class="btn-modern btn-success-modern w-100">
+                                   class="btn-modern btn-success-modern w-100">
                                     <i class="fas fa-plus me-2"></i>Tambah User
                                 </a>
 
@@ -157,7 +190,7 @@
                         </div>
                     </div>
 
-                    <!-- Statistik -->
+                    <!-- ================= STATISTIK USER ================= -->
                     <div class="card-modern">
                         <div class="card-header-modern">
                             <div class="header-content">
@@ -165,9 +198,11 @@
                                 <h5>Statistik</h5>
                             </div>
                         </div>
+
                         <div class="card-body">
                             <div class="d-flex flex-column gap-3">
 
+                                {{-- Nama --}}
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="icon-circle bg-primary">
                                         <i class="fas fa-user"></i>
@@ -178,6 +213,7 @@
                                     </div>
                                 </div>
 
+                                {{-- Role --}}
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="icon-circle bg-success">
                                         <i class="fas fa-user-tag"></i>
@@ -188,6 +224,7 @@
                                     </div>
                                 </div>
 
+                                {{-- ID User --}}
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="icon-circle bg-warning">
                                         <i class="fas fa-hashtag"></i>
@@ -198,6 +235,7 @@
                                     </div>
                                 </div>
 
+                                {{-- Lama bergabung --}}
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="icon-circle bg-info">
                                         <i class="fas fa-clock"></i>
@@ -216,4 +254,6 @@
             </div>
         </div>
     </div>
+
+{{-- Mengakhiri section --}}
 @endsection

@@ -9,14 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class AgendaController extends Controller
 {
-    // =========================
-    // INDEX (SEARCH + FILTER)
-    // =========================
+    // ==================================================
+    // INDEX
+    // Menampilkan daftar agenda dengan search & filter
+    // ==================================================
     public function index(Request $request)
     {
         $query = Agenda::query();
 
-        // SEARCH
+        // ================= SEARCH =================
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('judul', 'like', '%' . $request->search . '%')
@@ -25,30 +26,33 @@ class AgendaController extends Controller
             });
         }
 
-        // FILTER TANGGAL
+        // ================= FILTER TANGGAL =================
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal_mulai', $request->tanggal);
         }
 
+        // ================= PAGINATION =================
         $agendas = $query
-            ->orderBy('tanggal_mulai', 'desc')
+            ->orderBy('tanggal_mulai', 'desc') // urut dari terbaru
             ->paginate(9)
             ->withQueryString();
 
         return view('pages.agenda.index', compact('agendas'));
     }
 
-    // =========================
+    // ==================================================
     // CREATE
-    // =========================
+    // Menampilkan form tambah agenda baru
+    // ==================================================
     public function create()
     {
         return view('pages.agenda.create');
     }
 
-    // =========================
+    // ==================================================
     // STORE
-    // =========================
+    // Menyimpan data agenda baru beserta media
+    // ==================================================
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -61,9 +65,10 @@ class AgendaController extends Controller
             'filename.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Simpan data agenda
         $agenda = Agenda::create($validated);
 
-        // SIMPAN MEDIA
+        // ================= SIMPAN MEDIA =================
         if ($request->hasFile('filename')) {
             foreach ($request->file('filename') as $index => $file) {
 
@@ -85,27 +90,30 @@ class AgendaController extends Controller
             ->with('success', 'Agenda berhasil ditambahkan!');
     }
 
-    // =========================
+    // ==================================================
     // SHOW
-    // =========================
+    // Menampilkan detail agenda beserta media
+    // ==================================================
     public function show($id)
     {
         $agenda = Agenda::with('media')->findOrFail($id);
         return view('pages.agenda.show', compact('agenda'));
     }
 
-    // =========================
+    // ==================================================
     // EDIT
-    // =========================
+    // Menampilkan form edit agenda beserta media
+    // ==================================================
     public function edit($id)
     {
         $agenda = Agenda::with('media')->findOrFail($id);
         return view('pages.agenda.edit', compact('agenda'));
     }
 
-    // =========================
+    // ==================================================
     // UPDATE
-    // =========================
+    // Update data agenda dan ganti media jika ada file baru
+    // ==================================================
     public function update(Request $request, $id)
     {
         $agenda = Agenda::findOrFail($id);
@@ -120,6 +128,7 @@ class AgendaController extends Controller
             'filename.*'      => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        // Update data agenda
         $agenda->update($request->only([
             'judul',
             'lokasi',
@@ -129,9 +138,10 @@ class AgendaController extends Controller
             'deskripsi',
         ]));
 
-        // JIKA ADA FOTO BARU → GANTI TOTAL
+        // Jika ada file baru → hapus media lama & simpan yang baru
         if ($request->hasFile('filename')) {
 
+            // Hapus file lama dari storage
             $oldMedia = Media::where('ref_table', 'agenda')
                 ->where('ref_id', $agenda->agenda_id)
                 ->get();
@@ -143,6 +153,7 @@ class AgendaController extends Controller
                 $media->delete();
             }
 
+            // Simpan file baru
             foreach ($request->file('filename') as $index => $file) {
 
                 $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
@@ -163,13 +174,15 @@ class AgendaController extends Controller
             ->with('success', 'Agenda berhasil diperbarui!');
     }
 
-    // =========================
+    // ==================================================
     // DESTROY
-    // =========================
+    // Hapus agenda dan semua media terkait
+    // ==================================================
     public function destroy($id)
     {
         $agenda = Agenda::findOrFail($id);
 
+        // Hapus media lama dari storage dan database
         $mediaList = Media::where('ref_table', 'agenda')
             ->where('ref_id', $agenda->agenda_id)
             ->get();
@@ -179,6 +192,7 @@ class AgendaController extends Controller
             $media->delete();
         }
 
+        // Hapus agenda
         $agenda->delete();
 
         return back()->with('success', 'Agenda berhasil dihapus');

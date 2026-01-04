@@ -1,24 +1,34 @@
+{{-- Menggunakan layout utama guest --}}
 @extends('layouts.guest.app')
 
+{{-- Section konten utama --}}
 @section('content')
-    {{-- start main content --}}
+
+    {{-- Memanggil navbar --}}
     @include('layouts.guest.navbar')
 
+    {{-- Container utama halaman --}}
     <div class="container-fluid content-section">
         <div class="container py-5">
 
-            <!-- Action Bar -->
+            {{-- ================= ACTION BAR ================= --}}
+            {{-- Menampilkan judul halaman dan navigasi --}}
             <div class="action-bar mb-4">
                 <div class="action-left">
                     <h4 class="mb-0 fw-bold text-dark">
+                        {{-- Ikon detail --}}
                         <i class="fas fa-eye me-2 text-primary"></i>
                         Detail Profil Desa
                     </h4>
+
+                    {{-- Menampilkan nama desa (dibatasi 50 karakter) --}}
                     <p class="text-muted mb-0 mt-1">
                         <i class="fas fa-home me-1"></i>
                         "{{ Str::limit($profil->nama_desa, 50) }}"
                     </p>
                 </div>
+
+                {{-- Tombol kembali ke halaman index --}}
                 <div class="action-right">
                     <div class="d-flex gap-2">
                         <a href="{{ route('profil.index') }}" class="btn-modern btn-secondary-modern">
@@ -27,32 +37,49 @@
                     </div>
                 </div>
             </div>
+            {{-- ================= END ACTION BAR ================= --}}
 
             <div class="row">
+
+                {{-- ================= KONTEN UTAMA ================= --}}
                 <div class="col-lg-8">
-                    <!-- Info Card -->
+
+                    {{-- ================= INFO PROFIL DESA ================= --}}
                     <div class="card-modern mb-4">
                         <div class="card-header-modern">
                             <div class="header-content">
+                                {{-- Ikon info --}}
                                 <i class="fas fa-info-circle"></i>
                                 <h5>Informasi Profil Desa</h5>
                             </div>
                         </div>
+
+                        {{-- Body card --}}
                         <div class="card-body p-0">
                             <div class="card-warga">
+
+                                {{-- Header informasi desa --}}
                                 <div class="card-warga-header">
                                     <div class="user-avatar-modern">
                                         <i class="fas fa-home"></i>
                                     </div>
+
                                     <div class="user-info">
+                                        {{-- Nama desa --}}
                                         <h6 class="user-name">{{ $profil->nama_desa }}</h6>
+
+                                        {{-- Kecamatan --}}
                                         <span class="badge-gender badge-male">
                                             <i class="fas fa-map-marker-alt me-1"></i>
                                             {{ $profil->kecamatan }}
                                         </span>
                                     </div>
                                 </div>
+
+                                {{-- Body detail profil --}}
                                 <div class="card-warga-body">
+
+                                    {{-- ID Profil --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-primary">
                                             <i class="fas fa-id-card"></i>
@@ -62,6 +89,8 @@
                                             <span class="info-value">{{ $profil->profil_id }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Kabupaten --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-success">
                                             <i class="fas fa-map"></i>
@@ -71,6 +100,8 @@
                                             <span class="info-value">{{ $profil->kabupaten }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Provinsi --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-warning">
                                             <i class="fas fa-globe-asia"></i>
@@ -80,6 +111,8 @@
                                             <span class="info-value">{{ $profil->provinsi }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Alamat kantor --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-info">
                                             <i class="fas fa-building"></i>
@@ -89,6 +122,8 @@
                                             <span class="info-value">{{ $profil->alamat_kantor }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Email --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-primary">
                                             <i class="fas fa-envelope"></i>
@@ -98,6 +133,8 @@
                                             <span class="info-value">{{ $profil->email ?: '-' }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Telepon --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-success">
                                             <i class="fas fa-phone"></i>
@@ -107,106 +144,124 @@
                                             <span class="info-value">{{ $profil->telepon ?: '-' }}</span>
                                         </div>
                                     </div>
+
+                                    {{-- Tanggal dibuat --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-warning">
                                             <i class="fas fa-calendar-plus"></i>
                                         </div>
                                         <div class="info-content">
                                             <span class="info-label">Dibuat</span>
-                                            <span class="info-value">{{ $profil->created_at->format('d M Y') }}</span>
+                                            <span class="info-value">
+                                                {{ $profil->created_at->format('d M Y') }}
+                                            </span>
                                         </div>
                                     </div>
+
+                                    {{-- Terakhir diperbarui --}}
                                     <div class="info-item">
                                         <div class="info-icon bg-info">
                                             <i class="fas fa-clock"></i>
                                         </div>
                                         <div class="info-content">
                                             <span class="info-label">Update Terakhir</span>
-                                            <span class="info-value">{{ $profil->updated_at->format('d M Y H:i') }}</span>
+                                            <span class="info-value">
+                                                {{ $profil->updated_at->format('d M Y H:i') }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- ================= END INFO PROFIL ================= --}}
+
+                    {{-- ================= VISI & MISI ================= --}}
+                    @if ($profil->visi || $profil->misi)
+                        <div class="row mt-4">
+
+                            {{-- VISI --}}
+                            @if ($profil->visi)
+                                <div class="{{ $profil->misi ? 'col-md-6' : 'col-12' }} mb-4">
+                                    <div class="card-modern h-100">
+                                        <div class="card-header-modern">
+                                            <i class="fas fa-lightbulb"></i>
+                                            <h5>Visi Desa</h5>
+                                        </div>
+                                        <div class="card-body p-4" style="white-space: pre-line;">
+                                            {{ $profil->visi }}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            @endif
 
-                    <!-- Visi Misi Section -->
-                    <div class="row">
-                        @if($profil->visi)
-                        <div class="col-md-6 mb-4">
-                            <div class="card-modern">
-                                <div class="card-header-modern">
-                                    <div class="header-content">
-                                        <i class="fas fa-lightbulb"></i>
-                                        <h5>Visi Desa</h5>
+                            {{-- MISI --}}
+                            @if ($profil->misi)
+                                <div class="{{ $profil->visi ? 'col-md-6' : 'col-12' }} mb-4">
+                                    <div class="card-modern h-100">
+                                        <div class="card-header-modern">
+                                            <i class="fas fa-bullseye"></i>
+                                            <h5>Misi Desa</h5>
+                                        </div>
+                                        <div class="card-body p-4" style="white-space: pre-line;">
+                                            {{ $profil->misi }}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="card-body p-4">
-                                    <div class="p-3 bg-light rounded">
-                                        {{ $profil->visi }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+                            @endif
 
-                        @if($profil->misi)
-                        <div class="col-md-6 mb-4">
-                            <div class="card-modern">
-                                <div class="card-header-modern">
-                                    <div class="header-content">
-                                        <i class="fas fa-bullseye"></i>
-                                        <h5>Misi Desa</h5>
-                                    </div>
-                                </div>
-                                <div class="card-body p-4">
-                                    <div class="p-3 bg-light rounded">
-                                        {{ $profil->misi }}
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        @endif
-                    </div>
+                    @endif
+                    {{-- ================= END VISI MISI ================= --}}
 
-                    <!-- Logo Desa Section -->
+                    {{-- ================= LOGO DESA ================= --}}
+                    {{-- Mengambil data logo dari tabel media --}}
                     @php
                         $logo = App\Models\Media::where('ref_table', 'profil')
                             ->where('ref_id', $profil->profil_id)
                             ->first();
                     @endphp
 
+                    {{-- Card logo desa --}}
                     <div class="card-modern">
                         <div class="card-header-modern">
                             <div class="header-content">
                                 <i class="fas fa-image"></i>
                                 <h5>Logo Desa</h5>
                             </div>
-                            @if($logo)
-                            <span class="badge bg-primary">1 Logo</span>
+
+                            {{-- Badge jika logo tersedia --}}
+                            @if ($logo)
+                                <span class="badge bg-primary">1 Logo</span>
                             @endif
                         </div>
+
                         <div class="card-body p-4">
-                            @if($logo)
+
+                            {{-- Jika logo tersedia --}}
+                            @if ($logo)
                                 <div class="row g-3">
                                     <div class="col-md-4 col-lg-3">
                                         <div class="border rounded overflow-hidden shadow-sm">
+
+                                            {{-- Cek apakah file berupa gambar --}}
                                             @if (str_contains($logo->mime_type, 'image'))
-                                                <!-- PAKAI STORAGE URL -->
+                                                {{-- Menampilkan gambar logo --}}
                                                 <img src="{{ Storage::url($logo->file_name) }}" class="img-fluid w-100"
-                                                    style="height: 200px; object-fit: contain; cursor: pointer; background-color: #f8f9fa;"
-                                                    alt="{{ $logo->caption }}" data-bs-toggle="modal"
-                                                    data-bs-target="#logoModal">
+                                                    style="height:200px;object-fit:contain;cursor:pointer;"
+                                                    data-bs-toggle="modal" data-bs-target="#logoModal">
                                             @else
+                                                {{-- Jika bukan gambar --}}
                                                 <div class="text-center p-4 bg-light">
                                                     <i class="fas fa-file fa-3x text-muted"></i>
                                                     <p class="small mt-2 mb-0">{{ $logo->file_name }}</p>
                                                 </div>
                                             @endif
 
+                                            {{-- Informasi file --}}
                                             <div class="p-3 bg-white">
-                                                <small class="d-block text-truncate" title="{{ $logo->caption }}">
-                                                    <i class="fas fa-sticky-note me-1"></i>
+                                                <small class="d-block text-truncate">
                                                     {{ $logo->caption ?: 'Logo ' . $profil->nama_desa }}
                                                 </small>
                                                 <small class="text-muted">
@@ -217,25 +272,30 @@
                                     </div>
                                 </div>
 
-                                <!-- Modal for logo preview -->
+                                {{-- Modal preview logo --}}
                                 @if (str_contains($logo->mime_type, 'image'))
                                     <div class="modal fade" id="logoModal">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
+
+                                                {{-- Header modal --}}
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">
-                                                        {{ $logo->caption ?: 'Logo ' . $profil->nama_desa }}</h5>
+                                                        {{ $logo->caption ?: 'Logo ' . $profil->nama_desa }}
+                                                    </h5>
                                                     <button type="button" class="btn-close"
                                                         data-bs-dismiss="modal"></button>
                                                 </div>
+
+                                                {{-- Body modal --}}
                                                 <div class="modal-body text-center">
                                                     <img src="{{ Storage::url($logo->file_name) }}"
-                                                        class="img-fluid rounded" alt="{{ $logo->caption }}"
-                                                        style="max-height: 70vh; max-width: 100%;">
+                                                        class="img-fluid rounded">
                                                 </div>
+
+                                                {{-- Footer modal --}}
                                                 <div class="modal-footer">
-                                                    <a href="{{ Storage::url($logo->file_name) }}"
-                                                        download="{{ $logo->file_name }}"
+                                                    <a href="{{ Storage::url($logo->file_name) }}" download
                                                         class="btn btn-sm btn-primary">
                                                         <i class="fas fa-download me-1"></i>Download
                                                     </a>
@@ -244,20 +304,13 @@
                                                         Tutup
                                                     </button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
                                 @endif
-
-                                <!-- Media Info -->
-                                <div class="alert alert-info mt-4">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    <small>
-                                        Data disimpan di tabel <code>media</code> dengan
-                                        <code>ref_table='profil_desa'</code> dan <code>ref_id={{ $profil->profil_id }}</code>
-                                    </small>
-                                </div>
                             @else
+                                {{-- Jika logo belum ada --}}
                                 <div class="text-center py-5">
                                     <i class="fas fa-image fa-4x text-muted mb-3"></i>
                                     <p class="text-muted">Belum ada logo desa</p>
@@ -269,115 +322,57 @@
                             @endif
                         </div>
                     </div>
+                    {{-- ================= END LOGO ================= --}}
+
                 </div>
 
-                <!-- Sidebar -->
+                {{-- ================= SIDEBAR ================= --}}
                 <div class="col-lg-4">
-                    <!-- Action Card -->
+
+                    {{-- CARD AKSI --}}
                     <div class="card-modern mb-4">
                         <div class="card-header-modern">
-                            <div class="header-content">
-                                <i class="fas fa-cogs"></i>
-                                <h5>Aksi</h5>
-                            </div>
+                            <i class="fas fa-cogs"></i>
+                            <h5>Aksi</h5>
                         </div>
                         <div class="card-body">
                             <div class="d-grid gap-2">
-                                <a href="{{ route('profil.edit', $profil->profil_id) }}" class="btn-modern btn-warning-modern">
+
+                                {{-- Edit --}}
+                                <a href="{{ route('profil.edit', $profil->profil_id) }}"
+                                    class="btn-modern btn-warning-modern w-100">
                                     <i class="fas fa-edit me-2"></i>Edit Profil
                                 </a>
-                                <form action="{{ route('profil.destroy', $profil->profil_id) }}" method="POST" class="d-grid">
+
+                                {{-- Hapus --}}
+                                <form action="{{ route('profil.destroy', $profil->profil_id) }}" method="POST"
+                                    class="m-0">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-modern btn-danger-modern"
-                                        onclick="return confirm('Hapus profil desa ini? Logo terkait juga akan dihapus.')">
+                                    <button type="submit" class="btn-modern btn-danger-modern w-100"
+                                        onclick="return confirm('Hapus profil desa ini?')">
                                         <i class="fas fa-trash me-2"></i>Hapus Profil
                                     </button>
                                 </form>
-                                <a href="{{ route('profil.create') }}" class="btn-modern btn-success-modern">
+
+                                {{-- Buat Baru --}}
+                                <a href="{{ route('profil.create') }}" class="btn-modern btn-success-modern w-100">
                                     <i class="fas fa-plus me-2"></i>Buat Baru
                                 </a>
-                                <a href="{{ route('profil.index') }}" class="btn-modern btn-secondary-modern">
+
+                                {{-- Daftar --}}
+                                <a href="{{ route('profil.index') }}" class="btn-modern btn-secondary-modern w-100">
                                     <i class="fas fa-list me-2"></i>Daftar Profil
                                 </a>
+
                             </div>
                         </div>
+
                     </div>
 
-                    <!-- Info Card -->
-                    <div class="card-modern">
-                        <div class="card-header-modern">
-                            <div class="header-content">
-                                <i class="fas fa-info-circle"></i>
-                                <h5>Statistik</h5>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="d-flex flex-column gap-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-home"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted d-block">Nama Desa</small>
-                                        <strong>{{ $profil->nama_desa }}</strong>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted d-block">Kecamatan</small>
-                                        <strong>{{ $profil->kecamatan }}</strong>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-hashtag"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted d-block">ID Profil</small>
-                                        <strong>{{ $profil->profil_id }}</strong>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="icon-circle bg-info">
-                                        <i class="fas fa-clock"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted d-block">Durasi</small>
-                                        <strong>{{ $profil->created_at->diffForHumans() }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Logo Preview Card -->
-                    @if($logo)
-                    <div class="card-modern mt-4">
-                        <div class="card-header-modern">
-                            <div class="header-content">
-                                <i class="fas fa-eye"></i>
-                                <h5>Pratinjau Logo</h5>
-                            </div>
-                        </div>
-                        <div class="card-body text-center">
-                            <div class="logo-preview mb-3">
-                                <img src="{{ Storage::url($logo->file_name) }}"
-                                     class="img-fluid rounded-circle border shadow-sm"
-                                     style="width: 150px; height: 150px; object-fit: cover;"
-                                     alt="Logo {{ $profil->nama_desa }}">
-                            </div>
-                            <p class="text-muted small mb-0">
-                                <i class="fas fa-image me-1"></i>
-                                {{ $logo->file_name }}
-                            </p>
-                        </div>
-                    </div>
-                    @endif
                 </div>
+                {{-- ================= END SIDEBAR ================= --}}
+
             </div>
         </div>
     </div>

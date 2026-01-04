@@ -11,11 +11,15 @@ use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
+    // ==================================================
+    // INDEX
+    // Menampilkan daftar berita dengan search, filter kategori dan status
+    // ==================================================
     public function index(Request $request)
     {
-        $query = Berita::with(['kategori', 'media'])->latest();
+        $query = Berita::with(['kategori', 'media'])->latest(); // Ambil berita terbaru beserta kategori dan media
 
-        // SEARCH
+        // ================= SEARCH =================
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('judul', 'like', "%{$request->search}%")
@@ -23,30 +27,39 @@ class BeritaController extends Controller
             });
         }
 
-        // FILTER KATEGORI
+        // ================= FILTER KATEGORI =================
         if ($request->kategori_id) {
             $query->where('kategori_id', $request->kategori_id);
         }
 
-        // FILTER STATUS
+        // ================= FILTER STATUS =================
         if ($request->status) {
             $query->where('status', $request->status);
         }
 
-        $berita     = $query->paginate(6)->withQueryString();
-        $kategories = KategoriBerita::orderBy('nama')->get();
+        $berita     = $query->paginate(6)->withQueryString(); // Pagination 6 per halaman
+        $kategories = KategoriBerita::orderBy('nama')->get(); // Ambil semua kategori untuk filter dropdown
 
         return view('pages.berita.index', compact('berita', 'kategories'));
     }
 
+    // ==================================================
+    // CREATE
+    // Menampilkan form tambah berita baru
+    // ==================================================
     public function create()
     {
-        $kategories = KategoriBerita::orderBy('nama')->get();
+        $kategories = KategoriBerita::orderBy('nama')->get(); // Ambil kategori untuk select option
         return view('pages.berita.create', compact('kategories'));
     }
 
+    // ==================================================
+    // STORE
+    // Menyimpan berita baru beserta media
+    // ==================================================
     public function store(Request $request)
     {
+        // ================= VALIDASI =================
         $request->validate([
             'judul'       => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori_berita,kategori_id',
@@ -56,9 +69,10 @@ class BeritaController extends Controller
             'media.*'     => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
         ]);
 
-        // SLUG unik
+        // ================= GENERATE SLUG UNIK =================
         $slug = $this->generateUniqueSlug($request->judul);
 
+        // ================= SIMPAN BERITA =================
         $berita = Berita::create([
             'judul'       => $request->judul,
             'slug'        => $slug,
@@ -69,10 +83,9 @@ class BeritaController extends Controller
             'terbit_at'   => $request->status === 'terbit' ? now() : null,
         ]);
 
-        // UPLOAD MEDIA
+        // ================= UPLOAD MEDIA =================
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $file) {
-
                 $filename = uniqid() . '-' . time() . '.' . $file->getClientOriginalExtension();
                 $path     = $file->storeAs('media/berita', $filename, 'public');
 
@@ -88,12 +101,20 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dibuat!');
     }
 
+    // ==================================================
+    // SHOW
+    // Menampilkan detail berita beserta media dan kategori
+    // ==================================================
     public function show($id)
     {
         $berita = Berita::with(['kategori', 'media'])->findOrFail($id);
         return view('pages.berita.show', compact('berita'));
     }
 
+    // ==================================================
+    // EDIT
+    // Menampilkan form edit berita beserta media
+    // ==================================================
     public function edit($id)
     {
         $berita     = Berita::with('media')->findOrFail($id);
@@ -102,10 +123,15 @@ class BeritaController extends Controller
         return view('pages.berita.edit', compact('berita', 'kategories'));
     }
 
+    // ==================================================
+    // UPDATE
+    // Memperbarui berita, hapus media lama jika dipilih, tambah media baru
+    // ==================================================
     public function update(Request $request, $id)
     {
         $berita = Berita::with('media')->findOrFail($id);
 
+        // ================= VALIDASI =================
         $request->validate([
             'judul'         => 'required|string|max:255',
             'kategori_id'   => 'required|exists:kategori_berita,kategori_id',
@@ -113,13 +139,14 @@ class BeritaController extends Controller
             'penulis'       => 'required|string|max:100',
             'status'        => 'required|in:draft,terbit',
             'media.*'       => 'nullable|image|max:2048',
-            'hapus_media'   => 'nullable|array',
+            'hapus_media'   => 'nullable|array', // array id media yang ingin dihapus
             'hapus_media.*' => 'integer',
         ]);
 
-        // SLUG unik (exclude current id)
+        // ================= GENERATE SLUG UNIK =================
         $slug = $this->generateUniqueSlug($request->judul, $id);
 
+        // ================= UPDATE BERITA =================
         $berita->update([
             'judul'       => $request->judul,
             'slug'        => $slug,
@@ -130,18 +157,18 @@ class BeritaController extends Controller
             'terbit_at'   => $request->status === 'terbit' ? now() : null,
         ]);
 
-        // HAPUS MEDIA TERPILIH
+        // ================= HAPUS MEDIA TERPILIH =================
         if (!empty($request->hapus_media)) {
             foreach ($request->hapus_media as $mediaId) {
                 $media = Media::find($mediaId);
                 if ($media) {
-                    Storage::disk('public')->delete($media->file_name);
-                    $media->delete();
+                    Storage::disk('public')->delete($media->file_name); // hapus file dari storage
+                    $media->delete(); // hapus record dari database
                 }
             }
         }
 
-        // UPLOAD MEDIA BARU
+        // ================= UPLOAD MEDIA BARU =================
         if ($request->hasFile('media')) {
             foreach ($request->file('media') as $file) {
                 $filename = uniqid() . '-' . time() . '.' . $file->getClientOriginalExtension();
@@ -159,29 +186,36 @@ class BeritaController extends Controller
         return redirect()->route('berita.index')->with('success', 'Berita berhasil diperbarui!');
     }
 
+    // ==================================================
+    // DESTROY
+    // Menghapus berita beserta semua media terkait
+    // ==================================================
     public function destroy($id)
     {
         $berita = Berita::with('media')->findOrFail($id);
 
+        // Hapus semua media terkait
         foreach ($berita->media as $media) {
-            Storage::disk('public')->delete($media->file_name);
-            $media->delete();
+            Storage::disk('public')->delete($media->file_name); // hapus file dari storage
+            $media->delete(); // hapus record
         }
 
-        $berita->delete();
+        $berita->delete(); // hapus berita
 
         return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus!');
     }
 
-    // =====================
-    // SLUG UNIK
-    // =====================
+    // ==================================================
+    // GENERATE UNIQUE SLUG
+    // Membuat slug unik berdasarkan judul, excludeId digunakan saat update
+    // ==================================================
     private function generateUniqueSlug($judul, $excludeId = null)
     {
         $slug = Str::slug($judul);
         $originalSlug = $slug;
         $counter = 1;
 
+        // Loop sampai slug unik ditemukan
         while (
             Berita::where('slug', $slug)
                 ->when($excludeId, fn ($q) => $q->where('berita_id', '!=', $excludeId))
